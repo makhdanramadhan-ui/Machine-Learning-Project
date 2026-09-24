@@ -26,9 +26,6 @@ st.title("📡 Aplikasi Prediksi Customer Churn - Telco")
 st.sidebar.header("Info Model")
 if INFO:
     st.sidebar.write(f"**Model terbaik:** {INFO.get('best_model')}")
-    m = INFO.get("metrics", {})
-    st.sidebar.write(f"Akurasi: {m.get('Accuracy')} | F1: {m.get('F1')}")
-    st.sidebar.write(f"Recall: {m.get('Recall')} | AUC: {m.get('ROC_AUC')}")
     st.sidebar.caption("Model Dipilih berdasarkan CV-F1 tertinggi.")
 st.sidebar.caption("Dataset: Telco-Customer-Churn (7032 bersih, 18 fitur)")
 
