@@ -59,7 +59,15 @@ with tab1:
         PaperlessBilling = st.selectbox("Paperless Billing", ["Yes", "No"])
         PaymentMethod = st.selectbox("Metode Bayar", ["Electronic check", "Mailed check",
             "Bank transfer (automatic)", "Credit card (automatic)"])
-        MonthlyCharges = st.number_input("Monthly Charges ($)", 0.0, 200.0, 70.0)
+        MonthlyCharges = st.number_input("Monthly Charges ($)", 0.0, 120.0, 70.0,
+            help="Maks 120 mengikuti data latih (maks 118,75). Isi tagihan aktual dari billing.")
+        # Validasi kewajaran: tagihan harus masuk akal untuk paket yang dipilih
+        if InternetService == "No" and MonthlyCharges > 35:
+            st.warning("Tidak wajar: tanpa internet tagihan normalnya sekitar 20. Cek lagi input.")
+        elif InternetService == "DSL" and MonthlyCharges > 85:
+            st.warning("Tidak wajar: DSL normalnya di bawah 85. Cek lagi input.")
+        elif InternetService == "Fiber optic" and MonthlyCharges < 25:
+            st.warning("Tidak wajar: fiber normalnya di atas 25. Cek lagi input.")
 
     if st.button("🚀 Prediksi Sekarang", type="primary"):
         # DataFrame 1 baris sesuai kolom mentah training
