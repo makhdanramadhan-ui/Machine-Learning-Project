@@ -45,8 +45,7 @@ with tab1:
         _ml_opts = ["Yes", "No", "No phone service"]
         _ml_lock = (PhoneService == "No")
         MultipleLines = st.selectbox("Multiple Lines", _ml_opts,
-            index=2 if _ml_lock else 0, disabled=_ml_lock,
-            help="Dikunci mengikuti data latih." if _ml_lock else None)
+            index=2 if _ml_lock else 0, disabled=_ml_lock)
     with c2:
         InternetService = st.selectbox("Internet", ["Fiber optic", "DSL", "No"])
         # Kunci konsistensi: tanpa internet, add-on pasti "No internet service"
@@ -58,8 +57,6 @@ with tab1:
         TechSupport = st.selectbox("Tech Support", _opts, index=2 if _lock else 0, disabled=_lock)
         StreamingTV = st.selectbox("Streaming TV", _opts, index=2 if _lock else 0, disabled=_lock)
         StreamingMovies = st.selectbox("Streaming Movies", _opts, index=2 if _lock else 0, disabled=_lock)
-    if _lock:
-        st.info("Internet = No, add-on dikunci ke 'No internet service' (mengikuti data latih).")
     with c3:
         Contract = st.selectbox("Kontrak", ["Month-to-month", "One year", "Two year"])
         PaperlessBilling = st.selectbox("Paperless Billing", ["Yes", "No"])
