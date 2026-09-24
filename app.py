@@ -29,7 +29,7 @@ if INFO:
     m = INFO.get("metrics", {})
     st.sidebar.write(f"Akurasi: {m.get('Accuracy')} | F1: {m.get('F1')}")
     st.sidebar.write(f"Recall: {m.get('Recall')} | AUC: {m.get('ROC_AUC')}")
-    st.sidebar.caption("Dipilih by CV-F1 + Recall tertinggi (miss churn lebih mahal dari false alarm).")
+    st.sidebar.caption("Dipilih berdasarkan CV-F1 tertinggi.")
 st.sidebar.caption("Dataset: Telco-Customer-Churn (7032 bersih, 18 fitur)")
 
 tab1, tab2, tab3 = st.tabs(["🔮 Prediksi Single", "📁 Prediksi Batch (CSV)", "📊 Dashboard & Model"])
