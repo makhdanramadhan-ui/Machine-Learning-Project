@@ -1,0 +1,4 @@
+Model,BestParams,CV_F1,Accuracy,Precision,Recall,F1,ROC_AUC,TN,FP,FN,TP
+DecisionTree,"{'clf__class_weight': 'balanced', 'clf__max_depth': 5, 'clf__min_samples_split': 2}",0.6147,0.7363,0.5025,0.7968,0.6163,0.8305,738,295,76,298
+RandomForest,"{'clf__class_weight': 'balanced_subsample', 'clf__max_depth': 12, 'clf__min_samples_split': 5, 'clf__n_estimators': 200}",0.626,0.7697,0.5548,0.6765,0.6096,0.8235,830,203,121,253
+LogisticRegression,"{'clf__C': 10.0, 'clf__class_weight': 'balanced'}",0.6304,0.7264,0.4908,0.7861,0.6043,0.8321,728,305,80,294
