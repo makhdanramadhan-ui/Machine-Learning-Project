@@ -43,6 +43,9 @@ with tab1:
         tenure = st.number_input("Tenure (bulan)", 0, 72, 12)
         PhoneService = st.selectbox("Layanan Telepon", ["Yes", "No"])
         MultipleLines = st.selectbox("Multiple Lines", ["Yes", "No", "No phone service"])
+    # Kunci konsistensi: tanpa telepon, MultipleLines pasti "No phone service"
+    if PhoneService == "No" and MultipleLines != "No phone service":
+        MultipleLines = "No phone service"
     with c2:
         InternetService = st.selectbox("Internet", ["Fiber optic", "DSL", "No"])
         OnlineSecurity = st.selectbox("Online Security", ["Yes", "No", "No internet service"])
@@ -51,6 +54,10 @@ with tab1:
         TechSupport = st.selectbox("Tech Support", ["Yes", "No", "No internet service"])
         StreamingTV = st.selectbox("Streaming TV", ["Yes", "No", "No internet service"])
         StreamingMovies = st.selectbox("Streaming Movies", ["Yes", "No", "No internet service"])
+    # Kunci konsistensi: tanpa internet, add-on pasti "No internet service"
+    if InternetService == "No":
+        OnlineSecurity = OnlineBackup = DeviceProtection = TechSupport = StreamingTV = StreamingMovies = "No internet service"
+        st.info("Internet = No, add-on dikunci ke 'No internet service' (mengikuti data latih).")
     with c3:
         Contract = st.selectbox("Kontrak", ["Month-to-month", "One year", "Two year"])
         PaperlessBilling = st.selectbox("Paperless Billing", ["Yes", "No"])
