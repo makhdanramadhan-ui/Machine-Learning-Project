@@ -413,6 +413,40 @@ with tab3:
                 "| Recall | TP/(TP+FN) | Dari churn asli, berapa yang ketangkap |\n"
                 "| F1 | 2×P×R/(P+R) | Rata-rata adil Precision + Recall |\n"
                 "| ROC-AUC | luas kurva ROC | 0.5 = acak, 1.0 = sempurna |")
+            st.divider()
+            st.markdown("**📘 F1-Score — definisi lengkap**")
+            st.markdown(
+                "**Kepanjangan:** F1 = *F-Measure / F-Score* (rata-rata harmonik Precision dan Recall).\n\n"
+                "**Rumus:** `F1 = 2 × (Precision × Recall) / (Precision + Recall)`.\n\n"
+                "**Definisi:** F1 mengukur keseimbangan antara Precision (ketepatan saat memprediksi churn) "
+                "dan Recall (kemampuan menangkap semua churn asli). Nilainya 0–1: makin dekat 1 makin bagus. "
+                "F1 penting karena dataset churn itu tidak seimbang (yang churn lebih sedikit) — "
+                "akurasi saja bisa menipu, sedangkan F1 menghukum model yang hanya bagus di satu sisi. "
+                "Contoh di proyek ini: model dengan Recall tinggi tapi Precision rendah tetap butuh F1 "
+                "untuk memastikan promo retensi tidak terlalu banyak salah sasaran."
+            )
+            st.markdown("**📗 CV-F1 — definisi lengkap**")
+            st.markdown(
+                "**Kepanjangan:** CV-F1 = *Cross-Validated F1* (rata-rata F1 dari validasi silang).\n\n"
+                "**Cara hitung:** data latih dibagi 5 fold (lipatan). Model dilatih di 4 fold, diuji di 1 fold, "
+                "diulang 5 kali sampai semua fold pernah jadi data uji. CV-F1 = rata-rata F1 dari kelima fold.\n\n"
+                "**Definisi:** CV-F1 menunjukkan performa model yang stabil dan tidak kebetulan bagus di satu "
+                "pembagian data saja. Inilah alasan model terbaik di proyek ini dipilih berdasarkan CV-F1 tertinggi, "
+                "bukan sekadar akurasi test sekali jalan — supaya model terbukti konsisten di semua variasi data "
+                "pelanggan."
+            )
+            st.markdown("**📙 ROC-AUC — definisi lengkap**")
+            st.markdown(
+                "**Kepanjangan:** ROC-AUC = *Receiver Operating Characteristic – Area Under the Curve* "
+                "(luas area di bawah kurva ROC).\n\n"
+                "**Cara baca:** kurva ROC memetakan *True Positive Rate* (Recall) vs *False Positive Rate* "
+                "(FP / (FP+TN)) di semua threshold probabilitas. AUC = luas di bawah kurva itu, nilainya 0–1.\n\n"
+                "**Definisi:** ROC-AUC mengukur kemampuan model membedakan pelanggan churn vs setia "
+                "di semua level threshold, bukan cuma di threshold 0.5. Nilai 0.5 = tebakan acak, "
+                "0.7–0.8 = cukup baik, 0.8–0.9 = baik, 1.0 = sempurna. Di proyek ini ROC-AUC dipakai sebagai "
+                "pembanding kualitas diskriminasi antar model: makin tinggi, makin andal model memilah "
+                "pelanggan berisiko tanpa tergantung satu titik cutoff."
+            )
         if CMP is not None:
             st.dataframe(CMP, use_container_width=True)
             try:
