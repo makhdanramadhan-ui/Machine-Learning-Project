@@ -448,7 +448,9 @@ with tab3:
                 "pelanggan berisiko tanpa tergantung satu titik cutoff."
             )
         if CMP is not None:
-            st.dataframe(CMP, use_container_width=True)
+            _cmp_show = CMP.copy()
+            _cmp_show.index = _cmp_show.index + 1
+            st.dataframe(_cmp_show, use_container_width=True)
             try:
                 b = CMP[CMP["Model"] == BEST].iloc[0]
                 st.markdown(f"**Confusion matrix — {BEST} (test 1407 data):**")
