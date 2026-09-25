@@ -414,7 +414,7 @@ with tab3:
                 "| F1 | 2×P×R/(P+R) | Rata-rata adil Precision + Recall |\n"
                 "| ROC-AUC | luas kurva ROC | 0.5 = acak, 1.0 = sempurna |")
             st.divider()
-            st.markdown("**📘 F1-Score — definisi lengkap**")
+            st.markdown("**📘 F1-Score**")
             st.markdown(
                 "**Kepanjangan:** F1 = *F-Measure / F-Score* (rata-rata harmonik Precision dan Recall).\n\n"
                 "**Rumus:** `F1 = 2 × (Precision × Recall) / (Precision + Recall)`.\n\n"
@@ -425,7 +425,7 @@ with tab3:
                 "Contoh di proyek ini: model dengan Recall tinggi tapi Precision rendah tetap butuh F1 "
                 "untuk memastikan promo retensi tidak terlalu banyak salah sasaran."
             )
-            st.markdown("**📗 CV-F1 — definisi lengkap**")
+            st.markdown("**📗 CV-F1**")
             st.markdown(
                 "**Kepanjangan:** CV-F1 = *Cross-Validated F1* (rata-rata F1 dari validasi silang).\n\n"
                 "**Cara hitung:** data latih dibagi 5 fold (lipatan). Model dilatih di 4 fold, diuji di 1 fold, "
@@ -435,7 +435,7 @@ with tab3:
                 "bukan sekadar akurasi test sekali jalan — supaya model terbukti konsisten di semua variasi data "
                 "pelanggan."
             )
-            st.markdown("**📙 ROC-AUC — definisi lengkap**")
+            st.markdown("**📙 ROC-AUC**")
             st.markdown(
                 "**Kepanjangan:** ROC-AUC = *Receiver Operating Characteristic – Area Under the Curve* "
                 "(luas area di bawah kurva ROC).\n\n"
