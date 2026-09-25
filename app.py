@@ -494,8 +494,6 @@ with tab3:
                 pass
             if CVDET is not None:
                 st.markdown("**Hasil training tiap session (F1):**")
-                st.caption("Sesuai `train.py`: `StratifiedKFold(n_splits=5, shuffle=True, random_state=42)` — "
-                           "tiap session 1 fold jadi test, 4 fold lainnya jadi train.")
                 _cv_show = CVDET.rename(columns={"Fold": "Session"})
                 _cv_pivot = _cv_show.pivot(index="Session", columns="Model", values="F1").reset_index()
                 _cv_pivot = _cv_pivot.rename(
