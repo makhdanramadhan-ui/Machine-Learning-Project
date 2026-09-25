@@ -33,23 +33,15 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# ---------- Theme state ----------
-if "dark_mode" not in st.session_state:
-    st.session_state.dark_mode = True
+# ---------- Theme: dark permanen ----------
+DARK = True
 
-# ---------- Top bar: brand + theme toggle ----------
-top_l, top_r = st.columns([7, 3])
-with top_l:
-    st.markdown(
-        "<div style='font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;opacity:.6;"
-        "font-weight:700'>Telco &nbsp;•&nbsp; Customer Churn &nbsp;•&nbsp; ML Project</div>",
-        unsafe_allow_html=True,
-    )
-with top_r:
-    dark_mode = st.toggle("🌙 Dark mode", value=st.session_state.dark_mode)
-    st.session_state.dark_mode = dark_mode
-
-DARK = st.session_state.dark_mode
+# ---------- Top bar: brand ----------
+st.markdown(
+    "<div style='font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;opacity:.6;"
+    "font-weight:700'>Telco &nbsp;•&nbsp; Customer Churn &nbsp;•&nbsp; ML Project</div>",
+    unsafe_allow_html=True,
+)
 
 # ---------- CSS ----------
 BG = "#0B0F19" if DARK else "#F4F6FB"
@@ -304,7 +296,8 @@ with tab1:
             PaperlessBilling = st.selectbox("Paperless Billing", ["Yes", "No"])
             PaymentMethod = st.selectbox("Metode Bayar", ["Electronic check", "Mailed check",
                 "Bank transfer (automatic)", "Credit card (automatic)"])
-            MonthlyCharges = st.number_input("Monthly Charges ($)", 0.0, 120.0, 70.0,
+            MonthlyCharges = st.number_input("Monthly Charges ($)", 0.0, 120.0, 70.0, step=1.0,
+                format="%.2f",
                 help="Maks 120 mengikuti data latih (maks 118,75). Isi tagihan aktual dari billing.")
             if InternetService == "No" and MonthlyCharges > 35:
                 st.warning("⚠️ Tidak wajar: tanpa internet tagihan normalnya ~20. Cek lagi input.")
