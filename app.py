@@ -256,7 +256,7 @@ with k4:
                 "<div class='value'>7032</div>"
                 "<div class='sub'>Telco-Customer-Churn • bersih</div></div>", unsafe_allow_html=True)
 
-with st.expander("ℹ️ Detail Info Model (pengganti sidebar)", expanded=False):
+with st.expander("ℹ️ Detail Info Model", expanded=False):
     c_a, c_b = st.columns([1, 2])
     with c_a:
         st.write(f"**Model terbaik:** `{BEST}`")
@@ -440,14 +440,18 @@ with tab3:
                 )
             except Exception:
                 pass
-            fig, ax = plt.subplots(figsize=(8, 3.2))
+            fig, ax = plt.subplots(figsize=(6.5, 2.6))
             plot_df = CMP.set_index("Model")[["Accuracy", "Precision", "Recall", "F1"]]
             plot_df.plot(kind="barh", ax=ax, color=["#7C3AED", "#2563EB", "#06B6D4", "#10B981"])
-            ax.set_xlabel("Skor")
-            ax.bar_label(ax.containers[0], fmt="%.3f", fontsize=7)
+            ax.set_xlabel("Skor", fontsize=9)
+            ax.tick_params(labelsize=8)
+            leg = ax.legend(fontsize=7.5, loc="upper center", bbox_to_anchor=(0.5, -0.22),
+                            ncol=4, frameon=True, handlelength=1.2, handletextpad=0.4,
+                            columnspacing=1.0)
+            leg.get_frame().set_alpha(0.95)
             style_fig(fig, ax)
             plt.tight_layout()
-            st.pyplot(fig)
+            st.pyplot(fig, use_container_width=False)
             try:
                 lr = CMP[CMP["Model"] == "LogisticRegression"].iloc[0]
                 rf = CMP[CMP["Model"] == "RandomForest"].iloc[0]
@@ -463,14 +467,15 @@ with tab3:
                 st.markdown("**Hasil training tiap fold (F1):**")
                 st.dataframe(CVDET.pivot(index="Fold", columns="Model", values="F1"),
                              use_container_width=True)
-                fig0, ax0 = plt.subplots(figsize=(8, 3))
+                fig0, ax0 = plt.subplots(figsize=(6.5, 2.6))
                 for m in CVDET["Model"].unique():
                     d = CVDET[CVDET["Model"] == m].sort_values("Fold")
-                    ax0.plot(d["Fold"], d["F1"], marker="o", label=m, linewidth=2.5)
+                    ax0.plot(d["Fold"], d["F1"], marker="o", label=m, linewidth=2.2, markersize=4)
                 ax0.set_xticks([1, 2, 3, 4, 5])
-                ax0.set_xlabel("Fold")
-                ax0.set_ylabel("F1")
-                ax0.legend(frameon=False)
+                ax0.set_xlabel("Fold", fontsize=9)
+                ax0.set_ylabel("F1", fontsize=9)
+                ax0.tick_params(labelsize=8)
+                ax0.legend(fontsize=7.5, frameon=False, loc="best")
                 ax0.grid(alpha=.2)
                 style_fig(fig0, ax0)
                 plt.tight_layout()
@@ -509,7 +514,3 @@ with tab3:
                 st.dataframe(top, use_container_width=True)
         except Exception as e:
             st.caption(f"Tidak bisa tampilkan importance: {e}")
-
-st.markdown("<div class='footer'>Built with ❤️ menggunakan Streamlit • "
-            "Telco Churn Project • Dark/Light mode tersedia di atas ☝️</div>",
-            unsafe_allow_html=True)
