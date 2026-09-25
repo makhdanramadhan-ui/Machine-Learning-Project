@@ -495,8 +495,8 @@ with tab3:
             if CVDET is not None:
                 st.markdown("**Hasil training tiap session (F1):**")
                 _cv_show = CVDET.rename(columns={"Fold": "Session"})
-                st.dataframe(_cv_show.pivot(index="Session", columns="Model", values="F1"),
-                             use_container_width=True)
+                _cv_pivot = _cv_show.pivot(index="Session", columns="Model", values="F1").reset_index()
+                st.dataframe(_cv_pivot, use_container_width=True)
                 fig0, ax0 = plt.subplots(figsize=(6.5, 2.6))
                 for m in CVDET["Model"].unique():
                     d = CVDET[CVDET["Model"] == m].sort_values("Fold")
