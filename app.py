@@ -493,15 +493,16 @@ with tab3:
             except Exception:
                 pass
             if CVDET is not None:
-                st.markdown("**Hasil training tiap fold (F1):**")
-                st.dataframe(CVDET.pivot(index="Fold", columns="Model", values="F1"),
+                st.markdown("**Hasil training tiap session (F1):**")
+                _cv_show = CVDET.rename(columns={"Fold": "Session"})
+                st.dataframe(_cv_show.pivot(index="Session", columns="Model", values="F1"),
                              use_container_width=True)
                 fig0, ax0 = plt.subplots(figsize=(6.5, 2.6))
                 for m in CVDET["Model"].unique():
                     d = CVDET[CVDET["Model"] == m].sort_values("Fold")
                     ax0.plot(d["Fold"], d["F1"], marker="o", label=m, linewidth=2.2, markersize=4)
                 ax0.set_xticks([1, 2, 3, 4, 5])
-                ax0.set_xlabel("Fold", fontsize=9)
+                ax0.set_xlabel("Session", fontsize=9)
                 ax0.set_ylabel("F1", fontsize=9)
                 ax0.tick_params(labelsize=8)
                 ax0.legend(fontsize=7.5, frameon=False, loc="best")
