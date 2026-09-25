@@ -193,7 +193,7 @@ with tab3:
             pass
         # Rincian 5 fold (bukti tiap tryout, bukan cuma rata-rata)
         if CVDET is not None:
-            st.markdown("**Nilai tryout tiap fold (F1):**")
+            st.markdown("**Hasil training model tiap fold (F1):**")
             st.dataframe(CVDET.pivot(index="Fold", columns="Model", values="F1"))
             fig0, ax0 = plt.subplots(figsize=(8, 3))
             for m in CVDET["Model"].unique():
