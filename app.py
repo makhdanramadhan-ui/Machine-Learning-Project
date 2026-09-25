@@ -496,6 +496,8 @@ with tab3:
                 st.markdown("**Hasil training tiap session (F1):**")
                 _cv_show = CVDET.rename(columns={"Fold": "Session"})
                 _cv_pivot = _cv_show.pivot(index="Session", columns="Model", values="F1").reset_index()
+                _cv_pivot = _cv_pivot.rename(
+                    columns={c: f"Nilai F1 {c}" for c in _cv_pivot.columns if c != "Session"})
                 st.dataframe(_cv_pivot, use_container_width=True, hide_index=True)
                 fig0, ax0 = plt.subplots(figsize=(6.5, 2.6))
                 for m in CVDET["Model"].unique():
