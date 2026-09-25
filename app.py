@@ -494,10 +494,25 @@ with tab3:
                 pass
             if CVDET is not None:
                 st.markdown("**Hasil training tiap session (F1):**")
+                st.caption("Sesuai `train.py`: `StratifiedKFold(n_splits=5, shuffle=True, random_state=42)` — "
+                           "tiap session 1 fold jadi test, 4 fold lainnya jadi train.")
                 _cv_show = CVDET.rename(columns={"Fold": "Session"})
                 _cv_pivot = _cv_show.pivot(index="Session", columns="Model", values="F1").reset_index()
                 _cv_pivot = _cv_pivot.rename(
                     columns={c: f"Nilai F1 {c}" for c in _cv_pivot.columns if c != "Session"})
+                # Mapping fold standar sklearn: session k -> test fold k, train = sisanya
+                _fold_map = {
+                    1: ("2, 3, 4, 5", "1"),
+                    2: ("1, 3, 4, 5", "2"),
+                    3: ("1, 2, 4, 5", "3"),
+                    4: ("1, 2, 3, 5", "4"),
+                    5: ("1, 2, 3, 4", "5"),
+                }
+                _cv_pivot["Train Fold"] = _cv_pivot["Session"].map(lambda s: _fold_map.get(s, ("-", "-"))[0])
+                _cv_pivot["Test Fold"] = _cv_pivot["Session"].map(lambda s: _fold_map.get(s, ("-", "-"))[1])
+                # Urutan kolom: Session, Train, Test, baru nilai F1
+                _f1_cols = [c for c in _cv_pivot.columns if c.startswith("Nilai F1")]
+                _cv_pivot = _cv_pivot[["Session", "Train Fold", "Test Fold"] + _f1_cols]
                 st.dataframe(_cv_pivot, use_container_width=True, hide_index=True)
                 fig0, ax0 = plt.subplots(figsize=(6.5, 2.6))
                 for m in CVDET["Model"].unique():
