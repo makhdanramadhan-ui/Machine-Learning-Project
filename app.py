@@ -145,6 +145,7 @@ with tab2:
 with tab3:
     st.subheader("Perbandingan Model (Test Set)")
     with st.expander("Rumus metrik", expanded=True):
+        st.markdown("Label Confusion Matrix : churn = 1, setia = 0.")
         st.markdown(
             "| Metrik | Rumus | Arti (Prediksi vs Realita) |\n"
             "|---|---|---|\n"
