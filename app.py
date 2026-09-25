@@ -507,7 +507,9 @@ with tab3:
                 ax0.set_xlabel("Session", fontsize=9)
                 ax0.set_ylabel("F1", fontsize=9)
                 ax0.tick_params(labelsize=8)
-                ax0.legend(fontsize=7.5, frameon=False, loc="best")
+                _leg0 = ax0.legend(fontsize=8, frameon=False, loc="best", labelcolor="white")
+                for _t in _leg0.get_texts():
+                    _t.set_color("white")
                 ax0.grid(alpha=.2)
                 style_fig(fig0, ax0)
                 plt.tight_layout()
