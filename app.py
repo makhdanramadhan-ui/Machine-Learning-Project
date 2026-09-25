@@ -149,10 +149,10 @@ with tab3:
         st.markdown(
             "| Metrik | Rumus | Arti (Prediksi vs Realita) |\n"
             "|---|---|---|\n"
-            "| TP (True Positive) | TP | Prediksi = churn, Realita = churn (ketangkap, benar) |\n"
-            "| TN (True Negative) | TN | Prediksi = setia, Realita = setia (benar dibiarin) |\n"
-            "| FP (False Positive) | FP | Prediksi = churn, Realita = setia (salah tuduh) |\n"
-            "| FN (False Negative) | FN | Prediksi = setia, Realita = churn (lolos, paling rugi) |\n"
+            "| TP (True Positive) | TP | Prediksi = churn (1), Realita = churn (1) (ketangkap, benar) |\n"
+            "| TN (True Negative) | TN | Prediksi = setia (0), Realita = setia (0) (benar dibiarin) |\n"
+            "| FP (False Positive) | FP | Prediksi = churn (1), Realita = setia (0) (salah tuduh) |\n"
+            "| FN (False Negative) | FN | Prediksi = setia (0), Realita = churn (1) (lolos, paling rugi) |\n"
             "| Accuracy | (TP+TN) / total | Tebakan benar / total |\n"
             "| Precision | TP / (TP+FP) | Dari yang dibilang churn, berapa yang benar |\n"
             "| Recall | TP / (TP+FN) | Dari churn asli, berapa yang ketangkap |\n"
@@ -167,10 +167,10 @@ with tab3:
             b = CMP[CMP["Model"] == best_name].iloc[0]
             st.markdown(f"**Confusion matrix — {best_name} (test 1407 data):**")
             k1, k2, k3, k4 = st.columns(4)
-            k1.metric("TP: prediksi churn, realita churn", int(b["TP"]))
-            k2.metric("TN: prediksi setia, realita setia", int(b["TN"]))
-            k3.metric("FP: prediksi churn, realita setia", int(b["FP"]))
-            k4.metric("FN: prediksi setia, realita churn", int(b["FN"]))
+            k1.metric("TP: prediksi churn (1), realita churn (1)", int(b["TP"]))
+            k2.metric("TN: prediksi setia (0), realita setia (0)", int(b["TN"]))
+            k3.metric("FP: prediksi churn (1), realita setia (0)", int(b["FP"]))
+            k4.metric("FN: prediksi setia (0), realita churn (1)", int(b["FN"]))
         except Exception:
             pass
         # Grafik horizontal biar label lurus terbaca
