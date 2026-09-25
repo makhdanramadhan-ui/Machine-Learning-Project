@@ -74,12 +74,11 @@ models = {
     ),
 }
 
-rows = []
+rows, pipes = [], {}
 best = {"f1": -1}
-pipes = {}
+cv_details = []  # Rincian F1 tiap fold buat transparansi di dashboard
 for name, (clf, grid) in models.items():
-    pipe = Pipeline([("pre", pre), ("clf", clf)])
-    gs = GridSearchCV(pipe, grid, cv=cv, scoring="f1", n_jobs=-1)
+    gs = GridSearchCV(Pipeline([("pre", pre), ("clf", clf)]), grid, cv=cv, scoring="f1", n_jobs=-1)
     gs.fit(X_train, y_train)
     pred = gs.predict(X_test)
     prob = gs.predict_proba(X_test)[:, 1]
@@ -99,6 +98,11 @@ for name, (clf, grid) in models.items():
     }
     rows.append(m)
     pipes[name] = gs.best_estimator_
+    # Simpan F1 tiap fold dari setting terbaik (bukti tryout 5x)
+    bi = gs.best_index_
+    for f in range(5):
+        cv_details.append({"Model": name, "Fold": f + 1,
+                           "F1": round(float(gs.cv_results_[f"split{f}_test_score"][bi]), 4)})
     print(f"\n== {name} ==\n{m}\n{classification_report(y_test, pred)}")
     # Pilih best by CV_F1 (metodologis benar: seleksi di train-CV, bukan test)
     if gs.best_score_ > best["f1"]:
@@ -107,6 +111,7 @@ for name, (clf, grid) in models.items():
 
 res = pd.DataFrame(rows).sort_values("F1", ascending=False)
 res.to_csv("hasil_perbandingan.csv", index=False)
+pd.DataFrame(cv_details).to_csv("cv_detail.csv", index=False)
 print("\n=== PERBANDINGAN (sort F1) ===")
 print(res.to_string(index=False))
 
