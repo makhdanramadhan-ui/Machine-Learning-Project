@@ -1,10 +1,22 @@
 {
   "best_model": "LogisticRegression",
   "metrics": {
+    "Model": "LogisticRegression",
+    "BestParams": {
+      "clf__C": 10.0,
+      "clf__class_weight": "balanced"
+    },
+    "CV_F1": 0.6304,
     "Accuracy": 0.7264,
     "Precision": 0.4908,
     "Recall": 0.7861,
     "F1": 0.6043,
-    "ROC_AUC": 0.8321
-  }
+    "ROC_AUC": 0.8321,
+    "TN": 728,
+    "FP": 305,
+    "FN": 80,
+    "TP": 294
+  },
+  "n_train": 5625,
+  "n_test": 1407
 }

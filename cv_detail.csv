@@ -1,0 +1,16 @@
+Model,Fold,F1
+LogisticRegression,1,0.6395
+LogisticRegression,2,0.6263
+LogisticRegression,3,0.6154
+LogisticRegression,4,0.6347
+LogisticRegression,5,0.6364
+DecisionTree,1,0.6099
+DecisionTree,2,0.6124
+DecisionTree,3,0.631
+DecisionTree,4,0.6127
+DecisionTree,5,0.6077
+RandomForest,1,0.6326
+RandomForest,2,0.622
+RandomForest,3,0.6038
+RandomForest,4,0.6407
+RandomForest,5,0.6311

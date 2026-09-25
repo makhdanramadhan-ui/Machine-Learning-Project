@@ -18,6 +18,10 @@ try:
     CMP = pd.read_csv("hasil_perbandingan.csv")
 except FileNotFoundError:
     CMP = None
+try:
+    CVDET = pd.read_csv("cv_detail.csv")
+except FileNotFoundError:
+    CVDET = None
 
 st.set_page_config(page_title="Prediksi Customer Churn", page_icon="📡", layout="wide")
 st.title("📡 Aplikasi Prediksi Customer Churn - Telco")
@@ -187,6 +191,20 @@ with tab3:
                 "dalam bisnis, kehilangan pelanggan (FN) lebih mahal dari promo salah sasaran (FP).")
         except Exception:
             pass
+        # Rincian 5 fold (bukti tiap tryout, bukan cuma rata-rata)
+        if CVDET is not None:
+            st.markdown("**Nilai tryout tiap fold (F1):**")
+            st.dataframe(CVDET.pivot(index="Fold", columns="Model", values="F1"))
+            fig0, ax0 = plt.subplots(figsize=(8, 3))
+            for m in CVDET["Model"].unique():
+                d = CVDET[CVDET["Model"] == m].sort_values("Fold")
+                ax0.plot(d["Fold"], d["F1"], marker="o", label=m)
+            ax0.set_xticks([1, 2, 3, 4, 5])
+            ax0.set_xlabel("Fold")
+            ax0.set_ylabel("F1")
+            ax0.legend()
+            plt.tight_layout()
+            st.pyplot(fig0)
     # Feature insight: koefisien (LogReg) atau importance (Tree)
     st.subheader("Fitur Paling Berpengaruh")
     try:
