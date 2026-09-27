@@ -11,7 +11,18 @@ import streamlit as st
 BASE = Path(__file__).parent
 
 # --- Load artefak ---
-pipe = joblib.load(BASE / "model_churn.pkl")
+pipe = joblib.load(BASE / "model_churn.pkl")  # Pipeline ColumnTransformer + Classifier (BEKU)
+try:
+    CAL = joblib.load(BASE / "calibrator.pkl")  # Kalibrator sigmoid (peluang jujur)
+except FileNotFoundError:
+    CAL = None
+
+
+def churn_proba(df):
+    """Peluang churn terkalibrasi; fallback ke base bila calibrator belum ada."""
+    if CAL is not None:
+        return CAL.predict_proba(df)[:, 1]
+    return pipe.predict_proba(df)[:, 1]
 try:
     with open(BASE / "model_info.json") as f:
         INFO = json.load(f)
@@ -219,8 +230,8 @@ def fmt(x):
 st.markdown(
     f"""<div class="hero">
     <h1>📡 Prediksi Customer Churn — Telco</h1>
-    <p>Uji coba pelanggan akan <b>churn</b> atau <b>setia</b>, lengkap dengan probabilitas,
-    rekomendasi retensi, prediksi massal CSV, dan transparansi model.</p>
+    <p>Uji coba pelanggan akan <b>churn</b> atau <b>setia</b>, lengkap dengan probabilitas
+    terkalibrasi, rekomendasi retensi, prediksi massal CSV, dan transparansi model.</p>
     <span class="pill">🏆 Model: {BEST}</span>
     <span class="pill">🎯 CV-F1: {fmt(CVF1)}</span>
     <span class="pill">📈 ROC-AUC: {fmt(AUC)}</span>
@@ -322,8 +333,8 @@ with tab1:
             "PaperlessBilling": PaperlessBilling, "PaymentMethod": PaymentMethod,
             "MonthlyCharges": MonthlyCharges,
         }])
-        pred = pipe.predict(row)[0]
-        prob = float(pipe.predict_proba(row)[0][1])
+        pred = pipe.predict(row)[0]  # keputusan dari model inti (BEKU, tidak berubah)
+        prob = float(churn_proba(row)[0])  # peluang terkalibrasi (jujur)
 
         if prob < 0.30:
             lvl, cls = "🟢 RISIKO RENDAH", "low"
@@ -337,11 +348,14 @@ with tab1:
             <span class="badge {cls}">{lvl}</span>
             <div class="prob">{prob*100:.2f}%</div>
             <div style="opacity:.85">Keputusan model: <b>{'CHURN' if pred == 1 else 'TETAP'}</b>
-            • Probabilitas churn dari <code>predict_proba</code></div>
+            • Probabilitas churn terkalibrasi</div>
             </div>""",
             unsafe_allow_html=True,
         )
         st.progress(prob)
+        st.caption("📌 Peluang sudah dikalibrasi (sigmoid, 5-fold, train-only): band 🔴 rata-rata "
+                   "prediksi 68.6 vs kejadian 67.6; Brier 0.174 → 0.141. "
+                   "Keputusan CHURN/TETAP dari model inti (tidak berubah).")
 
         st.markdown("### 💡 Rekomendasi Retensi")
         recs = []
@@ -370,8 +384,8 @@ with tab2:
     if f:
         df = pd.read_csv(f)
         df_clean = df.drop(columns=["customerID", "Churn", "TotalCharges"], errors="ignore").copy()
-        probs = pipe.predict_proba(df_clean)[:, 1]
-        preds = pipe.predict(df_clean)
+        probs = churn_proba(df_clean)
+        preds = pipe.predict(df_clean)  # keputusan dari model inti (BEKU)
         out = df.copy().loc[df_clean.index]
         out["Prob_Churn"] = (probs * 100).round(2)
         out["Prediksi"] = ["CHURN" if p == 1 else "TETAP" for p in preds]

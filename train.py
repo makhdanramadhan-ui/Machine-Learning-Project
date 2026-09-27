@@ -123,3 +123,11 @@ with open("model_info.json", "w") as f:
 # Simpan daftar kolom mentah untuk validasi app
 joblib.dump({"num": NUM, "cat": CAT}, "model_meta.pkl")
 print(f"\nBEST: {best['name']} F1={best['f1']:.4f} -> model_churn.pkl (pipeline)")
+
+# 8. Kalibrasi peluang (model inti BEKU, tidak mengubah keputusan/metrik):
+# CalibratedClassifierCV sigmoid 5-fold, fit HANYA di train.
+from sklearn.calibration import CalibratedClassifierCV
+_cal = CalibratedClassifierCV(estimator=best["pipe"], method="sigmoid", cv=5)
+_cal.fit(X_train, y_train)
+joblib.dump(_cal, "calibrator.pkl", protocol=4)
+print("OK -> calibrator.pkl (sigmoid, 5-fold, train-only)")

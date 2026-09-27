@@ -1,0 +1,30 @@
+{
+  "method": "sigmoid",
+  "cv": 5,
+  "fit_on": "train-only",
+  "base_model": "LogisticRegression",
+  "brier_base": 0.1741,
+  "brier_cal": 0.1414,
+  "reliability_test": [
+    {
+      "band": "LOW",
+      "n": 861,
+      "mean_pred": 0.101,
+      "empirical": 0.1069
+    },
+    {
+      "band": "MID",
+      "n": 333,
+      "mean_pred": 0.4486,
+      "empirical": 0.4144
+    },
+    {
+      "band": "HIGH",
+      "n": 213,
+      "mean_pred": 0.6859,
+      "empirical": 0.6761
+    }
+  ],
+  "n_train": 5625,
+  "n_test": 1407
+}
