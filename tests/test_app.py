@@ -117,6 +117,36 @@ class StreamlitTests(unittest.TestCase):
         at.button[0].click().run()
         self.assertEqual([x.message for x in at.exception], [])
 
+    def test_charge_reference_updates_before_prediction(self):
+        at = self.run_app()
+        train, _, _, _ = load_training_split()
+        for service in ["Fiber optic", "DSL", "No"]:
+            with self.subTest(service=service):
+                at.selectbox[6].select(service).run()
+                charges = train.loc[train.InternetService == service, "MonthlyCharges"]
+                low, high = float(charges.min()), float(charges.max())
+                median = float(charges.median())
+                at.number_input[1].set_value(median).run()
+                self.assertEqual([x.message for x in at.exception], [])
+                self.assertFalse(at.warning)
+                captions = "\n".join(x.value for x in at.caption)
+                self.assertIn("Median: $" + f"{median:.2f}".replace(".", ","), captions)
+                self.assertIn("Rentang yang tercatat: $" + f"{low:.2f}".replace(".", ","), captions)
+                for value, direction in [(max(0, low - 1), "lebih rendah"),
+                                         (min(120, high + 1), "lebih tinggi")]:
+                    at.number_input[1].set_value(value).run()
+                    self.assertTrue(any(direction in x.value for x in at.warning))
+                    self.assertFalse(any("Keputusan model:" in x.value for x in at.markdown))
+                for value in [low, high]:
+                    at.number_input[1].set_value(value).run()
+                    self.assertFalse(at.warning)
+        at.selectbox[6].select("Fiber optic").run()
+        at.number_input[1].set_value(10.0).run()
+        self.assertTrue(any("$10,00" in x.value for x in at.warning))
+        at.button[0].click().run()
+        self.assertEqual([x.message for x in at.exception], [])
+        self.assertTrue(any("Keputusan model:" in x.value for x in at.markdown))
+
     def test_batch_results_and_invalid_csv_feedback(self):
         valid = example_customers().to_csv(index=False).encode()
         invalid_column = example_customers().drop(columns="tenure").to_csv(index=False).encode()

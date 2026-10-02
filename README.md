@@ -49,6 +49,10 @@ branch `main`, entrypoint `app.py`, dan Python 3.12 atau lebih baru.
 
 - **Single:** input 18 fitur pelanggan. Opsi add-on otomatis menyesuaikan layanan
   telepon/internet. Hasil lama disembunyikan saat input berubah sampai diprediksi ulang.
+- **Acuan tagihan:** form menampilkan median, rentang 50% data (Q1–Q3), serta
+  minimum–maksimum MonthlyCharges dari training set sesuai layanan internet.
+  Input di luar rentang tercatat mendapat peringatan langsung, tetapi tetap bisa
+  diprediksi. Acuan ini mencakup total layanan dan bukan daftar tarif resmi.
 - **Batch:** unduh template langsung dari aplikasi, unggah CSV UTF-8 dengan
   pemisah koma, lihat ringkasan, lalu unduh semua hasil.
 - **Validasi:** kolom wajib, angka kosong/non-numerik/tak berhingga, rentang angka,
@@ -197,9 +201,10 @@ salinan sebelum mengisi pembagian tugas.
 python -m unittest discover -s tests -v
 ```
 
-Enam test mencakup input invalid, dataset/template valid, kesamaan metrik
+Tujuh test mencakup input invalid, dataset/template valid, kesamaan metrik
 holdout dengan metadata deployment, keputusan di batas threshold, form
-layanan dan hasil kedaluwarsa, serta CSV valid/invalid melalui Streamlit AppTest.
+layanan dan hasil kedaluwarsa, acuan tagihan yang berubah sesuai layanan,
+serta CSV valid/invalid melalui Streamlit AppTest.
 
 ## Dataset dan keterbatasan
 

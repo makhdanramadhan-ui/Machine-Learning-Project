@@ -14,6 +14,7 @@ from prediction import (
     InputValidationError, example_customers, input_schema, input_notes,
     predict_customers, risk_levels, high_risk_boundary,
 )
+from training_data import load_training_split
 
 BASE = Path(__file__).parent
 
@@ -58,6 +59,21 @@ except (OSError, ValueError, KeyError) as exc:
 SCHEMA = input_schema(pipe)
 THRESHOLD = float(DEPLOY["threshold"])
 HIGH_BOUNDARY = high_risk_boundary(THRESHOLD)
+
+
+@st.cache_data
+def load_charge_reference(dataset_stamp):
+    """Acuan tagihan dari training set, bukan tarif pasar atau aturan model."""
+    train_data, _, _, _ = load_training_split()
+    reference = {}
+    for service, group in train_data.groupby("InternetService"):
+        charges = group["MonthlyCharges"]
+        reference[service] = {
+            "min": float(charges.min()), "max": float(charges.max()),
+            "median": float(charges.median()),
+            "q1": float(charges.quantile(0.25)), "q3": float(charges.quantile(0.75)),
+        }
+    return reference
 
 # ---------- Theme: dark permanen ----------
 DARK = True
@@ -252,6 +268,10 @@ def count_text(value):
     return f"{int(value):,}".replace(",", ".")
 
 
+def dollar_text(value):
+    return "$" + f"{value:.2f}".replace(".", ",")
+
+
 def option_label(value):
     """Terjemahkan tampilan pilihan; nilai yang diterima model tetap sama."""
     labels = {
@@ -371,6 +391,21 @@ with tab1:
             MonthlyCharges = st.number_input("Tagihan Bulanan ($)", 0.0, 120.0, 70.0, step=1.0,
                 format="%.2f",
                 help="Batas input $0–$120; rentang data latih $18,25–$118,75. Isi tagihan aktual.")
+            charge_reference = load_charge_reference(
+                (BASE / "Telco-Customer-Churn.csv").stat().st_mtime_ns)[InternetService]
+            service_label = "tanpa internet" if InternetService == "No" else option_label(InternetService)
+            st.markdown(f"**Acuan tagihan {service_label}**")
+            st.caption(f"Rentang umum: {dollar_text(charge_reference['q1'])}–"
+                       f"{dollar_text(charge_reference['q3'])}/bulan (50% data training). "
+                       f"Median: {dollar_text(charge_reference['median'])}.")
+            st.caption(f"Rentang yang tercatat: {dollar_text(charge_reference['min'])}–"
+                       f"{dollar_text(charge_reference['max'])}. Ini total tagihan termasuk "
+                       "telepon dan layanan tambahan yang dipakai, bukan tarif internet saja.")
+            if MonthlyCharges < charge_reference["min"] or MonthlyCharges > charge_reference["max"]:
+                direction = "lebih rendah" if MonthlyCharges < charge_reference["min"] else "lebih tinggi"
+                st.warning(f"Tagihan {dollar_text(MonthlyCharges)} {direction} dari rentang {service_label} "
+                           "pada data training. Periksa lagi nominal dan layanan yang dipilih. "
+                           "Prediksi tetap bisa dijalankan; acuan ini bukan daftar harga resmi.")
 
         b1, b2, b3 = st.columns([1, 2, 1])
         with b2:
