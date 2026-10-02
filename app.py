@@ -305,11 +305,13 @@ with st.expander("ℹ️ Detail Info Model", expanded=False):
                    "Preprocessing dilakukan otomatis di dalam pipeline. "
                    "Kalibrasi sigmoid dilatih hanya pada data train.")
         st.write(f"**Aturan keputusan:** CHURN jika probabilitas ≥ {THRESHOLD:.0%}; "
-                 "TETAP jika di bawah ambang tersebut.")
-        st.caption("Ambang dipilih dengan F1 maksimum dari prediksi out-of-fold pada data train. "
+                 "TETAP jika di bawah threshold tersebut.")
+        st.caption("Threshold dipilih dengan F1 maksimum dari prediksi out-of-fold pada data train. "
                    "Data test hanya digunakan untuk evaluasi akhir. CHURN adalah prediksi, bukan kepastian.")
 
-tab1, tab2, tab3 = st.tabs(["🔮 Prediksi Single", "📁 Prediksi Batch (CSV)", "📊 Dashboard & Model"])
+tab1, tab2, tab3, tab4 = st.tabs([
+    "🔮 Prediksi Single", "📁 Prediksi Batch (CSV)", "📊 Dashboard & Model", "🔎 EDA & Dokumentasi",
+])
 
 # ---------- TAB 1 ----------
 with tab1:
@@ -460,7 +462,7 @@ with tab2:
             out["Prob_Churn"] = (probs * 100).round(2)
             out["Prediksi"] = ["CHURN" if p == 1 else "TETAP" for p in preds]
             out["Risiko"] = risk_levels(probs, THRESHOLD)
-            out["Ambang_Churn"] = THRESHOLD
+            out["Threshold_Churn"] = THRESHOLD
         except (InputValidationError, pd.errors.EmptyDataError, pd.errors.ParserError,
                 UnicodeDecodeError, ValueError) as exc:
             st.error("CSV belum bisa diproses. Perbaiki input berikut:")
@@ -481,7 +483,7 @@ with tab2:
             st.markdown(f"<div class='kpi'><div class='label'>Churn Rate</div>"
                         f"<div class='value'>{rate:.1f}%</div></div>", unsafe_allow_html=True)
 
-        st.caption(f"Keputusan dari probabilitas terkalibrasi dengan ambang {THRESHOLD:.0%}. "
+        st.caption(f"Keputusan dari probabilitas terkalibrasi dengan threshold {THRESHOLD:.0%}. "
                    f"Prob_Churn ditampilkan dalam persen. Pratinjau 20 dari {len(out)} baris.")
         st.dataframe(out.head(20), width="stretch", hide_index=True)
         st.bar_chart(out["Prediksi"].value_counts())
@@ -496,20 +498,20 @@ with tab3:
         st.caption(f"{BEST} + kalibrasi sigmoid • probabilitas dan keputusan dari model yang sama • "
                    f"test holdout {N_TEST} pelanggan.")
         st.dataframe(pd.DataFrame([
-            {"Konfigurasi": f"Aplikasi (ambang {THRESHOLD:.2f}, dipilih di train)", **MET},
-            {"Konfigurasi": "Kalibrasi (ambang default 0.50)", **DEPLOY["metrics_at_0_5"]},
+            {"Konfigurasi": f"Aplikasi (threshold {THRESHOLD:.2f}, dipilih di train)", **MET},
+            {"Konfigurasi": "Kalibrasi (threshold default 0.50)", **DEPLOY["metrics_at_0_5"]},
         ]), width="stretch", hide_index=True)
         show_confusion_matrix(MET)
-        st.info(f"Dengan ambang {THRESHOLD:.0%}, aplikasi menangkap {MET['TP']} dari "
+        st.info(f"Dengan threshold {THRESHOLD:.0%}, aplikasi menangkap {MET['TP']} dari "
                 f"{MET['TP'] + MET['FN']} pelanggan churn dan melewatkan {MET['FN']}. "
                 f"Ada {MET['FP']} alarm keliru. Precision {MET['Precision']:.2%} dan "
                 f"recall {MET['Recall']:.2%} menunjukkan trade-off penawaran retensi.")
-        with st.expander("Kalibrasi dan pemilihan ambang"):
+        with st.expander("Kalibrasi dan pemilihan threshold"):
             st.write("Kalibrasi sigmoid menyesuaikan probabilitas model inti. "
-                     "Ambang keputusan dipilih dari grid 0,10–0,60 (langkah 0,01) "
+                     "Threshold keputusan dipilih dari grid 0,10–0,60 (langkah 0,01) "
                      "berdasarkan F1 maksimum prediksi out-of-fold data training, "
                      "dengan kalibrasi 5-fold di dalam setiap training fold.")
-            st.caption(f"OOF-F1 untuk tuning ambang: {DEPLOY['oof_tuning_f1']:.4f}. "
+            st.caption(f"OOF-F1 untuk tuning threshold: {DEPLOY['oof_tuning_f1']:.4f}. "
                        "Angka ini adalah skor tuning, bukan estimasi generalisasi yang independen; "
                        "hyperparameter model inti juga telah dipilih pada data train. "
                        "Semua keputusan tuning tidak memakai label test.")
@@ -522,7 +524,7 @@ with tab3:
 
     with st.container(border=True):
         st.markdown("### 🏆 Perbandingan Tiga Model Inti (Test Set)")
-        st.caption("Model inti dievaluasi tanpa kalibrasi, dengan ambang default 0,50. "
+        st.caption("Model inti dievaluasi tanpa kalibrasi, dengan threshold default 0,50. "
                    "Tabel diurutkan berdasarkan CV-F1 untuk seleksi pada data train; "
                    "angka ini berbeda dari konfigurasi aplikasi terkalibrasi di atas.")
         with st.expander("📖 Rumus metrik", expanded=False):
@@ -701,6 +703,37 @@ with tab3:
                  "TETAP berarti diprediksi tidak churn, bukan jaminan loyalitas. "
                  "Rekomendasi retensi adalah aturan contoh yang perlu diuji efektivitasnya.")
 
-st.markdown("<div class='footer'>Kelompok 12 • Muhamad Akhdan Ramadhan (J0404241102) • "
+with tab4:
+    st.markdown("### 🔎 Exploratory Data Analysis")
+    eda_dir = BASE / "docs" / "eda"
+    if (eda_dir / "summary.json").exists():
+        summary = json.loads((eda_dir / "summary.json").read_text(encoding="utf-8"))
+        st.caption("Grafik hubungan fitur–target memakai data train saja. Pemeriksaan kualitas "
+                   "data mencakup dataset mentah; test tetap untuk evaluasi akhir.")
+        st.write(f"**{summary['raw_rows']:,} pelanggan mentah → {summary['clean_rows']:,} cohort bersih**, "
+                 f"{summary['input_features']} fitur input. Target churn Yes=1 / No=0.")
+        with st.expander("Variabel, statistik, missing value, duplikat, dan outlier"):
+            st.dataframe(pd.read_csv(eda_dir / "data_dictionary.csv"), width="stretch", hide_index=True)
+            st.dataframe(pd.read_csv(eda_dir / "descriptive_statistics.csv"), width="stretch", hide_index=True)
+            st.dataframe(pd.read_csv(eda_dir / "missing_values.csv"), width="stretch", hide_index=True)
+            st.dataframe(pd.DataFrame(summary["duplicates"].items(), columns=["Pemeriksaan", "Jumlah"]),
+                         width="stretch", hide_index=True)
+            st.dataframe(pd.read_csv(eda_dir / "outliers_iqr.csv"), width="stretch", hide_index=True)
+            st.caption("11 TotalCharges kosong adalah pelanggan tenure 0 / tidak churn. "
+                       "Eksklusi mereka membatasi generalisasi pelanggan baru. Profil identik dengan ID "
+                       "berbeda dipertahankan; IQR tanpa outlier tidak menjamin seluruh data bebas anomali.")
+        for figure in summary["figures"]:
+            st.image(str(eda_dir / figure["file"]), width="stretch")
+            st.caption(figure["interpretation"])
+    else:
+        st.info("Jalankan `python eda.py` untuk membangun grafik dan tabel EDA.")
+    st.markdown("### 📚 Dokumentasi Kelompok 12 — Kelas B2")
+    repo_docs = "https://github.com/makhdanramadhan-ui/Machine-Learning-Project/blob/main/docs/"
+    st.markdown(f"- [Laporan EDA]({repo_docs}eda/EDA.md)\n"
+                f"- [Lima jurnal dan tabel studi literatur]({repo_docs}STUDI_LITERATUR.md)\n"
+                f"- [PPT laporan]({repo_docs}ML2026_B2_Kelompok12_PrediksiCustomerChurn.pptx)\n"
+                f"- [Naskah video demo]({repo_docs}NASKAH_VIDEO_DEMO.md)")
+
+st.markdown("<div class='footer'>Kelompok 12 • B2 • Muhamad Akhdan Ramadhan (J0404241102) • "
             "Thevan Erlangga (J0404241073) • Fachri Abyasa Tarid (J0404241136)</div>",
             unsafe_allow_html=True)

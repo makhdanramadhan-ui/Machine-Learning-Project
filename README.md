@@ -5,7 +5,7 @@ terkalibrasi, memberikan saran retensi berbasis aturan, dan memproses CSV massal
 
 **Aplikasi:** https://machine-learning-project-u8yovshrqrc5tm5s2y2qto.streamlit.app/
 
-## Kelompok 12
+## Kelompok 12 — Kelas B2
 
 | Anggota | NIM |
 |---|---|
@@ -57,11 +57,13 @@ branch `main`, entrypoint `app.py`, dan Python 3.12 atau lebih baru.
   tidak ada penghapusan baris diam-diam.
 - **Dashboard:** evaluasi model aplikasi, perbandingan tiga model inti,
   confusion matrix, validation-fold F1, analisis train–test, dan koefisien model inti.
+- **EDA & Dokumentasi:** grafik dengan interpretasi, kamus variabel, pemeriksaan
+  kualitas data, serta tautan laporan dan studi literatur.
 
-**Probabilitas dan label berasal dari model terkalibrasi yang sama.** Ambang saat ini
+**Probabilitas dan label berasal dari model terkalibrasi yang sama.** Threshold saat ini
 adalah **0,32**: CHURN jika probabilitas ≥ 32%, TETAP jika lebih rendah.
-Ambang dipilih dengan F1 maksimum pada prediksi out-of-fold **data train**,
-bukan menggunakan test set. Karena ambangnya 32%, CHURN tidak harus memiliki
+Threshold dipilih dengan F1 maksimum pada prediksi out-of-fold **data train**,
+bukan menggunakan test set. Karena threshold-nya 32%, CHURN tidak harus memiliki
 probabilitas di atas 50%; ini merupakan trade-off precision–recall yang dinyatakan eksplisit.
 
 Kategori tampilan: RENDAH <32%, SEDANG 32%–<60%, TINGGI ≥60%.
@@ -148,10 +150,47 @@ tidak tertukar dengan versi model lain.
 | `calib_info.json`, `threshold_selection.csv` | Evaluasi probabilitas dan jejak tuning threshold |
 | `tests/test_app.py` | Uji regresi validasi, hasil prediksi, dan alur aplikasi |
 
-`projekk.ipynb`, `scaler.pkl`, dan `feature_columns.pkl` adalah berkas dari
-alur eksperimen sebelumnya. Aplikasi tidak memakai scaler/daftar fitur lama.
-Untuk membangun artefak aplikasi terkini, gunakan `train.py`; notebook lama
-belum menyimpan metadata lengkap konfigurasi deployment terbaru.
+`projekk.ipynb` adalah notebook terkini yang sudah dieksekusi: EDA, alasan metode,
+perbandingan model, evaluasi ulang holdout, interpretasi, dan sanity test.
+Training ulang tersedia melalui sel opsional `RUN_TRAINING=True` yang memanggil
+`train.py`. Notebook awal disimpan di `docs/archive/projekk_awal.ipynb`.
+`scaler.pkl` dan `feature_columns.pkl` berasal dari eksperimen lama dan tidak
+digunakan aplikasi. Gunakan `train.py` untuk membuat artefak deployment terkini.
+
+## Laporan, EDA, dan studi literatur
+
+- [PPT editable — 29 slide](docs/ML2026_B2_Kelompok12_PrediksiCustomerChurn.pptx)
+- [PDF PPT](docs/ML2026_B2_Kelompok12_PrediksiCustomerChurn.pdf)
+- [Outline PPT](docs/PPT_OUTLINE.md)
+- [Laporan EDA, tujuh grafik dan interpretasi](docs/eda/EDA.md)
+- [Daftar lima jurnal dan tabel studi literatur](docs/STUDI_LITERATUR.md)
+- [Tabel studi literatur CSV](docs/tabel_studi_literatur.csv)
+- [BibTeX](docs/referensi.bib) dan [arsip teks lengkap jurnal](docs/jurnal/)
+- [Naskah demo target 6:40](docs/NASKAH_VIDEO_DEMO.md)
+- [Template demo](docs/template_pelanggan.csv) dan [hasil contoh aktual](docs/contoh_demo.csv)
+- [Petunjuk pengumpulan](docs/PENGUMPULAN.md)
+
+Identitas sudah diisi. **Pembagian tugas pada slide 27 diisi sendiri sesuai
+pengerjaan aktual.** Naskah demo membantu rekaman; video final direkam anggota.
+Tiga PDF jurnal berhasil diunduh; kelima teks lengkap tersedia sebagai Markdown/XML
+dengan DOI dan tautan PDF penerbit. Hasil penelitian pada tabel adalah hasil
+yang dilaporkan penulis, bukan hasil eksperimen project.
+
+Membangun ulang laporan (dependency tambahan dipisahkan dari aplikasi):
+
+```bash
+python -m pip install -r requirements-report.txt
+python eda.py
+python build_literature.py
+python build_notebook.py
+python build_report.py
+```
+
+Gunakan `python build_literature.py --download` untuk mengunduh ulang arsip
+open-access jurnal. `build_report.py` menghasilkan PPT; PDF dapat diekspor
+dari PowerPoint melalui **Export → Create PDF**. Grafik evaluasi dihitung dari
+model tersimpan. Regenerasi PPT akan menimpa edit manual, sehingga simpan
+salinan sebelum mengisi pembagian tugas.
 
 ## Pengujian aplikasi
 

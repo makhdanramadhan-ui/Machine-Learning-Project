@@ -56,7 +56,7 @@ def calibrate():
                            method="predict_proba", n_jobs=-1)[:, 1]
     thresholds = np.round(np.arange(0.10, 0.601, 0.01), 2)
     scores = [f1_score(y_train, oof >= t, zero_division=0) for t in thresholds]
-    # Jika sama, pilih ambang lebih rendah (lebih sensitif untuk churn).
+    # Jika sama, pilih threshold lebih rendah (lebih sensitif untuk churn).
     threshold = float(thresholds[int(np.argmax(scores))])
     pd.DataFrame({"Threshold": thresholds, "OOF_F1": scores}).to_csv(
         BASE / "threshold_selection.csv", index=False)

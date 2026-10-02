@@ -98,7 +98,7 @@ def high_risk_boundary(threshold):
 
 
 def risk_levels(probabilities, threshold):
-    """Risiko rendah selalu di bawah ambang keputusan CHURN."""
+    """Risiko rendah selalu di bawah threshold keputusan CHURN."""
     return np.where(np.asarray(probabilities) < threshold, "RENDAH",
                     np.where(np.asarray(probabilities) < high_risk_boundary(threshold),
                              "SEDANG", "TINGGI"))

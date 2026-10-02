@@ -1,0 +1,44 @@
+Fitur,Kategori,Jumlah train,Churn train,Churn rate train
+gender,Female,2802,752,0.2684
+gender,Male,2823,743,0.2632
+SeniorCitizen,0,4715,1115,0.2365
+SeniorCitizen,1,910,380,0.4176
+Partner,No,2891,960,0.3321
+Partner,Yes,2734,535,0.1957
+Dependents,No,3940,1242,0.3152
+Dependents,Yes,1685,253,0.1501
+PhoneService,No,545,138,0.2532
+PhoneService,Yes,5080,1357,0.2671
+MultipleLines,No,2695,669,0.2482
+MultipleLines,No phone service,545,138,0.2532
+MultipleLines,Yes,2385,688,0.2885
+InternetService,DSL,1934,368,0.1903
+InternetService,Fiber optic,2483,1038,0.418
+InternetService,No,1208,89,0.0737
+OnlineSecurity,No,2803,1174,0.4188
+OnlineSecurity,No internet service,1208,89,0.0737
+OnlineSecurity,Yes,1614,232,0.1437
+OnlineBackup,No,2446,984,0.4023
+OnlineBackup,No internet service,1208,89,0.0737
+OnlineBackup,Yes,1971,422,0.2141
+DeviceProtection,No,2473,965,0.3902
+DeviceProtection,No internet service,1208,89,0.0737
+DeviceProtection,Yes,1944,441,0.2269
+TechSupport,No,2759,1152,0.4175
+TechSupport,No internet service,1208,89,0.0737
+TechSupport,Yes,1658,254,0.1532
+StreamingTV,No,2229,736,0.3302
+StreamingTV,No internet service,1208,89,0.0737
+StreamingTV,Yes,2188,670,0.3062
+StreamingMovies,No,2222,743,0.3344
+StreamingMovies,No internet service,1208,89,0.0737
+StreamingMovies,Yes,2195,663,0.3021
+Contract,Month-to-month,3085,1329,0.4308
+Contract,One year,1182,126,0.1066
+Contract,Two year,1358,40,0.0295
+PaperlessBilling,No,2276,375,0.1648
+PaperlessBilling,Yes,3349,1120,0.3344
+PaymentMethod,Bank transfer (automatic),1235,198,0.1603
+PaymentMethod,Credit card (automatic),1215,187,0.1539
+PaymentMethod,Electronic check,1907,866,0.4541
+PaymentMethod,Mailed check,1268,244,0.1924

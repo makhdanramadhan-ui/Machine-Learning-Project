@@ -1,0 +1,4 @@
+Variabel,Minimum,Maximum,Batas IQR bawah,Batas IQR atas,Jumlah outlier IQR
+tenure,0.0,72.0,-60.0,124.0,0
+MonthlyCharges,18.25,118.75,-46.025,171.375,0
+TotalCharges,18.8,8684.8,-4688.4813,8884.6688,0

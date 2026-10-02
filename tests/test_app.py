@@ -130,6 +130,7 @@ class StreamlitTests(unittest.TestCase):
                 if expected_valid:
                     self.assertEqual(len(outputs), 1)
                     self.assertEqual(len(outputs[0]), 2)
+                    self.assertIn("Threshold_Churn", outputs[0].columns)
                     self.assertFalse(((outputs[0]["Prediksi"] == "CHURN") &
                                       (outputs[0]["Risiko"] == "RENDAH")).any())
                     self.assertFalse(at.error)

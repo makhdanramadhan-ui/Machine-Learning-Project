@@ -1,0 +1,22 @@
+﻿Variabel,Tipe CSV,Tipe semantik,Jumlah nilai unik,Arti,Peran
+customerID,str,ID,7043,Identitas unik pelanggan; tidak digunakan model.,dihapus
+gender,str,kategorikal,2,Jenis kelamin pelanggan (Female/Male).,fitur
+SeniorCitizen,int64,kategorikal,2,"Indikator pelanggan senior: 1=ya, 0=tidak.",fitur
+Partner,str,kategorikal,2,Apakah pelanggan memiliki pasangan (Yes/No).,fitur
+Dependents,str,kategorikal,2,Apakah pelanggan memiliki tanggungan (Yes/No).,fitur
+tenure,int64,numerik diskrit,73,"Lama berlangganan, dalam bulan.",fitur
+PhoneService,str,kategorikal,2,Apakah pelanggan memakai layanan telepon (Yes/No).,fitur
+MultipleLines,str,kategorikal,3,Layanan beberapa jalur telepon; No phone service jika tanpa telepon.,fitur
+InternetService,str,kategorikal,3,"Jenis internet: DSL, Fiber optic, atau No.",fitur
+OnlineSecurity,str,kategorikal,3,Layanan keamanan online; No internet service jika tanpa internet.,fitur
+OnlineBackup,str,kategorikal,3,Layanan backup online; No internet service jika tanpa internet.,fitur
+DeviceProtection,str,kategorikal,3,Layanan perlindungan perangkat; No internet service jika tanpa internet.,fitur
+TechSupport,str,kategorikal,3,Layanan bantuan teknis; No internet service jika tanpa internet.,fitur
+StreamingTV,str,kategorikal,3,Layanan streaming TV; No internet service jika tanpa internet.,fitur
+StreamingMovies,str,kategorikal,3,Layanan streaming film; No internet service jika tanpa internet.,fitur
+Contract,str,kategorikal,3,"Durasi kontrak: Month-to-month, One year, Two year.",fitur
+PaperlessBilling,str,kategorikal,2,Penggunaan tagihan tanpa kertas (Yes/No).,fitur
+PaymentMethod,str,kategorikal,4,Metode pembayaran: cek elektronik/pos atau transfer/kartu otomatis.,fitur
+MonthlyCharges,float64,numerik kontinu,1585,"Tagihan bulanan pelanggan, dalam dolar.",fitur
+TotalCharges,str,numerik kontinu,6530,Total tagihan kumulatif; tidak digunakan model aplikasi.,dihapus
+Churn,str,target biner,2,"Target: Yes=berhenti berlangganan, No=tidak berhenti dalam periode label dataset.",target

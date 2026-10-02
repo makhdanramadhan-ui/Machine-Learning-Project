@@ -1,0 +1,47 @@
+[
+  {
+    "no": 1,
+    "doi": "10.1371/journal.pone.0278095",
+    "file": "01_10.1371_journal.pone.0278095.pdf",
+    "source": "https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0278095&type=printable",
+    "fulltext_xml": "01_10.1371_journal.pone.0278095.xml",
+    "fulltext_source": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC9714823/fullTextXML",
+    "status": "downloaded"
+  },
+  {
+    "no": 2,
+    "doi": "10.1371/journal.pone.0267935",
+    "file": "02_10.1371_journal.pone.0267935.pdf",
+    "source": "https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0267935&type=printable",
+    "fulltext_xml": "02_10.1371_journal.pone.0267935.xml",
+    "fulltext_source": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC9128990/fullTextXML",
+    "status": "downloaded"
+  },
+  {
+    "no": 3,
+    "doi": "10.7717/peerj-cs.854",
+    "file": "03_10.7717_peerj-cs.854.pdf",
+    "source": "https://peerj.com/articles/cs-854.pdf",
+    "fulltext_xml": "03_10.7717_peerj-cs.854.xml",
+    "fulltext_source": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC9044233/fullTextXML",
+    "status": "link-only: HTTP Error 403: Forbidden"
+  },
+  {
+    "no": 4,
+    "doi": "10.1371/journal.pone.0292466",
+    "file": "04_10.1371_journal.pone.0292466.pdf",
+    "source": "https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0292466&type=printable",
+    "fulltext_xml": "04_10.1371_journal.pone.0292466.xml",
+    "fulltext_source": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10566699/fullTextXML",
+    "status": "downloaded"
+  },
+  {
+    "no": 5,
+    "doi": "10.1038/s41598-023-44396-w",
+    "file": "05_10.1038_s41598-023-44396-w.pdf",
+    "source": "https://www.nature.com/articles/s41598-023-44396-w.pdf",
+    "fulltext_xml": "05_10.1038_s41598-023-44396-w.xml",
+    "fulltext_source": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10570272/fullTextXML",
+    "status": "link-only: Respons bukan PDF; gunakan tautan teks lengkap."
+  }
+]

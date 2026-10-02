@@ -1,0 +1,2 @@
+# Arsip sumber penerbit dipertahankan byte-for-byte, termasuk TeX/whitespace asli.
+docs/jurnal/*.xml -text -diff
