@@ -734,6 +734,19 @@ with tab4:
         with st.expander("Isi dataset dan hasil pemeriksaan data"):
             st.markdown("**Arti setiap variabel**")
             st.dataframe(pd.read_csv(eda_dir / "data_dictionary.csv"), width="stretch", hide_index=True)
+            st.markdown("**Mengapa TotalCharges dihapus?**")
+            st.write("TotalCharges adalah total tagihan selama berlangganan. Kolom ini tidak digunakan "
+                     "sebagai fitur agar pengguna cukup mengisi lama berlangganan (tenure) dan tagihan "
+                     "bulanan (MonthlyCharges), tanpa perlu mencari total tagihan dari seluruh riwayat pembayaran.")
+            st.write("TotalCharges juga berkaitan erat dengan tenure, sehingga sebagian informasinya "
+                     "beririsan dengan fitur yang tetap digunakan. Namun, nilainya tidak selalu sama "
+                     "dengan MonthlyCharges × tenure. Penghapusan ini merupakan pilihan untuk menyederhanakan "
+                     "input; kami belum membandingkan performa model dengan dan tanpa TotalCharges.")
+            st.caption("Menghapus kolom berbeda dengan menghapus baris: pada tahap cleaning, 11 baris "
+                       "dengan TotalCharges kosong lebih dulu dihapus untuk mempertahankan data pemodelan "
+                       "yang sama dengan eksperimen awal. Setelah itu, kolom TotalCharges dibuang. "
+                       "Jika kolom tersebut sejak awal tidak dipakai, nilai kosongnya saja tidak "
+                       "mengharuskan baris data ikut dihapus.")
             st.markdown("**Ringkasan statistik**")
             st.dataframe(pd.read_csv(eda_dir / "descriptive_statistics.csv"), width="stretch", hide_index=True)
             st.markdown("**Data yang kosong (missing value)**")
