@@ -129,7 +129,7 @@ class StreamlitTests(unittest.TestCase):
                 at.number_input[1].set_value(median).run()
                 self.assertEqual([x.message for x in at.exception], [])
                 self.assertFalse(at.warning)
-                captions = "\n".join(x.value for x in at.caption)
+                captions = "\n".join(x.value for x in at.caption).replace(r"\$", "$")
                 self.assertIn("Median: $" + f"{median:.2f}".replace(".", ","), captions)
                 self.assertIn("Rentang yang tercatat: $" + f"{low:.2f}".replace(".", ","), captions)
                 for value, direction in [(max(0, low - 1), "lebih rendah"),

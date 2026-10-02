@@ -269,7 +269,7 @@ def count_text(value):
 
 
 def dollar_text(value):
-    return "$" + f"{value:.2f}".replace(".", ",")
+    return r"\$" + f"{value:.2f}".replace(".", ",")
 
 
 def option_label(value):
