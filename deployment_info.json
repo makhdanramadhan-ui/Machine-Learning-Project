@@ -1,0 +1,39 @@
+{
+  "base_model": "LogisticRegression",
+  "probability_model": "sigmoid calibrated ensemble (5-fold)",
+  "threshold": 0.32,
+  "threshold_selection": "max F1 on 5-fold OOF train probabilities",
+  "threshold_selection_data": "train-only",
+  "oof_tuning_f1": 0.6338,
+  "risk_high_boundary": 0.6,
+  "n_train": 5625,
+  "n_test": 1407,
+  "n_features": 18,
+  "sklearn_version": "1.9.1",
+  "metrics": {
+    "Accuracy": 0.7569,
+    "Precision": 0.5309,
+    "Recall": 0.7353,
+    "F1": 0.6166,
+    "ROC_AUC": 0.8324,
+    "Brier": 0.1414,
+    "TN": 790,
+    "FP": 243,
+    "FN": 99,
+    "TP": 275
+  },
+  "metrics_at_0_5": {
+    "Accuracy": 0.8024,
+    "Precision": 0.6472,
+    "Recall": 0.5642,
+    "F1": 0.6029,
+    "ROC_AUC": 0.8324,
+    "Brier": 0.1414,
+    "TN": 918,
+    "FP": 115,
+    "FN": 163,
+    "TP": 211
+  },
+  "model_sha256": "97b83e12f3fd4472eb7782db3a6c959fc53565992093817b36d3a2c4dc7b541d",
+  "calibrator_sha256": "8fda75ca98d07554e98609c581b8fd878a2955f7a97dd34a0f55e75d65f06eeb"
+}

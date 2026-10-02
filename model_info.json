@@ -1,5 +1,6 @@
 {
   "best_model": "LogisticRegression",
+  "selection_metric": "CV_F1",
   "metrics": {
     "Model": "LogisticRegression",
     "BestParams": {
@@ -7,11 +8,15 @@
       "clf__class_weight": "balanced"
     },
     "CV_F1": 0.6304,
+    "CV_F1_STD": 0.0087,
+    "CV_TRAIN_F1": 0.6354,
+    "Train_F1": 0.6338,
     "Accuracy": 0.7264,
     "Precision": 0.4908,
     "Recall": 0.7861,
     "F1": 0.6043,
     "ROC_AUC": 0.8321,
+    "Brier": 0.1741,
     "TN": 728,
     "FP": 305,
     "FN": 80,

@@ -8,21 +8,21 @@
   "reliability_test": [
     {
       "band": "LOW",
-      "n": 861,
-      "mean_pred": 0.101,
-      "empirical": 0.1069
+      "n": 889,
+      "mean_pred": 0.1068,
+      "empirical": 0.1114
     },
     {
       "band": "MID",
-      "n": 333,
-      "mean_pred": 0.4486,
-      "empirical": 0.4144
+      "n": 303,
+      "mean_pred": 0.4613,
+      "empirical": 0.4257
     },
     {
       "band": "HIGH",
-      "n": 213,
-      "mean_pred": 0.6859,
-      "empirical": 0.6761
+      "n": 215,
+      "mean_pred": 0.6872,
+      "empirical": 0.6791
     }
   ],
   "n_train": 5625,

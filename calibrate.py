@@ -1,61 +1,104 @@
-"""Kalibrasi peluang model churn (Opsi 1: model inti TIDAK diubah).
+"""Kalibrasi train-only + threshold F1 dari out-of-fold training, lalu evaluasi test.
 
-- Base model (model_churn.pkl) tetap beku: keputusan CHURN/TETAP + semua
-  metrik laporan tidak berubah.
-- CalibratedClassifierCV(method='sigmoid', cv=5) di-fit HANYA di data train
-  (split identik train.py: 80/20, stratify, random_state=42) -> jujur, tidak
-  menyentuh test.
-- Output: calibrator.pkl + calib_info.json (reliabilitas per band + Brier).
-- Rollback: hapus pakai calibrator.pkl / checkout branch backup-sebelum-kalibrasi.
+Jalankan setelah train.py. Test tidak dipakai untuk memilih threshold.
+Model inti tetap tersedia untuk perbandingan; aplikasi memakai model terkalibrasi.
 """
+import hashlib
 import json
-import warnings
+from pathlib import Path
+
 import joblib
+import numpy as np
 import pandas as pd
+import sklearn
 from sklearn.calibration import CalibratedClassifierCV
-from sklearn.metrics import brier_score_loss
-from sklearn.model_selection import train_test_split
+from sklearn.metrics import (
+    accuracy_score, precision_score, recall_score, f1_score, roc_auc_score,
+    confusion_matrix, brier_score_loss,
+)
+from sklearn.model_selection import StratifiedKFold, cross_val_predict
 
-warnings.filterwarnings("ignore")
+from prediction import high_risk_boundary
+from training_data import load_training_split
 
-CSV = "Telco-Customer-Churn.csv"
+BASE = Path(__file__).resolve().parent
 
-df = pd.read_csv(CSV)
-df = df.drop(columns=["customerID"], errors="ignore")
-df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
-df = df.dropna().reset_index(drop=True).drop(columns=["TotalCharges"])
 
-X = df.drop(columns=["Churn"])
-y = (df["Churn"] == "Yes").astype(int)
+def file_hash(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42, stratify=y)
 
-base = joblib.load("model_churn.pkl")  # template beku, akan di-clone + refit per fold
-cal = CalibratedClassifierCV(estimator=base, method="sigmoid", cv=5)
-cal.fit(X_train, y_train)
+def classification_metrics(y, probabilities, threshold):
+    pred = (probabilities >= threshold).astype(int)
+    tn, fp, fn, tp = confusion_matrix(y, pred, labels=[0, 1]).ravel()
+    return {
+        "Accuracy": round(float(accuracy_score(y, pred)), 4),
+        "Precision": round(float(precision_score(y, pred, zero_division=0)), 4),
+        "Recall": round(float(recall_score(y, pred, zero_division=0)), 4),
+        "F1": round(float(f1_score(y, pred, zero_division=0)), 4),
+        "ROC_AUC": round(float(roc_auc_score(y, probabilities)), 4),
+        "Brier": round(float(brier_score_loss(y, probabilities)), 4),
+        "TN": int(tn), "FP": int(fp), "FN": int(fn), "TP": int(tp),
+    }
 
-p_base = base.predict_proba(X_test)[:, 1]
-p_cal = cal.predict_proba(X_test)[:, 1]
 
-print("Brier (makin kecil makin jujur): base=%.4f cal=%.4f"
-      % (brier_score_loss(y_test, p_base), brier_score_loss(y_test, p_cal)))
+def calibrate():
+    X_train, X_test, y_train, y_test = load_training_split()
+    base = joblib.load(BASE / "model_churn.pkl")
+    inner_cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=43)
+    outer_cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+    cal = CalibratedClassifierCV(estimator=base, method="sigmoid", cv=inner_cv)
 
-bands = [(0.00, 0.30, "LOW"), (0.30, 0.60, "MID"), (0.60, 1.01, "HIGH")]
-rel = []
-for lo, hi, lbl in bands:
-    m = (p_cal >= lo) & (p_cal < hi)
-    rel.append({"band": lbl, "n": int(m.sum()),
-                "mean_pred": round(float(p_cal[m].mean()), 4),
-                "empirical": round(float(y_test[m].mean()), 4)})
-    print(rel[-1])
+    # Setiap outer fold kalibrasi/fit hanya pada training fold-nya.
+    # Hyperparameter model inti sudah dipilih di train-CV; ini bukan nested-CV
+    # untuk estimasi generalisasi. Holdout test tetap menjadi evaluasi akhir.
+    oof = cross_val_predict(cal, X_train, y_train, cv=outer_cv,
+                           method="predict_proba", n_jobs=-1)[:, 1]
+    thresholds = np.round(np.arange(0.10, 0.601, 0.01), 2)
+    scores = [f1_score(y_train, oof >= t, zero_division=0) for t in thresholds]
+    # Jika sama, pilih ambang lebih rendah (lebih sensitif untuk churn).
+    threshold = float(thresholds[int(np.argmax(scores))])
+    pd.DataFrame({"Threshold": thresholds, "OOF_F1": scores}).to_csv(
+        BASE / "threshold_selection.csv", index=False)
 
-joblib.dump(cal, "calibrator.pkl", protocol=4)
-with open("calib_info.json", "w") as f:
-    json.dump({"method": "sigmoid", "cv": 5, "fit_on": "train-only",
-               "base_model": type(base.named_steps["clf"]).__name__,
-               "brier_base": round(float(brier_score_loss(y_test, p_base)), 4),
-               "brier_cal": round(float(brier_score_loss(y_test, p_cal)), 4),
-               "reliability_test": rel,
-               "n_train": len(X_train), "n_test": len(X_test)}, f, indent=2)
-print("OK -> calibrator.pkl + calib_info.json")
+    cal.fit(X_train, y_train)
+    joblib.dump(cal, BASE / "calibrator.pkl", protocol=4)
+    p_base = base.predict_proba(X_test)[:, 1]
+    p_cal = cal.predict_proba(X_test)[:, 1]
+    high = high_risk_boundary(threshold)
+    bands = [(0.0, threshold, "LOW"), (threshold, high, "MID"), (high, 1.01, "HIGH")]
+    reliability = []
+    for lo, hi, label in bands:
+        mask = (p_cal >= lo) & (p_cal < hi)
+        reliability.append({
+            "band": label, "n": int(mask.sum()),
+            "mean_pred": round(float(p_cal[mask].mean()), 4) if mask.any() else None,
+            "empirical": round(float(y_test[mask].mean()), 4) if mask.any() else None,
+        })
+    clf_name = type(base.named_steps["clf"]).__name__
+    metadata = {
+        "method": "sigmoid", "cv": 5, "fit_on": "train-only", "base_model": clf_name,
+        "brier_base": round(float(brier_score_loss(y_test, p_base)), 4),
+        "brier_cal": round(float(brier_score_loss(y_test, p_cal)), 4),
+        "reliability_test": reliability, "n_train": len(X_train), "n_test": len(X_test),
+    }
+    (BASE / "calib_info.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+    deployment = {
+        "base_model": clf_name, "probability_model": "sigmoid calibrated ensemble (5-fold)",
+        "threshold": threshold, "threshold_selection": "max F1 on 5-fold OOF train probabilities",
+        "threshold_selection_data": "train-only", "oof_tuning_f1": round(float(max(scores)), 4),
+        "risk_high_boundary": high, "n_train": len(X_train), "n_test": len(X_test),
+        "n_features": X_train.shape[1], "sklearn_version": sklearn.__version__,
+        "metrics": classification_metrics(y_test, p_cal, threshold),
+        "metrics_at_0_5": classification_metrics(y_test, p_cal, 0.5),
+        "model_sha256": file_hash(BASE / "model_churn.pkl"),
+        "calibrator_sha256": file_hash(BASE / "calibrator.pkl"),
+    }
+    (BASE / "deployment_info.json").write_text(json.dumps(deployment, indent=2), encoding="utf-8")
+    print(f"Threshold OOF-train: {threshold:.2f} | OOF tuning F1: {max(scores):.4f}")
+    print("Evaluasi model aplikasi:", deployment["metrics"])
+    return deployment
+
+
+if __name__ == "__main__":
+    calibrate()
