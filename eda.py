@@ -10,7 +10,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 BASE = Path(__file__).resolve().parent
-OUT = BASE / "docs" / "eda"
+OUT = BASE / "docs" / "eda(explaratory data analysis)"
 DATASET_URL = "https://www.kaggle.com/datasets/blastchar/telco-customer-churn"
 MEANINGS = {
     "customerID": "Identitas unik pelanggan; tidak digunakan model.",
@@ -32,7 +32,7 @@ MEANINGS = {
     "PaperlessBilling": "Penggunaan tagihan tanpa kertas (Yes/No).",
     "PaymentMethod": "Metode pembayaran: cek elektronik/pos atau transfer/kartu otomatis.",
     "MonthlyCharges": "Tagihan bulanan pelanggan, dalam dolar.",
-    "TotalCharges": "Total tagihan kumulatif; tidak digunakan model aplikasi.",
+    "TotalCharges": "Total tagihan selama berlangganan; tidak digunakan model aplikasi.",
     "Churn": "Target: Yes=berhenti berlangganan, No=tidak berhenti dalam periode label dataset.",
 }
 
@@ -73,9 +73,9 @@ def run_eda():
     dictionary.to_csv(OUT / "data_dictionary.csv", index=False, encoding="utf-8-sig")
     numeric.describe(include="all").T.to_csv(OUT / "descriptive_statistics.csv")
     missing = pd.DataFrame({"Kolom": raw.columns,
-                            "Missing CSV awal": raw.isna().sum().values,
-                            "Missing setelah konversi": numeric.isna().sum().values,
-                            "Missing cohort bersih": complete.isna().sum().values})
+                            "Kosong pada CSV awal": raw.isna().sum().values,
+                            "Kosong setelah konversi angka": numeric.isna().sum().values,
+                            "Kosong setelah data dibersihkan": complete.isna().sum().values})
     missing.to_csv(OUT / "missing_values.csv", index=False)
     outliers = []
     for col in ["tenure", "MonthlyCharges", "TotalCharges"]:
@@ -118,38 +118,41 @@ def run_eda():
 
     fig, axes = plt.subplots(1, 3, figsize=(12, 3.7))
     for ax, data, title in zip(axes, [raw, complete, train],
-                               ["Data mentah (7.043)", "Cohort bersih (7.032)", "Training (5.625)"]):
+                               ["Data awal (7.043)", "Setelah dibersihkan (7.032)", "Data training (5.625)"]):
         counts = data["Churn"].value_counts().reindex(["No", "Yes"])
         ax.bar(["Tidak churn", "Churn"], counts, color=["#2563eb", "#ef4444"])
         ax.set_title(title)
         for i, count in enumerate(counts):
             ax.text(i, count, f"{count:,}\n{count / len(data):.1%}", ha="center", va="bottom", fontsize=10)
         ax.set_ylim(0, counts.max() * 1.25)
-    save(fig, "01_target_distribution.png", "Kelas tidak churn dominan (sekitar 73,4%) dan churn sekitar 26,6% "
-         "pada cohort bersih. Accuracy saja dapat menutupi kegagalan mendeteksi kelas churn; gunakan precision, recall, dan F1.")
+    save(fig, "01_target_distribution.png", "Setelah data dibersihkan, sekitar 73,4% pelanggan tidak churn dan "
+         "26,6% churn. Jumlah kedua kelompok tidak seimbang. Karena itu, akurasi perlu dilihat bersama "
+         "precision, recall, dan F1 agar kemampuan mendeteksi churn tidak terlewat.")
 
     fig, axes = plt.subplots(1, 3, figsize=(12, 3.5))
     for ax, col in zip(axes, ["tenure", "MonthlyCharges", "TotalCharges"]):
         ax.hist(train[col], bins=24, color="#7c3aed", alpha=0.85, edgecolor="white")
-        ax.set_title(col + " — TRAIN")
+        ax.set_title(col + " — data training")
         ax.set_ylabel("Pelanggan")
         ax.set_xlabel("Bulan" if col == "tenure" else "Dolar")
-    save(fig, "02_numeric_histograms_train.png", "Tenure mencakup pelanggan baru hingga 72 bulan; tagihan memiliki "
-         "beberapa kelompok sesuai paket layanan. TotalCharges berhubungan dengan durasi berlangganan. Bentuk histogram "
-         "tidak mengharuskan normalisasi agar normal; StandardScaler digunakan untuk skala numerik Logistic Regression.")
+    save(fig, "02_numeric_histograms_train.png", "Tenure menunjukkan lama berlangganan, dari pelanggan baru "
+         "hingga 72 bulan. Tagihan bulanan tersebar dalam beberapa kelompok, sedangkan total tagihan "
+         "banyak berada pada nilai rendah. StandardScaler menyamakan skala fitur angka untuk Logistic "
+         "Regression, bukan membuat distribusinya menjadi normal.")
 
     fig, axes = plt.subplots(1, 3, figsize=(12, 3.7))
     for ax, col in zip(axes, ["tenure", "MonthlyCharges", "TotalCharges"]):
         ax.boxplot([train.loc[train.Churn == label, col] for label in ["No", "Yes"]],
                    tick_labels=["Tidak churn", "Churn"], patch_artist=True,
                    boxprops={"facecolor": "#ddd6fe"}, medianprops={"color": "#7c3aed"})
-        ax.set_title(col + " — TRAIN")
+        ax.set_title(col + " — data training")
     medians = train.groupby("Churn")[["tenure", "MonthlyCharges"]].median()
-    save(fig, "03_numeric_boxplots_train.png", f"Median tenure pelanggan churn pada train adalah {medians.loc['Yes', 'tenure']:.0f} "
-         f"bulan, dibanding {medians.loc['No', 'tenure']:.0f} bulan pada tidak churn. Median tagihan churn "
-         f"${medians.loc['Yes', 'MonthlyCharges']:.2f} vs ${medians.loc['No', 'MonthlyCharges']:.2f}. "
-         "Ini hubungan deskriptif, bukan bukti bahwa menaikkan tagihan atau mengganti kontrak menyebabkan churn. "
-         "Titik outlier boxplot dihitung per kelas; berbeda dari pemeriksaan IQR seluruh cohort pada tabel kualitas data.")
+    save(fig, "03_numeric_boxplots_train.png", f"Pada data training, median lama berlangganan pelanggan "
+         f"churn adalah {medians.loc['Yes', 'tenure']:.0f} bulan, sedangkan pelanggan tidak churn "
+         f"{medians.loc['No', 'tenure']:.0f} bulan. Median tagihannya masing-masing "
+         f"${medians.loc['Yes', 'MonthlyCharges']:.2f} dan ${medians.loc['No', 'MonthlyCharges']:.2f}. "
+         "Pola ini belum membuktikan sebab-akibat. Titik outlier pada boxplot dihitung per kelompok, "
+         "berbeda dari tabel IQR yang memeriksa seluruh data sekaligus.")
 
     fig, ax = plt.subplots(figsize=(7, 5))
     im = ax.imshow(correlations, vmin=-1, vmax=1, cmap="RdBu_r")
@@ -160,47 +163,50 @@ def run_eda():
             ax.text(j, i, f"{correlations.iloc[i,j]:.2f}", ha="center", va="center",
                     color="white" if abs(correlations.iloc[i,j]) > 0.7 else "black")
     fig.colorbar(im, ax=ax)
-    ax.set_title("Korelasi Pearson numerik — TRAIN")
-    save(fig, "04_correlation_train.png", f"Korelasi TotalCharges–tenure pada train adalah "
-         f"{correlations.loc['TotalCharges','tenure']:.3f}. Korelasi tinggi tidak membuktikan keduanya identik. "
-         "TotalCharges dihapus untuk menyederhanakan input; manfaat penghapusan belum diuji dengan ablation.")
+    ax.set_title("Korelasi fitur angka — data training")
+    save(fig, "04_correlation_train.png", f"Korelasi total tagihan (TotalCharges) dan lama berlangganan "
+         f"(tenure) adalah {correlations.loc['TotalCharges','tenure']:.3f} pada data training. "
+         "Keduanya berkaitan, tetapi tidak selalu bisa saling menggantikan. TotalCharges tidak "
+         "diminta di aplikasi agar pengisian lebih mudah. Hasil model dengan dan tanpa fitur ini belum dibandingkan.")
 
     fig, axes = plt.subplots(1, 3, figsize=(13, 4.3))
     for ax, col in zip(axes, ["Contract", "InternetService", "PaymentMethod"]):
         subset = rates_df[rates_df.Fitur == col]
         ax.bar(subset.Kategori, subset["Churn rate train"] * 100, color="#2563eb")
-        ax.set_title(col + " — TRAIN")
-        ax.set_ylabel("Churn rate (%)")
+        ax.set_title(col + " — data training")
+        ax.set_ylabel("Pelanggan churn (%)")
         ax.tick_params(axis="x", rotation=25, labelsize=8)
         for i, value in enumerate(subset["Churn rate train"]):
             ax.text(i, value * 100, f"{value:.1%}", ha="center", va="bottom", fontsize=9)
         ax.set_ylim(0, 60)
     month = rates_df[(rates_df.Fitur == "Contract") & (rates_df.Kategori == "Month-to-month")].iloc[0]
     two = rates_df[(rates_df.Fitur == "Contract") & (rates_df.Kategori == "Two year")].iloc[0]
-    save(fig, "05_categorical_churn_train.png", f"Pada train, churn rate kontrak bulanan {month['Churn rate train']:.1%}, "
-         f"sedangkan kontrak dua tahun {two['Churn rate train']:.1%}. Pelanggan fiber/electronic check juga memiliki "
-         "profil churn berbeda. Asosiasi ini mendukung pemilihan fitur, bukan jaminan efektivitas saran retensi.")
+    save(fig, "05_categorical_churn_train.png", f"Pada data training, {month['Churn rate train']:.1%} "
+         f"pelanggan kontrak bulanan churn, dibanding {two['Churn rate train']:.1%} pada kontrak dua tahun. "
+         "Persentase churn juga berbeda menurut layanan internet dan cara pembayaran. Ini membantu "
+         "mengenali pola pelanggan, tetapi belum membuktikan bahwa mengganti kontrak atau metode pembayaran akan mencegah churn.")
 
     fig, axes = plt.subplots(1, 3, figsize=(12, 4))
     for ax, col in zip(axes, ["Contract", "InternetService", "SeniorCitizen"]):
         counts = train[col].astype(str).value_counts()
         ax.bar(counts.index, counts.values, color="#7c3aed")
-        ax.set_title(col + " — TRAIN")
+        ax.set_title(col + " — data training")
         ax.set_ylabel("Pelanggan")
         ax.tick_params(axis="x", rotation=20)
-    save(fig, "06_categorical_distribution_train.png", "Distribusi kategori menunjukkan sebagian besar pelanggan "
-         "bukan senior dan kategori kontrak/paket tidak sama besar. Bandingkan churn rate beserta jumlah pelanggan "
-         "per kategori, sehingga kelompok kecil tidak dianggap mewakili seluruh populasi.")
+    save(fig, "06_categorical_distribution_train.png", "Sebagian besar pelanggan bukan senior. Jumlah "
+         "pelanggan juga berbeda di setiap jenis kontrak dan layanan internet. Saat membandingkan "
+         "persentase churn, perhatikan jumlah pelanggan dalam kelompoknya: hasil kelompok kecil belum tentu mewakili semua pelanggan.")
 
     fig, ax = plt.subplots(figsize=(8, 4))
     for label, color in [("No", "#2563eb"), ("Yes", "#ef4444")]:
         sample = train[train.Churn == label].sample(n=min(500, int((train.Churn == label).sum())), random_state=42)
         ax.scatter(sample.tenure, sample.MonthlyCharges, s=13, alpha=0.35, color=color, label=label)
-    ax.set(xlabel="Tenure (bulan)", ylabel="MonthlyCharges ($)", title="Sampel scatter train (maks. 500/kelas)")
+    ax.set(xlabel="Lama berlangganan (bulan)", ylabel="Tagihan bulanan ($)",
+           title="Lama berlangganan dan tagihan — data training")
     ax.legend(title="Churn")
-    save(fig, "07_scatter_train.png", "Kedua kelas saling tumpang tindih pada tenure dan tagihan; tidak ada "
-         "satu batas sederhana yang memisahkan semua pelanggan churn. Grafik memakai sampel per kelas untuk keterbacaan, "
-         "bukan untuk menghitung proporsi populasi.")
+    save(fig, "07_scatter_train.png", "Pelanggan churn dan tidak churn tersebar pada lama berlangganan "
+         "dan tagihan yang mirip. Dua fitur ini saja belum dapat memisahkan semua pelanggan dengan jelas. "
+         "Grafik mengambil paling banyak 500 pelanggan per kelompok agar mudah dibaca; jumlah titiknya bukan perbandingan jumlah kelas.")
 
     summary = {
         "source": DATASET_URL, "raw_rows": len(raw), "raw_columns": raw.shape[1],
@@ -215,7 +221,7 @@ def run_eda():
     sections = ["# Exploratory Data Analysis — Telco Churn", "\nKelompok 12 • Kelas B2",
                 f"\nSumber: {DATASET_URL}",
                 "\n## 1. Informasi dataset",
-                f"Mentah: **{len(raw):,} pelanggan, {raw.shape[1]} kolom**. Cohort bersih: **{len(complete):,} pelanggan, "
+                f"Data awal: **{len(raw):,} pelanggan, {raw.shape[1]} kolom**. Setelah dibersihkan: **{len(complete):,} pelanggan, "
                 f"18 fitur + 1 target**. customerID adalah ID; Churn Yes=1, No=0. "
                 "Grafik hubungan fitur–target memakai train saja (5.625); test (1.407) disimpan untuk evaluasi akhir. "
                 "Pemeriksaan kualitas data mentah tidak melakukan fitting preprocessing.",
@@ -223,7 +229,7 @@ def run_eda():
                 "\n## 3. Statistik deskriptif", md_table(numeric[["tenure", "MonthlyCharges", "TotalCharges"]].describe().round(3).reset_index()),
                 "\n## 4. Missing value", md_table(missing),
                 "Sebelas string kosong pada TotalCharges terdeteksi setelah konversi numerik. "
-                "Seluruhnya tenure=0 dan Churn=No. Cohort awal dipertahankan untuk perbandingan eksperimen; "
+                "Seluruhnya tenure=0 dan Churn=No. Data pemodelan awal dipertahankan untuk perbandingan eksperimen; "
                 "karena fitur TotalCharges akhirnya dihapus, membuang baris ini bukan keharusan model. "
                 "Eksklusi pelanggan baru merupakan keterbatasan yang perlu diuji pada pengembangan berikutnya.",
                 "\n## 5. Duplikat", md_table(pd.DataFrame(duplicate_counts.items(), columns=["Pemeriksaan", "Jumlah"])),

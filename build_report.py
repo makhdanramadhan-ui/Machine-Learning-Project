@@ -23,6 +23,7 @@ from training_data import load_training_split
 BASE = Path(__file__).resolve().parent
 DOCS = BASE / "docs"
 FIG = DOCS / "figures"
+EDA = DOCS / "eda(explaratory data analysis)"
 APP_URL = "https://machine-learning-project-u8yovshrqrc5tm5s2y2qto.streamlit.app/"
 PPT_NAME = "ML2026_B2_Kelompok12_PrediksiCustomerChurn.pptx"
 BG, CARD, TEXT, MUTED, ACCENT = "0B0F19", "141B2E", "E9EDF5", "AAB4C8", "7C3AED"
@@ -102,7 +103,7 @@ def evaluation_figures():
 
 def build_report():
     comparison, deploy, example = evaluation_figures()
-    summary = json.loads((DOCS / "eda" / "summary.json").read_text(encoding="utf-8"))
+    summary = json.loads((EDA / "summary.json").read_text(encoding="utf-8"))
     refs = json.loads((DOCS / "referensi.json").read_text(encoding="utf-8"))
     prs = Presentation()
     prs.slide_width, prs.slide_height = Inches(13.333), Inches(7.5)
@@ -210,7 +211,7 @@ def build_report():
         ["Numerik", "tenure (bulan), MonthlyCharges ($); SeniorCitizen indikator 0/1"],
         ["Kategorikal", "15 fitur: kontrak, layanan, pembayaran, demografi"],
     ], h=3.9, size=19, widths=[.27,.73])
-    text(s, "Sumber dan kamus seluruh 21 variabel: docs/eda/EDA.md", .65, 6.05, 12, .5, size=17, color=MUTED)
+    text(s, "Sumber dan arti seluruh 21 variabel ada pada laporan EDA di folder docs.", .65, 6.05, 12, .5, size=17, color=MUTED)
     s = slide("Pemeriksaan kualitas data", "Missing, duplikat, outlier, dan keputusan cleaning")
     bullets(s, ["11 TotalCharges kosong → numeric coercion → missing; seluruhnya tenure 0 / tidak churn.",
                 "Tidak ada customerID ganda atau baris mentah identik.",
@@ -225,10 +226,10 @@ def build_report():
         ("EDA — kontrak, internet, pembayaran", "05_categorical_churn_train.png", summary["figures"][4]["interpretation"]),
     ]:
         s = slide(title, "Hubungan fitur–target dianalisis pada training set saja", notes=note)
-        picture(s, DOCS / "eda" / file, .6, 1.8, 12.1, 3.6)
+        picture(s, EDA / file, .6, 1.8, 12.1, 3.6)
         text(s, note, .65, 5.60, 12, 1.25, size=16, color=MUTED)
     s = slide("EDA — korelasi & pilihan fitur", "Korelasi bukan identitas dan bukan sebab-akibat")
-    picture(s, DOCS / "eda" / "04_correlation_train.png", .6, 1.8, 6.4, 4.8)
+    picture(s, EDA / "04_correlation_train.png", .6, 1.8, 6.4, 4.8)
     bullets(s, ["TotalCharges berkorelasi kuat dengan tenure.", "TotalCharges dihapus agar input aplikasi sederhana.",
                 "Tidak selalu MonthlyCharges × tenure.", "Belum ada ablation untuk membuktikan keuntungan penghapusan fitur."],
             x=7.25, y=2, w=5.4, h=4.8, size=20)
@@ -313,7 +314,7 @@ def build_report():
          "CSV invalid ditolak dengan pesan dan nomor baris; tidak dibuang diam-diam.", .65, 5.5, 12, 1.1, size=20)
     s = slide("Demo aplikasi — jalankan langsung", "Buka URL live; tunjukkan interaksi, bukan hanya screenshot",
               "Gunakan template_pelanggan.csv. Klik Prediksi untuk contoh pelanggan, upload batch, unduh hasil, "
-              "lalu upload CSV salah untuk menunjukkan validasi. Lihat docs/NASKAH_VIDEO_DEMO.md.")
+              "lalu upload CSV salah untuk menunjukkan validasi.")
     bullets(s, ["1. Buka aplikasi: KPI dan tab single, batch, dashboard, serta EDA.", "2. Isi profil pelanggan; klik Prediksi Sekarang dan jelaskan probabilitas/threshold.",
                 "3. Download template → upload CSV → tampilkan ringkasan → download hasil.",
                 "4. Tunjukkan validasi: CSV tanpa tenure atau kategori Contract yang salah.",
@@ -345,9 +346,9 @@ def build_report():
         text(s, f"[{r['no']}] {r['short']} — {r['journal']}\n{r['doi']}",
              .7, 1.8+i*.9, 12, .8, size=18)
     s = slide("Source code & berkas pengumpulan", "Format folder: ML2026_B2_Kelompok12_PrediksiCustomerChurn")
-    bullets(s, ["PPT: docs/" + PPT_NAME, "EDA: docs/eda/EDA.md • notebook: projekk.ipynb",
+    bullets(s, ["PPT: docs/" + PPT_NAME, "Laporan EDA: folder docs • notebook: projekk.ipynb",
                 "Lima jurnal & tabel: docs/STUDI_LITERATUR.md • docs/jurnal/",
-                "Naskah demo ≤7 menit: docs/NASKAH_VIDEO_DEMO.md",
+                "Video demo: maksimal 7 menit, aplikasi dijalankan langsung.",
                 "Pembagian tugas: isi pada slide 27; video asli direkam anggota."], size=21)
     text(s, "Repository: https://github.com/makhdanramadhan-ui/Machine-Learning-Project\n" + APP_URL,
          .65, 6.15, 12, .7, size=13, color="60A5FA")

@@ -26,7 +26,7 @@ def build_notebook():
              "from eda import run_eda\nfrom training_data import load_training_split\n"
              "from prediction import input_schema, predict_customers, example_customers\n"
              "from calibrate import classification_metrics\n"
-             "BASE = Path.cwd()\nsummary = run_eda()\nEDA = BASE / 'docs' / 'eda'\n"
+             "BASE = Path.cwd()\nsummary = run_eda()\nEDA = BASE / 'docs' / 'eda(explaratory data analysis)'\n"
              "raw = pd.read_csv(BASE / 'Telco-Customer-Churn.csv')\nprint('Raw shape:', raw.shape)"),
         md("## 2. Variabel, tipe data, dan statistik\n\nSeniorCitizen bertipe angka tetapi semantiknya "
            "indikator kategori biner; tenure adalah bulan. TotalCharges awalnya string karena nilai kosong. "
@@ -116,12 +116,11 @@ def build_notebook():
              "example['Prob_Churn'] = p\nexample['Prediksi'] = labels\ndisplay(example)"),
         md("## 11. Berkas pengumpulan\n\n"
            "- [PPT](docs/ML2026_B2_Kelompok12_PrediksiCustomerChurn.pptx)\n"
-           "- [Naskah video demo](docs/NASKAH_VIDEO_DEMO.md)\n"
            "- [Studi literatur](docs/STUDI_LITERATUR.md)\n"
-           "- [Laporan EDA](docs/eda/EDA.md)\n"
+           "- [Laporan EDA](docs/eda%28explaratory%20data%20analysis%29/EDA.md)\n"
            "- [Repository](https://github.com/makhdanramadhan-ui/Machine-Learning-Project)\n"
            "- [Aplikasi](https://machine-learning-project-u8yovshrqrc5tm5s2y2qto.streamlit.app/)\n\n"
-           "Pembagian tugas aktual diisi kelompok. Rekaman video asli dilakukan anggota; naskah bukan pengganti video."),
+           "Pembagian tugas aktual diisi kelompok. Video demo direkam anggota dengan durasi maksimal 7 menit."),
     ]
     nb = nbf.v4.new_notebook(cells=cells, metadata={
         "kernelspec": {"display_name": "Python 3", "language": "python", "name": "python3"},

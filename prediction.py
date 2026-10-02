@@ -32,7 +32,7 @@ def validate_input(frame, schema):
         raise InputValidationError("Nama kolom CSV tidak boleh duplikat.")
     missing = [col for col in schema["columns"] if col not in frame.columns]
     if missing:
-        raise InputValidationError("Kolom wajib belum tersedia: " + ", ".join(missing) + ".")
+        raise InputValidationError("Kolom wajib yang belum ada: " + ", ".join(missing) + ".")
 
     clean = frame.loc[:, schema["columns"]].copy()
     errors = []
@@ -48,7 +48,7 @@ def validate_input(frame, schema):
     for col in NUMERIC_COLUMNS:
         values = pd.to_numeric(clean[col], errors="coerce")
         valid = values.notna() & np.isfinite(values)
-        report(~valid, f"{col} harus berupa angka terisi dan berhingga")
+        report(~valid, f"Isi {col} dengan angka biasa (berhingga), bukan kosong, teks, atau infinity")
         clean[col] = values
         if col == "SeniorCitizen":
             report(valid & ~values.isin([0, 1]), "SeniorCitizen hanya boleh 0 atau 1")
@@ -108,9 +108,11 @@ def input_notes(frame):
     """Kondisi di luar rentang latih tetap bisa diprediksi, tetapi dijelaskan."""
     notes = []
     if pd.to_numeric(frame["tenure"], errors="coerce").eq(0).any():
-        notes.append("Ada tenure 0 bulan; data training bersih dimulai dari tenure 1 bulan.")
+        notes.append("Ada pelanggan dengan lama berlangganan 0 bulan. Model dilatih pada pelanggan "
+                     "yang sudah berlangganan minimal 1 bulan, jadi hasil untuk pelanggan baru ini belum teruji.")
     if (~pd.to_numeric(frame["MonthlyCharges"], errors="coerce").between(18.25, 118.75)).any():
-        notes.append("Ada tagihan di luar rentang dataset latih ($18,25–$118,75).")
+        notes.append("Ada tagihan di luar rentang data training ($18,25–$118,75). "
+                     "Prediksi tetap tersedia, tetapi model belum diuji pada nilai tagihan tersebut.")
     return notes
 
 

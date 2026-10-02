@@ -162,16 +162,15 @@ digunakan aplikasi. Gunakan `train.py` untuk membuat artefak deployment terkini.
 - [PPT editable — 29 slide](docs/ML2026_B2_Kelompok12_PrediksiCustomerChurn.pptx)
 - [PDF PPT](docs/ML2026_B2_Kelompok12_PrediksiCustomerChurn.pdf)
 - [Outline PPT](docs/PPT_OUTLINE.md)
-- [Laporan EDA, tujuh grafik dan interpretasi](docs/eda/EDA.md)
+- [Laporan EDA, tujuh grafik dan penjelasan](docs/eda%28explaratory%20data%20analysis%29/EDA.md)
 - [Daftar lima jurnal dan tabel studi literatur](docs/STUDI_LITERATUR.md)
 - [Tabel studi literatur CSV](docs/tabel_studi_literatur.csv)
 - [BibTeX](docs/referensi.bib) dan [arsip teks lengkap jurnal](docs/jurnal/)
-- [Naskah demo target 6:40](docs/NASKAH_VIDEO_DEMO.md)
 - [Template demo](docs/template_pelanggan.csv) dan [hasil contoh aktual](docs/contoh_demo.csv)
 - [Petunjuk pengumpulan](docs/PENGUMPULAN.md)
 
 Identitas sudah diisi. **Pembagian tugas pada slide 27 diisi sendiri sesuai
-pengerjaan aktual.** Naskah demo membantu rekaman; video final direkam anggota.
+pengerjaan aktual.** Video demo direkam anggota, dengan durasi maksimal 7 menit.
 Tiga PDF jurnal berhasil diunduh; kelima teks lengkap tersedia sebagai Markdown/XML
 dengan DOI dan tautan PDF penerbit. Hasil penelitian pada tabel adalah hasil
 yang dilaporkan penulis, bukan hasil eksperimen project.

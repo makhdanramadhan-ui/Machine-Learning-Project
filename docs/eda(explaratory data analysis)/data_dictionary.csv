@@ -18,5 +18,5 @@ Contract,str,kategorikal,3,"Durasi kontrak: Month-to-month, One year, Two year."
 PaperlessBilling,str,kategorikal,2,Penggunaan tagihan tanpa kertas (Yes/No).,fitur
 PaymentMethod,str,kategorikal,4,Metode pembayaran: cek elektronik/pos atau transfer/kartu otomatis.,fitur
 MonthlyCharges,float64,numerik kontinu,1585,"Tagihan bulanan pelanggan, dalam dolar.",fitur
-TotalCharges,str,numerik kontinu,6530,Total tagihan kumulatif; tidak digunakan model aplikasi.,dihapus
+TotalCharges,str,numerik kontinu,6530,Total tagihan selama berlangganan; tidak digunakan model aplikasi.,dihapus
 Churn,str,target biner,2,"Target: Yes=berhenti berlangganan, No=tidak berhenti dalam periode label dataset.",target

@@ -112,7 +112,7 @@ Numerik | tenure (bulan), MonthlyCharges ($); SeniorCitizen indikator 0/1
 
 Kategorikal | 15 fitur: kontrak, layanan, pembayaran, demografi
 
-Sumber dan kamus seluruh 21 variabel: docs/eda/EDA.md
+Sumber dan arti seluruh 21 variabel ada pada laporan EDA di folder docs.
 
 ## Slide 7: Pemeriksaan kualitas data
 
@@ -140,9 +140,9 @@ Hubungan fitur–target dianalisis pada training set saja
 
 ML 2026  •  B2  •  Kelompok 12                                      08
 
-Kelas tidak churn dominan (sekitar 73,4%) dan churn sekitar 26,6% pada cohort bersih. Accuracy saja dapat menutupi kegagalan mendeteksi kelas churn; gunakan precision, recall, dan F1.
+Setelah data dibersihkan, sekitar 73,4% pelanggan tidak churn dan 26,6% churn. Jumlah kedua kelompok tidak seimbang. Karena itu, akurasi perlu dilihat bersama precision, recall, dan F1 agar kemampuan mendeteksi churn tidak terlewat.
 
-Catatan presenter: Kelas tidak churn dominan (sekitar 73,4%) dan churn sekitar 26,6% pada cohort bersih. Accuracy saja dapat menutupi kegagalan mendeteksi kelas churn; gunakan precision, recall, dan F1.
+Catatan presenter: Setelah data dibersihkan, sekitar 73,4% pelanggan tidak churn dan 26,6% churn. Jumlah kedua kelompok tidak seimbang. Karena itu, akurasi perlu dilihat bersama precision, recall, dan F1 agar kemampuan mendeteksi churn tidak terlewat.
 
 ## Slide 9: EDA — distribusi numerik
 
@@ -154,9 +154,9 @@ Hubungan fitur–target dianalisis pada training set saja
 
 ML 2026  •  B2  •  Kelompok 12                                      09
 
-Tenure mencakup pelanggan baru hingga 72 bulan; tagihan memiliki beberapa kelompok sesuai paket layanan. TotalCharges berhubungan dengan durasi berlangganan. Bentuk histogram tidak mengharuskan normalisasi agar normal; StandardScaler digunakan untuk skala numerik Logistic Regression.
+Tenure menunjukkan lama berlangganan, dari pelanggan baru hingga 72 bulan. Tagihan bulanan tersebar dalam beberapa kelompok, sedangkan total tagihan banyak berada pada nilai rendah. StandardScaler menyamakan skala fitur angka untuk Logistic Regression, bukan membuat distribusinya menjadi normal.
 
-Catatan presenter: Tenure mencakup pelanggan baru hingga 72 bulan; tagihan memiliki beberapa kelompok sesuai paket layanan. TotalCharges berhubungan dengan durasi berlangganan. Bentuk histogram tidak mengharuskan normalisasi agar normal; StandardScaler digunakan untuk skala numerik Logistic Regression.
+Catatan presenter: Tenure menunjukkan lama berlangganan, dari pelanggan baru hingga 72 bulan. Tagihan bulanan tersebar dalam beberapa kelompok, sedangkan total tagihan banyak berada pada nilai rendah. StandardScaler menyamakan skala fitur angka untuk Logistic Regression, bukan membuat distribusinya menjadi normal.
 
 ## Slide 10: EDA — profil churn vs tidak churn
 
@@ -168,9 +168,9 @@ Hubungan fitur–target dianalisis pada training set saja
 
 ML 2026  •  B2  •  Kelompok 12                                      10
 
-Median tenure pelanggan churn pada train adalah 10 bulan, dibanding 38 bulan pada tidak churn. Median tagihan churn $79.90 vs $64.68. Ini hubungan deskriptif, bukan bukti bahwa menaikkan tagihan atau mengganti kontrak menyebabkan churn. Titik outlier boxplot dihitung per kelas; berbeda dari pemeriksaan IQR seluruh cohort pada tabel kualitas data.
+Pada data training, median lama berlangganan pelanggan churn adalah 10 bulan, sedangkan pelanggan tidak churn 38 bulan. Median tagihannya masing-masing $79.90 dan $64.68. Pola ini belum membuktikan sebab-akibat. Titik outlier pada boxplot dihitung per kelompok, berbeda dari tabel IQR yang memeriksa seluruh data sekaligus.
 
-Catatan presenter: Median tenure pelanggan churn pada train adalah 10 bulan, dibanding 38 bulan pada tidak churn. Median tagihan churn $79.90 vs $64.68. Ini hubungan deskriptif, bukan bukti bahwa menaikkan tagihan atau mengganti kontrak menyebabkan churn. Titik outlier boxplot dihitung per kelas; berbeda dari pemeriksaan IQR seluruh cohort pada tabel kualitas data.
+Catatan presenter: Pada data training, median lama berlangganan pelanggan churn adalah 10 bulan, sedangkan pelanggan tidak churn 38 bulan. Median tagihannya masing-masing $79.90 dan $64.68. Pola ini belum membuktikan sebab-akibat. Titik outlier pada boxplot dihitung per kelompok, berbeda dari tabel IQR yang memeriksa seluruh data sekaligus.
 
 ## Slide 11: EDA — kontrak, internet, pembayaran
 
@@ -182,9 +182,9 @@ Hubungan fitur–target dianalisis pada training set saja
 
 ML 2026  •  B2  •  Kelompok 12                                      11
 
-Pada train, churn rate kontrak bulanan 43.1%, sedangkan kontrak dua tahun 2.9%. Pelanggan fiber/electronic check juga memiliki profil churn berbeda. Asosiasi ini mendukung pemilihan fitur, bukan jaminan efektivitas saran retensi.
+Pada data training, 43.1% pelanggan kontrak bulanan churn, dibanding 2.9% pada kontrak dua tahun. Persentase churn juga berbeda menurut layanan internet dan cara pembayaran. Ini membantu mengenali pola pelanggan, tetapi belum membuktikan bahwa mengganti kontrak atau metode pembayaran akan mencegah churn.
 
-Catatan presenter: Pada train, churn rate kontrak bulanan 43.1%, sedangkan kontrak dua tahun 2.9%. Pelanggan fiber/electronic check juga memiliki profil churn berbeda. Asosiasi ini mendukung pemilihan fitur, bukan jaminan efektivitas saran retensi.
+Catatan presenter: Pada data training, 43.1% pelanggan kontrak bulanan churn, dibanding 2.9% pada kontrak dua tahun. Persentase churn juga berbeda menurut layanan internet dan cara pembayaran. Ini membantu mengenali pola pelanggan, tetapi belum membuktikan bahwa mengganti kontrak atau metode pembayaran akan mencegah churn.
 
 ## Slide 12: EDA — korelasi & pilihan fitur
 
@@ -433,7 +433,7 @@ ML 2026  •  B2  •  Kelompok 12                                      24
 
 https://machine-learning-project-u8yovshrqrc5tm5s2y2qto.streamlit.app/
 
-Catatan presenter: Gunakan template_pelanggan.csv. Klik Prediksi untuk contoh pelanggan, upload batch, unduh hasil, lalu upload CSV salah untuk menunjukkan validasi. Lihat docs/NASKAH_VIDEO_DEMO.md.
+Catatan presenter: Gunakan template_pelanggan.csv. Klik Prediksi untuk contoh pelanggan, upload batch, unduh hasil, lalu upload CSV salah untuk menunjukkan validasi.
 
 ## Slide 25: Kesimpulan
 
@@ -527,9 +527,9 @@ Format folder: ML2026_B2_Kelompok12_PrediksiCustomerChurn
 ML 2026  •  B2  •  Kelompok 12                                      29
 
 • PPT: docs/ML2026_B2_Kelompok12_PrediksiCustomerChurn.pptx
-• EDA: docs/eda/EDA.md • notebook: projekk.ipynb
+• Laporan EDA: folder docs • notebook: projekk.ipynb
 • Lima jurnal & tabel: docs/STUDI_LITERATUR.md • docs/jurnal/
-• Naskah demo ≤7 menit: docs/NASKAH_VIDEO_DEMO.md
+• Video demo: maksimal 7 menit, aplikasi dijalankan langsung.
 • Pembagian tugas: isi pada slide 27; video asli direkam anggota.
 
 Repository: https://github.com/makhdanramadhan-ui/Machine-Learning-Project

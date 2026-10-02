@@ -51,8 +51,8 @@ try:
     CMP = pd.read_csv(BASE / "hasil_perbandingan.csv")
     CVDET = pd.read_csv(BASE / "cv_detail.csv")
 except (OSError, ValueError, KeyError) as exc:
-    st.error(f"Artefak aplikasi belum lengkap atau tidak konsisten: {exc}")
-    st.info("Jalankan `python train.py`, lalu deploy seluruh artefak hasil training bersamaan.")
+    st.error(f"Model belum bisa dimuat: {exc}")
+    st.info("Jalankan `python train.py`, lalu unggah model dan file hasil evaluasinya bersama-sama.")
     st.stop()
 
 SCHEMA = input_schema(pipe)
@@ -232,6 +232,9 @@ def style_fig(fig, ax_or_axes):
     fig.patch.set_facecolor("none")
 
 BEST = INFO.get("best_model", "LogisticRegression") if INFO else "LogisticRegression"
+MODEL_NAMES = {"LogisticRegression": "Logistic Regression", "DecisionTree": "Decision Tree",
+               "RandomForest": "Random Forest"}
+BEST_LABEL = MODEL_NAMES.get(BEST, BEST)
 BASE_MET = INFO.get("metrics", {})
 MET = DEPLOY["metrics"]
 CVF1 = BASE_MET.get("CV_F1", "-")
@@ -245,17 +248,34 @@ def fmt(x):
     return f"{x:.4f}" if isinstance(x, float) else str(x)
 
 
+def count_text(value):
+    return f"{int(value):,}".replace(",", ".")
+
+
+def option_label(value):
+    """Terjemahkan tampilan pilihan; nilai yang diterima model tetap sama."""
+    labels = {
+        "Female": "Perempuan", "Male": "Laki-laki", "Yes": "Ya", "No": "Tidak",
+        "No phone service": "Tidak memakai telepon", "No internet service": "Tidak memakai internet",
+        "Fiber optic": "Fiber optik", "Month-to-month": "Bulanan", "One year": "Satu tahun",
+        "Two year": "Dua tahun", "Electronic check": "Cek elektronik",
+        "Mailed check": "Cek melalui pos", "Bank transfer (automatic)": "Transfer bank otomatis",
+        "Credit card (automatic)": "Kartu kredit otomatis",
+    }
+    return labels.get(value, value)
+
+
 def show_confusion_matrix(metrics):
     st.markdown(
         f"""<div class="cm-grid">
         <div class="cm-cell cm-tp"><span>TP • churn terdeteksi</span><b>{int(metrics['TP'])}</b>
-        <span style="opacity:.7;font-size:.8rem">pred 1, real 1</span></div>
+        <span style="opacity:.7;font-size:.8rem">Diprediksi churn, memang churn</span></div>
         <div class="cm-cell cm-tn"><span>TN • tidak churn benar</span><b>{int(metrics['TN'])}</b>
-        <span style="opacity:.7;font-size:.8rem">pred 0, real 0</span></div>
+        <span style="opacity:.7;font-size:.8rem">Diprediksi tetap, memang tidak churn</span></div>
         <div class="cm-cell cm-fp"><span>FP • alarm keliru</span><b>{int(metrics['FP'])}</b>
-        <span style="opacity:.7;font-size:.8rem">pred 1, real 0</span></div>
+        <span style="opacity:.7;font-size:.8rem">Diprediksi churn, ternyata tidak churn</span></div>
         <div class="cm-cell cm-fn"><span>FN • churn terlewat</span><b>{int(metrics['FN'])}</b>
-        <span style="opacity:.7;font-size:.8rem">pred 0, real 1</span></div>
+        <span style="opacity:.7;font-size:.8rem">Diprediksi tetap, ternyata churn</span></div>
         </div>""", unsafe_allow_html=True,
     )
 
@@ -263,12 +283,12 @@ def show_confusion_matrix(metrics):
 st.markdown(
     f"""<div class="hero">
     <h1>📡 Prediksi Customer Churn — Telco</h1>
-    <p>Prediksi pelanggan <b>churn</b> atau <b>tidak churn</b>, lengkap dengan probabilitas
-    terkalibrasi, rekomendasi retensi, prediksi massal CSV, dan transparansi model.</p>
-    <span class="pill">🏆 Model: {BEST}</span>
-    <span class="pill">🎯 CV-F1 model inti: {fmt(CVF1)}</span>
+    <p>Perkirakan apakah pelanggan akan <b>berhenti berlangganan (churn)</b>.
+    Coba satu pelanggan atau unggah CSV untuk melihat hasil beberapa pelanggan sekaligus.</p>
+    <span class="pill">🏆 Model: {BEST_LABEL}</span>
+    <span class="pill">🎯 CV-F1: {fmt(CVF1)}</span>
     <span class="pill">📈 ROC-AUC: {fmt(AUC)}</span>
-    <span class="pill">🗂️ {N_DATA} data • {DEPLOY['n_features']} fitur</span>
+    <span class="pill">🗂️ {count_text(N_DATA)} pelanggan • {DEPLOY['n_features']} fitur</span>
     </div>""",
     unsafe_allow_html=True,
 )
@@ -277,37 +297,37 @@ st.markdown(
 k1, k2, k3, k4 = st.columns(4)
 with k1:
     st.markdown(f"<div class='kpi'><div class='label'>🏆 Model Terbaik</div>"
-                f"<div class='value'>{BEST}</div>"
-                f"<div class='sub'>Dipilih via CV-F1 tertinggi</div></div>", unsafe_allow_html=True)
+                f"<div class='value'>{BEST_LABEL}</div>"
+                f"<div class='sub'>CV-F1 tertinggi dari tiga model</div></div>", unsafe_allow_html=True)
 with k2:
     st.markdown(f"<div class='kpi'><div class='label'>🎯 Akurasi & Recall</div>"
-                f"<div class='value'>{fmt(ACC)} / {fmt(REC)}</div>"
-                f"<div class='sub'>Model aplikasi • test {N_TEST} data</div></div>", unsafe_allow_html=True)
+                f"<div class='value'>{ACC:.2%} / {REC:.2%}</div>"
+                f"<div class='sub'>Diuji pada {count_text(N_TEST)} pelanggan</div></div>", unsafe_allow_html=True)
 with k3:
     st.markdown(f"<div class='kpi'><div class='label'>📈 ROC-AUC</div>"
                 f"<div class='value'>{fmt(AUC)}</div>"
                 f"<div class='sub'>0.5 = acak, 1.0 = sempurna</div></div>", unsafe_allow_html=True)
 with k4:
     st.markdown("<div class='kpi'><div class='label'>🗂️ Dataset</div>"
-                f"<div class='value'>{N_DATA}</div>"
-                "<div class='sub'>Telco-Customer-Churn • bersih</div></div>", unsafe_allow_html=True)
+                f"<div class='value'>{count_text(N_DATA)}</div>"
+                "<div class='sub'>Data pelanggan setelah dibersihkan</div></div>", unsafe_allow_html=True)
 
-with st.expander("ℹ️ Detail Info Model", expanded=False):
+with st.expander("ℹ️ Tentang model dan cara membaca hasil", expanded=False):
     c_a, c_b = st.columns([1, 2])
     with c_a:
-        st.write(f"**Model terbaik:** `{BEST}`")
-        st.caption("Model inti dipilih berdasarkan CV-F1 tertinggi (5-fold). "
-                   "Angka KPI di atas adalah evaluasi model aplikasi setelah kalibrasi.")
+        st.write(f"**Model yang dipilih:** {BEST_LABEL}")
+        st.caption("Model ini mendapat rata-rata F1 tertinggi pada validasi silang lima fold. "
+                   "Akurasi, recall, dan AUC di atas dihitung setelah kalibrasi, sesuai model yang dipakai aplikasi.")
         if MET:
             st.json(MET)
     with c_b:
-        st.caption(f"Dataset: {N_DATA} pelanggan, {DEPLOY['n_features']} fitur mentah. "
-                   "Preprocessing dilakukan otomatis di dalam pipeline. "
-                   "Kalibrasi sigmoid dilatih hanya pada data train.")
+        st.caption(f"Model menggunakan {DEPLOY['n_features']} informasi pelanggan. "
+                   "Data angka dan kategori diproses otomatis sebelum diprediksi. "
+                   "Kalibrasi sigmoid membantu menyesuaikan probabilitas dan dilatih hanya dengan data training.")
         st.write(f"**Aturan keputusan:** CHURN jika probabilitas ≥ {THRESHOLD:.0%}; "
                  "TETAP jika di bawah threshold tersebut.")
-        st.caption("Threshold dipilih dengan F1 maksimum dari prediksi out-of-fold pada data train. "
-                   "Data test hanya digunakan untuk evaluasi akhir. CHURN adalah prediksi, bukan kepastian.")
+        st.caption("Threshold dipilih dari hasil validasi data training. Data testing dipakai untuk "
+                   "mengukur hasil akhirnya. Label CHURN menunjukkan risiko yang melewati threshold, bukan kepastian.")
 
 tab1, tab2, tab3, tab4 = st.tabs([
     "🔮 Prediksi Single", "📁 Prediksi Batch (CSV)", "📊 Dashboard & Model", "🔎 EDA & Dokumentasi",
@@ -316,37 +336,39 @@ tab1, tab2, tab3, tab4 = st.tabs([
 # ---------- TAB 1 ----------
 with tab1:
     with st.container(border=True):
-        st.markdown("### 🧾 Form Data Pelanggan")
-        st.caption("Isi sesuai kondisi pelanggan saat ini, lalu klik Prediksi. "
-                   "Field add-on terkunci otomatis jika tidak relevan.")
+        st.markdown("### 🧾 Data Pelanggan")
+        st.caption("Isi data pelanggan, lalu klik Prediksi Sekarang. Pilihan layanan tambahan "
+                   "akan menyesuaikan layanan telepon dan internet yang digunakan.")
         c1, c2, c3 = st.columns(3)
         with c1:
-            gender = st.selectbox("Jenis Kelamin", ["Female", "Male"])
-            SeniorCitizen = st.selectbox("Lansia (SeniorCitizen)", ["No", "Ya"], index=0)
-            Partner = st.selectbox("Punya Pasangan", ["Yes", "No"], index=1)
-            Dependents = st.selectbox("Punya Tanggungan", ["Yes", "No"], index=1)
-            tenure = st.number_input("Tenure (bulan)", 0, 72, 12)
-            PhoneService = st.selectbox("Layanan Telepon", ["Yes", "No"])
+            gender = st.selectbox("Jenis Kelamin", ["Female", "Male"], format_func=option_label)
+            SeniorCitizen = st.selectbox("Lansia (SeniorCitizen)", ["No", "Ya"], index=0, format_func=option_label)
+            Partner = st.selectbox("Punya Pasangan", ["Yes", "No"], index=1, format_func=option_label)
+            Dependents = st.selectbox("Punya Tanggungan", ["Yes", "No"], index=1, format_func=option_label)
+            tenure = st.number_input("Lama Berlangganan (bulan)", 0, 72, 12,
+                                     help="Tenure: jumlah bulan pelanggan sudah berlangganan.")
+            PhoneService = st.selectbox("Layanan Telepon", ["Yes", "No"], format_func=option_label)
             _ml_lock = (PhoneService == "No")
             _ml_opts = ["No phone service"] if _ml_lock else ["Yes", "No"]
-            MultipleLines = st.selectbox("Multiple Lines", _ml_opts,
-                disabled=_ml_lock)
+            MultipleLines = st.selectbox("Lebih dari Satu Jalur Telepon", _ml_opts,
+                disabled=_ml_lock, format_func=option_label,
+                help="MultipleLines: apakah pelanggan memakai lebih dari satu jalur telepon.")
         with c2:
-            InternetService = st.selectbox("Internet", ["Fiber optic", "DSL", "No"])
+            InternetService = st.selectbox("Layanan Internet", ["Fiber optic", "DSL", "No"], format_func=option_label)
             _lock = (InternetService == "No")
             _opts = ["No internet service"] if _lock else ["Yes", "No"]
-            OnlineSecurity = st.selectbox("Online Security", _opts, disabled=_lock)
-            OnlineBackup = st.selectbox("Online Backup", _opts, disabled=_lock)
-            DeviceProtection = st.selectbox("Device Protection", _opts, disabled=_lock)
-            TechSupport = st.selectbox("Tech Support", _opts, disabled=_lock)
-            StreamingTV = st.selectbox("Streaming TV", _opts, disabled=_lock)
-            StreamingMovies = st.selectbox("Streaming Movies", _opts, disabled=_lock)
+            OnlineSecurity = st.selectbox("Keamanan Online", _opts, disabled=_lock, format_func=option_label)
+            OnlineBackup = st.selectbox("Backup Online", _opts, disabled=_lock, format_func=option_label)
+            DeviceProtection = st.selectbox("Perlindungan Perangkat", _opts, disabled=_lock, format_func=option_label)
+            TechSupport = st.selectbox("Bantuan Teknis", _opts, disabled=_lock, format_func=option_label)
+            StreamingTV = st.selectbox("Streaming TV", _opts, disabled=_lock, format_func=option_label)
+            StreamingMovies = st.selectbox("Streaming Film", _opts, disabled=_lock, format_func=option_label)
         with c3:
-            Contract = st.selectbox("Kontrak", ["Month-to-month", "One year", "Two year"])
-            PaperlessBilling = st.selectbox("Paperless Billing", ["Yes", "No"])
-            PaymentMethod = st.selectbox("Metode Bayar", ["Electronic check", "Mailed check",
-                "Bank transfer (automatic)", "Credit card (automatic)"])
-            MonthlyCharges = st.number_input("Monthly Charges ($)", 0.0, 120.0, 70.0, step=1.0,
+            Contract = st.selectbox("Kontrak", ["Month-to-month", "One year", "Two year"], format_func=option_label)
+            PaperlessBilling = st.selectbox("Tagihan Tanpa Kertas", ["Yes", "No"], format_func=option_label)
+            PaymentMethod = st.selectbox("Metode Pembayaran", ["Electronic check", "Mailed check",
+                "Bank transfer (automatic)", "Credit card (automatic)"], format_func=option_label)
+            MonthlyCharges = st.number_input("Tagihan Bulanan ($)", 0.0, 120.0, 70.0, step=1.0,
                 format="%.2f",
                 help="Batas input $0–$120; rentang data latih $18,25–$118,75. Isi tagihan aktual.")
 
@@ -401,28 +423,28 @@ with tab1:
             unsafe_allow_html=True,
         )
         st.progress(prob)
-        st.caption(f"CHURN jika probabilitas ≥ {THRESHOLD:.0%}. Risiko rendah: < {THRESHOLD:.0%}; "
+        st.caption(f"Threshold keputusan: {THRESHOLD:.0%}. Risiko rendah: < {THRESHOLD:.0%}; "
                    f"sedang: {THRESHOLD:.0%}–< {HIGH_BOUNDARY:.0%}; tinggi: ≥ {HIGH_BOUNDARY:.0%}. "
-                   "Batas risiko adalah kategori tampilan, bukan kelas baru yang dilatih.")
-        st.caption(f"Kalibrasi sigmoid, 5-fold, train-only. Brier pada test: "
-                   f"{CALINFO['brier_base']:.4f} → {CALINFO['brier_cal']:.4f} (lebih kecil lebih baik).")
+                   "Kategori risiko membantu membaca hasil; model tetap memprediksi churn atau tidak churn.")
+        st.caption("TETAP berarti pelanggan diprediksi tidak churn. Probabilitas sudah disesuaikan "
+                   "dengan kalibrasi sigmoid; detail pengujiannya ada di Dashboard & Model.")
 
-        st.markdown("### 💡 Rekomendasi Retensi")
-        st.caption("Saran berbasis aturan profil pelanggan; bukan bukti sebab-akibat "
-                   "atau jaminan bahwa tindakan tersebut akan mengurangi churn.")
+        st.markdown("### 💡 Saran untuk Mempertahankan Pelanggan")
+        st.caption("Saran berikut disesuaikan dengan data yang diisi. Efektivitasnya perlu diuji, "
+                   "karena model belum mengukur dampak penawaran terhadap churn.")
         recs = []
         if Contract == "Month-to-month":
-            recs.append(("📝 Kontrak", "Tawarkan upgrade kontrak 1/2 tahun + diskon."))
+            recs.append(("📝 Kontrak", "Pertimbangkan penawaran kontrak satu atau dua tahun dengan diskon."))
         if InternetService == "Fiber optic" and MonthlyCharges > 75:
-            recs.append(("💸 Tagihan", "Tagihan fiber tinggi — tawarkan bundling / cashback."))
+            recs.append(("💸 Tagihan", "Tinjau paket fiber yang digunakan dan tawarkan paket yang lebih sesuai."))
         if PaymentMethod == "Electronic check":
-            recs.append(("💳 Pembayaran", "Pertimbangkan opsi auto-pay (transfer/kartu)."))
+            recs.append(("💳 Pembayaran", "Tawarkan pembayaran otomatis melalui transfer atau kartu."))
         if TechSupport in ("No", "No internet service") and InternetService != "No":
-            recs.append(("🛠️ Support", "Tawarkan paket TechSupport gratis 3 bulan."))
+            recs.append(("🛠️ Bantuan teknis", "Pertimbangkan masa coba layanan bantuan teknis."))
         if tenure < 6:
-            recs.append(("🌱 Baru", "Pelanggan baru — onboarding intensif & cek kepuasan minggu ke-4."))
+            recs.append(("🌱 Pelanggan baru", "Bantu pelanggan memahami layanan dan tanyakan pengalamannya setelah bulan pertama."))
         if not recs:
-            recs.append(("💎 Loyal", "Pertahankan kualitas layanan + loyalty reward."))
+            recs.append(("💎 Layanan", "Jaga kualitas layanan dan pertimbangkan penghargaan untuk pelanggan lama."))
         for title, desc in recs:
             st.markdown(f"<div class='rec'><b>{title}</b> — {desc}</div>", unsafe_allow_html=True)
 
@@ -430,16 +452,16 @@ with tab1:
 with tab2:
     with st.container(border=True):
         st.markdown("### 📤 Upload CSV untuk Prediksi Massal")
-        st.caption("Format kolom sama seperti Telco-Customer-Churn.csv (tanpa kolom Churn juga bisa). "
-                   "Kolom `customerID`, `Churn`, `TotalCharges` otomatis diabaikan.")
+        st.caption("Gunakan template di bawah atau CSV dengan kolom yang sama. Kolom `customerID`, "
+                   "`Churn`, dan `TotalCharges` boleh disertakan, tetapi tidak dipakai untuk prediksi.")
         st.download_button("⬇️ Download Template CSV", example_customers().to_csv(index=False).encode("utf-8"),
                            "template_pelanggan.csv", "text/csv", width="stretch")
-        with st.expander("Format dan validasi CSV"):
+        with st.expander("Panduan mengisi CSV"):
             st.write("Kolom wajib: " + ", ".join(SCHEMA["columns"]))
-            st.caption("Gunakan CSV UTF-8 dengan pemisah koma. Semua baris harus valid; "
-                       "baris bermasalah tidak dibuang otomatis. SeniorCitizen: 0/1, "
-                       "tenure: bulan bulat 0–72, MonthlyCharges: angka 0–120. "
-                       "Add-on harus konsisten dengan layanan telepon/internet.")
+            st.caption("Simpan CSV sebagai UTF-8 dengan pemisah koma. SeniorCitizen diisi 0 atau 1, "
+                       "tenure dengan bulan bulat 0–72, dan MonthlyCharges dengan angka 0–120. "
+                       "Pilihan layanan tambahan harus sesuai dengan layanan telepon dan internet. "
+                       "Jika ada data yang salah, perbaiki dulu agar seluruh pelanggan bisa diproses.")
             st.json(SCHEMA["categories"])
         f = st.file_uploader("Pilih file CSV", type="csv")
     out = None
@@ -465,7 +487,7 @@ with tab2:
             out["Threshold_Churn"] = THRESHOLD
         except (InputValidationError, pd.errors.EmptyDataError, pd.errors.ParserError,
                 UnicodeDecodeError, ValueError) as exc:
-            st.error("CSV belum bisa diproses. Perbaiki input berikut:")
+            st.error("CSV belum bisa diproses. Periksa bagian berikut, lalu unggah ulang:")
             st.text(str(exc))
 
     if out is not None:
@@ -480,11 +502,11 @@ with tab2:
             st.markdown(f"<div class='kpi'><div class='label'>Prediksi Churn</div>"
                         f"<div class='value'>{churn_n}</div></div>", unsafe_allow_html=True)
         with m3:
-            st.markdown(f"<div class='kpi'><div class='label'>Churn Rate</div>"
+            st.markdown(f"<div class='kpi'><div class='label'>Persentase Prediksi Churn</div>"
                         f"<div class='value'>{rate:.1f}%</div></div>", unsafe_allow_html=True)
 
-        st.caption(f"Keputusan dari probabilitas terkalibrasi dengan threshold {THRESHOLD:.0%}. "
-                   f"Prob_Churn ditampilkan dalam persen. Pratinjau 20 dari {len(out)} baris.")
+        st.caption(f"Threshold: {THRESHOLD:.0%}. Kolom Prob_Churn berisi probabilitas dalam persen. "
+                   f"Menampilkan {min(20, len(out))} dari {count_text(len(out))} pelanggan; unduhan memuat semua hasil.")
         st.dataframe(out.head(20), width="stretch", hide_index=True)
         st.bar_chart(out["Prediksi"].value_counts())
         st.download_button("⬇️ Download Hasil (CSV)",
@@ -494,96 +516,83 @@ with tab2:
 # ---------- TAB 3 ----------
 with tab3:
     with st.container(border=True):
-        st.markdown("### 🎯 Evaluasi Model yang Digunakan Aplikasi")
-        st.caption(f"{BEST} + kalibrasi sigmoid • probabilitas dan keputusan dari model yang sama • "
-                   f"test holdout {N_TEST} pelanggan.")
+        st.markdown("### 🎯 Hasil Pengujian Model Aplikasi")
+        st.caption(f"{BEST_LABEL} dengan kalibrasi sigmoid. Diuji pada {count_text(N_TEST)} pelanggan "
+                   "yang tidak digunakan untuk melatih model.")
         st.dataframe(pd.DataFrame([
-            {"Konfigurasi": f"Aplikasi (threshold {THRESHOLD:.2f}, dipilih di train)", **MET},
-            {"Konfigurasi": "Kalibrasi (threshold default 0.50)", **DEPLOY["metrics_at_0_5"]},
+            {"Konfigurasi": f"Aplikasi — threshold {THRESHOLD:.2f}", **MET},
+            {"Konfigurasi": "Pembanding — threshold 0.50", **DEPLOY["metrics_at_0_5"]},
         ]), width="stretch", hide_index=True)
         show_confusion_matrix(MET)
-        st.info(f"Dengan threshold {THRESHOLD:.0%}, aplikasi menangkap {MET['TP']} dari "
-                f"{MET['TP'] + MET['FN']} pelanggan churn dan melewatkan {MET['FN']}. "
-                f"Ada {MET['FP']} alarm keliru. Precision {MET['Precision']:.2%} dan "
-                f"recall {MET['Recall']:.2%} menunjukkan trade-off penawaran retensi.")
-        with st.expander("Kalibrasi dan pemilihan threshold"):
-            st.write("Kalibrasi sigmoid menyesuaikan probabilitas model inti. "
-                     "Threshold keputusan dipilih dari grid 0,10–0,60 (langkah 0,01) "
-                     "berdasarkan F1 maksimum prediksi out-of-fold data training, "
-                     "dengan kalibrasi 5-fold di dalam setiap training fold.")
-            st.caption(f"OOF-F1 untuk tuning threshold: {DEPLOY['oof_tuning_f1']:.4f}. "
-                       "Angka ini adalah skor tuning, bukan estimasi generalisasi yang independen; "
-                       "hyperparameter model inti juga telah dipilih pada data train. "
-                       "Semua keputusan tuning tidak memakai label test.")
-            st.write(f"Brier test sebelum/sesudah kalibrasi: {CALINFO['brier_base']:.4f} / "
-                     f"{CALINFO['brier_cal']:.4f}. Lebih kecil berarti kesalahan probabilitas lebih rendah.")
+        st.info(f"Dari {MET['TP'] + MET['FN']} pelanggan yang benar-benar churn, "
+                f"{MET['TP']} berhasil terdeteksi dan {MET['FN']} terlewat. "
+                f"Sebanyak {MET['FP']} pelanggan yang tidak churn juga ditandai CHURN. "
+                "Menurunkan threshold membantu mendeteksi lebih banyak churn, tetapi bisa menambah prediksi yang keliru.")
+        with st.expander(f"Mengapa threshold-nya {THRESHOLD:.0%}?", expanded=False):
+            st.write(f"Kami mencoba threshold 0,10 sampai 0,60 dengan selisih 0,01. "
+                     f"Threshold {THRESHOLD:.2f} memberi F1 tertinggi pada validasi data training. "
+                     "Artinya, model memberi label CHURN ketika probabilitas mencapai threshold ini, "
+                     "meskipun masih di bawah 50%.")
+            st.caption("Prediksi validasi dibuat dengan lima fold: setiap bagian diprediksi oleh model "
+                       "yang dilatih pada bagian lainnya, dengan kalibrasi di dalam proses itu. "
+                       f"F1 untuk memilih threshold: {DEPLOY['oof_tuning_f1']:.4f}. "
+                       "Skor ini dipakai untuk memilih pengaturan, bukan hasil pengujian akhir. "
+                       "Parameter model juga sudah dipilih dari data training.")
+            st.write(f"Kalibrasi sigmoid menyesuaikan probabilitas model. Pada data testing, Brier score "
+                     f"turun dari {CALINFO['brier_base']:.4f} menjadi {CALINFO['brier_cal']:.4f}. "
+                     "Semakin kecil Brier, semakin kecil kesalahan probabilitasnya.")
             st.dataframe(pd.DataFrame(CALINFO["reliability_test"]).rename(columns={
-                "band": "Band risiko", "n": "Pelanggan", "mean_pred": "Rata-rata probabilitas",
+                "band": "Kategori risiko", "n": "Pelanggan", "mean_pred": "Rata-rata probabilitas",
                 "empirical": "Proporsi churn aktual",
-            }), width="stretch", hide_index=True)
+            }).replace({"Kategori risiko": {"LOW": "Rendah", "MID": "Sedang", "HIGH": "Tinggi"}}),
+                         width="stretch", hide_index=True)
+            st.caption("Tabel membandingkan rata-rata probabilitas dengan proporsi pelanggan yang benar-benar "
+                       "churn pada setiap kategori risiko. Kedua kolom memakai skala 0–1.")
 
     with st.container(border=True):
-        st.markdown("### 🏆 Perbandingan Tiga Model Inti (Test Set)")
-        st.caption("Model inti dievaluasi tanpa kalibrasi, dengan threshold default 0,50. "
-                   "Tabel diurutkan berdasarkan CV-F1 untuk seleksi pada data train; "
-                   "angka ini berbeda dari konfigurasi aplikasi terkalibrasi di atas.")
-        with st.expander("📖 Rumus metrik", expanded=False):
-            st.markdown("Label Confusion Matrix: churn = 1, tidak churn = 0.")
+        st.markdown("### 🏆 Perbandingan Tiga Model")
+        st.caption("Ketiga model ini diuji sebelum kalibrasi, dengan threshold 50%. Model dipilih "
+                   "berdasarkan CV-F1 data training, bukan akurasi testing tertinggi. "
+                   "Hasil model setelah kalibrasi ditampilkan pada tabel aplikasi di atas.")
+        with st.expander("📖 Cara membaca metrik", expanded=False):
+            st.markdown("Label: churn = 1, tidak churn = 0. Nilai metrik pada tabel memakai skala 0–1.")
             st.markdown(
                 "| Metrik | Rumus | Arti |\n"
                 "|---|---|---|\n"
-                "| TP | TP | Prediksi churn (1), realita churn (1) ✅ |\n"
+                "| TP | TP | Diprediksi churn dan memang churn |\n"
                 "| TN | TN | Prediksi tidak churn (0), aktual tidak churn (0) ✅ |\n"
                 "| FP | FP | Prediksi churn (1), aktual tidak churn (0) — alarm keliru |\n"
                 "| FN | FN | Prediksi tidak churn (0), aktual churn (1) — churn terlewat |\n"
-                "| Accuracy | (TP+TN)/total | Tebakan benar / total |\n"
-                "| Precision | TP/(TP+FP) | Dari yang dibilang churn, berapa yang benar |\n"
-                "| Recall | TP/(TP+FN) | Dari churn asli, berapa yang ketangkap |\n"
-                "| F1 | 2×P×R/(P+R) | Rata-rata adil Precision + Recall |\n"
+                "| Accuracy | (TP+TN)/total | Proporsi seluruh prediksi yang benar |\n"
+                "| Precision | TP/(TP+FP) | Dari yang diprediksi churn, berapa yang benar-benar churn |\n"
+                "| Recall | TP/(TP+FN) | Dari seluruh pelanggan churn, berapa yang terdeteksi |\n"
+                "| F1 | 2×P×R/(P+R) | Rata-rata harmonik precision dan recall |\n"
                 "| ROC-AUC | luas kurva ROC | 0.5 = acak, 1.0 = sempurna |")
             st.divider()
-            st.markdown("**📘 F1-Score**")
-            st.markdown(
-                "**Kepanjangan:** F1 = *F-Measure / F-Score* (rata-rata harmonik Precision dan Recall).\n\n"
-                "**Rumus:** `F1 = 2 × (Precision × Recall) / (Precision + Recall)`.\n\n"
-                "**Definisi:** F1 mengukur keseimbangan antara Precision (ketepatan saat memprediksi churn) "
-                "dan Recall (kemampuan menangkap semua churn asli). Nilainya 0–1: makin dekat 1 makin bagus. "
-                "F1 penting karena dataset churn itu tidak seimbang (yang churn lebih sedikit) — "
-                "akurasi saja bisa menipu, sedangkan F1 menghukum model yang hanya bagus di satu sisi. "
-                "Contoh di proyek ini: model dengan Recall tinggi tapi Precision rendah tetap butuh F1 "
-                "untuk memastikan promo retensi tidak terlalu banyak salah sasaran."
-            )
-            st.markdown("**📗 CV-F1**")
-            st.markdown(
-                "**Kepanjangan:** CV-F1 = *Cross-Validated F1* (rata-rata F1 dari validasi silang).\n\n"
-                "**Cara hitung:** data latih dibagi 5 fold (lipatan). Model dilatih di 4 fold, diuji di 1 fold, "
-                "diulang 5 kali sampai semua fold pernah jadi data uji. CV-F1 = rata-rata F1 dari kelima fold.\n\n"
-                "**Definisi:** CV-F1 merangkum performa pada lima validation fold data training. "
-                "Model inti dipilih berdasarkan CV-F1 tertinggi. Variasi antar-fold membantu membaca "
-                "stabilitas hasil, tetapi tidak menjamin performa pada seluruh pelanggan baru."
-            )
-            st.markdown("**📙 ROC-AUC**")
-            st.markdown(
-                "**Kepanjangan:** ROC-AUC = *Receiver Operating Characteristic – Area Under the Curve* "
-                "(luas area di bawah kurva ROC).\n\n"
-                "**Cara baca:** kurva ROC memetakan *True Positive Rate* (Recall) vs *False Positive Rate* "
-                "(FP / (FP+TN)) di semua threshold probabilitas. AUC = luas di bawah kurva itu, nilainya 0–1.\n\n"
-                "**Definisi:** ROC-AUC mengukur kemampuan model membedakan pelanggan churn vs tidak churn "
-                "di semua level threshold, bukan cuma di threshold 0.5. Nilai 0.5 = tebakan acak, "
-                "0.7–0.8 = cukup baik, 0.8–0.9 = baik, 1.0 = sempurna. Di proyek ini ROC-AUC dipakai sebagai "
-                "pembanding kualitas diskriminasi antar model: makin tinggi, makin andal model memilah "
-                "pelanggan berisiko tanpa tergantung satu titik cutoff."
-            )
+            st.markdown("**F1** merangkum precision dan recall. Keduanya perlu diperhatikan karena "
+                        "pelanggan churn lebih sedikit daripada pelanggan yang tidak churn. "
+                        "Akurasi tinggi saja belum berarti model berhasil mendeteksi churn.")
+            st.markdown("**CV-F1** adalah rata-rata F1 dari validasi silang lima fold. Data training "
+                        "dibagi menjadi lima bagian: model dilatih pada empat bagian lalu divalidasi "
+                        "pada satu bagian, bergantian lima kali. Skor ini dipakai untuk memilih model.")
+            st.markdown("**ROC-AUC** menunjukkan kemampuan model membedakan churn dan tidak churn "
+                        "pada berbagai threshold. Kurva ROC membandingkan recall dengan "
+                        "false positive rate `FP/(FP+TN)`. Nilai 0,5 setara urutan acak; "
+                        "semakin mendekati 1, semakin baik pemisahannya.")
         if CMP is not None:
             _cmp_show = CMP.copy()
+            _cmp_show["Model"] = _cmp_show["Model"].replace(MODEL_NAMES)
             _cmp_show.index = _cmp_show.index + 1
             st.dataframe(_cmp_show, width="stretch")
-            cm_model = st.selectbox("Confusion matrix model inti", CMP["Model"].tolist())
+            cm_model = st.selectbox("Pilih model untuk melihat confusion matrix", CMP["Model"].tolist(),
+                                    format_func=lambda name: MODEL_NAMES.get(name, name))
             b = CMP[CMP["Model"] == cm_model].iloc[0]
-            st.markdown(f"**Confusion matrix — {cm_model} (test {N_TEST} data):**")
+            st.markdown(f"**Confusion matrix — {MODEL_NAMES.get(cm_model, cm_model)} "
+                        f"({count_text(N_TEST)} pelanggan testing):**")
             show_confusion_matrix(b)
             fig, ax = plt.subplots(figsize=(6.5, 2.6))
             plot_df = CMP.set_index("Model")[["Accuracy", "Precision", "Recall", "F1"]]
+            plot_df = plot_df.rename(index=MODEL_NAMES)
             plot_df.plot(kind="barh", ax=ax, color=["#7C3AED", "#2563EB", "#06B6D4", "#10B981"])
             ax.set_xlabel("Skor", fontsize=9)
             ax.tick_params(labelsize=8)
@@ -599,24 +608,27 @@ with tab3:
             top_recall = CMP.loc[CMP["Recall"].idxmax()]
             top_accuracy = CMP.loc[CMP["Accuracy"].idxmax()]
             st.info(
-                f"**Kenapa {BEST} dipilih?** CV-F1 tertinggi ({selected['CV_F1']:.4f}) "
-                "pada data train. Pada test model inti, "
-                f"{top_recall['Model']} memiliki recall tertinggi ({top_recall['Recall']:.2%}), "
-                f"sedangkan {top_accuracy['Model']} memiliki akurasi tertinggi "
-                f"({top_accuracy['Accuracy']:.2%}). Pemilihan model tidak diubah berdasarkan test.")
+                f"**Mengapa {BEST_LABEL}?** Model ini mendapat CV-F1 tertinggi "
+                f"({selected['CV_F1']:.4f}) pada data training. Saat diuji sebelum kalibrasi, "
+                f"{MODEL_NAMES.get(top_recall['Model'], top_recall['Model'])} memiliki recall tertinggi "
+                f"({top_recall['Recall']:.2%}), sedangkan "
+                f"{MODEL_NAMES.get(top_accuracy['Model'], top_accuracy['Model'])} memiliki akurasi tertinggi "
+                f"({top_accuracy['Accuracy']:.2%}). Hasil testing ini dilaporkan tanpa mengganti model yang sudah dipilih.")
             if {"Train_F1", "CV_TRAIN_F1", "CV_F1_STD"}.issubset(CMP.columns):
-                st.markdown("**Analisis train–validation–test:**")
-                st.dataframe(CMP[["Model", "Train_F1", "CV_TRAIN_F1", "CV_F1", "CV_F1_STD", "F1"]],
+                st.markdown("**Perbandingan F1 saat training, validasi, dan testing:**")
+                st.dataframe(CMP[["Model", "Train_F1", "CV_TRAIN_F1", "CV_F1", "CV_F1_STD", "F1"]].replace(
+                    {"Model": MODEL_NAMES}),
                              width="stretch", hide_index=True)
                 largest_gap = CMP.loc[(CMP["Train_F1"] - CMP["F1"]).idxmax()]
-                st.caption(f"Gap F1 train–test terbesar: {largest_gap['Model']} "
-                           f"({largest_gap['Train_F1']:.4f} vs {largest_gap['F1']:.4f}). "
-                           "Gap besar merupakan indikasi overfitting; bandingkan juga skor validation.")
+                st.caption(f"{MODEL_NAMES.get(largest_gap['Model'], largest_gap['Model'])} memiliki selisih "
+                           f"F1 training dan testing terbesar: {largest_gap['Train_F1']:.4f} vs "
+                           f"{largest_gap['F1']:.4f}. Model jauh lebih baik pada data yang sudah dipelajari "
+                           "daripada data baru. Ini indikasi overfitting, dan terlihat juga pada skor validasinya.")
             if CVDET is not None:
-                st.markdown("**Hasil validasi tiap session (F1):**")
-                st.caption("Lima session hanya membagi data train menjadi train fold dan validation fold. "
-                           "Holdout test 20% tidak termasuk dalam lima fold ini.")
-                _cv_show = CVDET.rename(columns={"Fold": "Session"})
+                st.markdown("**F1 pada setiap sesi validasi:**")
+                st.caption("Validasi dilakukan lima kali pada bagian data training yang berbeda. "
+                           "Data testing 20% disimpan terpisah dan tidak masuk ke lima fold ini.")
+                _cv_show = CVDET.rename(columns={"Fold": "Session"}).replace({"Model": MODEL_NAMES})
                 _cv_pivot = _cv_show.pivot(index="Session", columns="Model", values="F1").reset_index()
                 _cv_pivot = _cv_pivot.rename(
                     columns={c: f"Nilai F1 {c}" for c in _cv_pivot.columns if c != "Session"})
@@ -637,9 +649,9 @@ with tab3:
                 fig0, ax0 = plt.subplots(figsize=(6.5, 2.6))
                 for m in CVDET["Model"].unique():
                     d = CVDET[CVDET["Model"] == m].sort_values("Fold")
-                    ax0.plot(d["Fold"], d["F1"], marker="o", label=m, linewidth=2.2, markersize=4)
+                    ax0.plot(d["Fold"], d["F1"], marker="o", label=MODEL_NAMES.get(m, m), linewidth=2.2, markersize=4)
                 ax0.set_xticks([1, 2, 3, 4, 5])
-                ax0.set_xlabel("Session", fontsize=9)
+                ax0.set_xlabel("Sesi validasi", fontsize=9)
                 ax0.set_ylabel("F1", fontsize=9)
                 ax0.tick_params(labelsize=8)
                 _leg0 = ax0.legend(fontsize=8, frameon=False, loc="best", labelcolor="white")
@@ -652,11 +664,15 @@ with tab3:
                 plt.close(fig0)
 
     with st.container(border=True):
-        st.markdown("### ⭐ Interpretasi Model Inti")
-        st.caption("Bobot berikut berasal dari model inti sebelum kalibrasi. "
-                   "Koefisien positif/negatif menunjukkan hubungan dengan log-odds churn "
-                   "dengan fitur lain tetap; bukan bukti sebab-akibat. Besar koefisien "
-                   "numerik terstandardisasi dan dummy kategori tidak langsung sebanding.")
+        st.markdown("### ⭐ Hubungan Fitur dengan Prediksi")
+        st.caption("Grafik ini menampilkan koefisien model sebelum kalibrasi. Merah menunjukkan "
+                   "hubungan positif dengan churn, hijau hubungan negatif, ketika fitur lain tetap. "
+                   "Hubungan ini tidak membuktikan sebab-akibat.")
+        with st.expander("Catatan tentang koefisien"):
+            st.write("Koefisien Logistic Regression bekerja pada skala log-odds. Angka dan kategori "
+                     "diproses dengan cara berbeda, sehingga besar bobotnya tidak bisa langsung "
+                     "dipakai sebagai peringkat pengaruh. Fitur yang saling berkaitan juga "
+                     "dapat memengaruhi arah koefisien.")
         try:
             pre = pipe.named_steps["pre"]
             feats = pre.get_feature_names_out()
@@ -669,7 +685,7 @@ with tab3:
                 fig2, ax2 = plt.subplots(figsize=(8, 5))
                 colors = ["#EF4444" if v > 0 else "#10B981" for v in top["Bobot"]]
                 ax2.barh(top["Fitur"], top["Bobot"], color=colors, edgecolor="none", height=.6)
-                ax2.set_xlabel("Koefisien (+ / − hubungan dengan log-odds churn)")
+                ax2.set_xlabel("Koefisien model (log-odds)")
                 ax2.grid(axis="x", alpha=.2)
                 style_fig(fig2, ax2)
                 plt.tight_layout()
@@ -688,51 +704,70 @@ with tab3:
                 plt.close(fig2)
                 st.dataframe(top, width="stretch", hide_index=True)
         except Exception as e:
-            st.caption(f"Tidak bisa tampilkan importance: {e}")
+            st.caption(f"Grafik fitur belum bisa ditampilkan: {e}")
 
-    with st.expander("Dataset dan keterbatasan aplikasi"):
+    with st.expander("Sumber data dan keterbatasan model"):
         st.markdown("Sumber: [IBM Telco Customer Churn di Kaggle]"
                     "(https://www.kaggle.com/datasets/blastchar/telco-customer-churn). "
-                    "CSV mentah berisi 7.043 pelanggan. Cohort training menggunakan 7.032 "
-                    "catatan lengkap setelah 11 TotalCharges kosong dihapus.")
-        st.write("customerID tidak dipakai sebagai fitur. TotalCharges tidak diminta agar input aplikasi "
-                 "lebih sederhana. Nilainya berkorelasi dengan tenure, tetapi bukan selalu sama "
-                 "dengan tagihan bulanan dikali tenure. Keuntungan penghapusan fitur belum diuji "
-                 "dengan eksperimen ablation.")
-        st.write("Dataset ini tidak mencakup seluruh kondisi pelanggan/operator saat ini. "
-                 "TETAP berarti diprediksi tidak churn, bukan jaminan loyalitas. "
-                 "Rekomendasi retensi adalah aturan contoh yang perlu diuji efektivitasnya.")
+                    "Data awal berisi 7.043 pelanggan. Setelah 11 baris dengan TotalCharges kosong "
+                    "dihapus, tersisa 7.032 pelanggan untuk training dan testing.")
+        st.write("customerID hanya digunakan sebagai identitas. TotalCharges tidak diminta agar "
+                 "form lebih sederhana. Total tagihan berkaitan dengan lama berlangganan, tetapi "
+                 "tidak selalu sama dengan tagihan bulanan dikali jumlah bulan. Kami belum "
+                 "membandingkan hasil model dengan dan tanpa fitur ini.")
+        st.write("Hasil model berasal dari satu dataset dan belum diuji pada operator lain. "
+                 "TETAP berarti diprediksi tidak churn, bukan jaminan pelanggan akan terus "
+                 "berlangganan. Saran penawaran juga belum diuji efektivitasnya.")
 
 with tab4:
-    st.markdown("### 🔎 Exploratory Data Analysis")
-    eda_dir = BASE / "docs" / "eda"
+    st.markdown("### 🔎 Mengenal Data Pelanggan (EDA)")
+    eda_dir = BASE / "docs" / "eda(explaratory data analysis)"
     if (eda_dir / "summary.json").exists():
         summary = json.loads((eda_dir / "summary.json").read_text(encoding="utf-8"))
-        st.caption("Grafik hubungan fitur–target memakai data train saja. Pemeriksaan kualitas "
-                   "data mencakup dataset mentah; test tetap untuk evaluasi akhir.")
-        st.write(f"**{summary['raw_rows']:,} pelanggan mentah → {summary['clean_rows']:,} cohort bersih**, "
-                 f"{summary['input_features']} fitur input. Target churn Yes=1 / No=0.")
-        with st.expander("Variabel, statistik, missing value, duplikat, dan outlier"):
+        st.caption("EDA adalah pemeriksaan awal untuk memahami isi dan pola data sebelum membuat model. "
+                   "Grafik hubungan dengan churn menggunakan data training saja; data testing disimpan "
+                   "untuk pengujian akhir.")
+        st.write(f"Dari **{count_text(summary['raw_rows'])} pelanggan**, tersisa "
+                 f"**{count_text(summary['clean_rows'])} pelanggan setelah data dibersihkan**. "
+                 f"Model menggunakan {summary['input_features']} fitur. "
+                 "Churn Yes berarti berhenti berlangganan, sedangkan No berarti tidak churn.")
+        with st.expander("Isi dataset dan hasil pemeriksaan data"):
+            st.markdown("**Arti setiap variabel**")
             st.dataframe(pd.read_csv(eda_dir / "data_dictionary.csv"), width="stretch", hide_index=True)
+            st.markdown("**Ringkasan statistik**")
             st.dataframe(pd.read_csv(eda_dir / "descriptive_statistics.csv"), width="stretch", hide_index=True)
+            st.markdown("**Data yang kosong (missing value)**")
             st.dataframe(pd.read_csv(eda_dir / "missing_values.csv"), width="stretch", hide_index=True)
-            st.dataframe(pd.DataFrame(summary["duplicates"].items(), columns=["Pemeriksaan", "Jumlah"]),
+            st.markdown("**Data yang berulang (duplikat)**")
+            duplicate_labels = {
+                "raw_full_rows": "Baris yang sama persis pada data awal",
+                "customerID": "customerID yang berulang",
+                "raw_without_id": "Baris yang sama setelah customerID dihapus",
+                "clean_without_id_total_including_target": "Baris yang sama tanpa ID dan TotalCharges, termasuk label churn",
+                "clean_features_only": "Pelanggan dengan nilai fitur yang sama",
+                "test_features_matching_train": "Pelanggan testing dengan profil fitur yang sama seperti training",
+            }
+            st.dataframe(pd.DataFrame([(duplicate_labels.get(key, key), value)
+                                      for key, value in summary["duplicates"].items()],
+                                     columns=["Pemeriksaan", "Jumlah"]),
                          width="stretch", hide_index=True)
+            st.markdown("**Nilai yang jauh dari pola umum (outlier)**")
             st.dataframe(pd.read_csv(eda_dir / "outliers_iqr.csv"), width="stretch", hide_index=True)
-            st.caption("11 TotalCharges kosong adalah pelanggan tenure 0 / tidak churn. "
-                       "Eksklusi mereka membatasi generalisasi pelanggan baru. Profil identik dengan ID "
-                       "berbeda dipertahankan; IQR tanpa outlier tidak menjamin seluruh data bebas anomali.")
+            st.caption("Sebelas baris yang dihapus adalah pelanggan dengan lama berlangganan 0 bulan "
+                       "dan label tidak churn. Karena itu, hasil untuk pelanggan baru perlu dibaca "
+                       "dengan hati-hati. Pelanggan dengan fitur yang sama tetap disimpan jika ID-nya "
+                       "berbeda. Pemeriksaan IQR tidak menemukan outlier secara keseluruhan, tetapi "
+                       "itu belum berarti setiap catatan pasti benar.")
         for figure in summary["figures"]:
             st.image(str(eda_dir / figure["file"]), width="stretch")
             st.caption(figure["interpretation"])
     else:
-        st.info("Jalankan `python eda.py` untuk membangun grafik dan tabel EDA.")
-    st.markdown("### 📚 Dokumentasi Kelompok 12 — Kelas B2")
+        st.info("Grafik EDA belum tersedia. Jalankan `python eda.py` untuk membuatnya.")
+    st.markdown("### 📚 Laporan Kelompok 12 — Kelas B2")
     repo_docs = "https://github.com/makhdanramadhan-ui/Machine-Learning-Project/blob/main/docs/"
-    st.markdown(f"- [Laporan EDA]({repo_docs}eda/EDA.md)\n"
+    st.markdown(f"- [Laporan EDA]({repo_docs}eda%28explaratory%20data%20analysis%29/EDA.md)\n"
                 f"- [Lima jurnal dan tabel studi literatur]({repo_docs}STUDI_LITERATUR.md)\n"
-                f"- [PPT laporan]({repo_docs}ML2026_B2_Kelompok12_PrediksiCustomerChurn.pptx)\n"
-                f"- [Naskah video demo]({repo_docs}NASKAH_VIDEO_DEMO.md)")
+                f"- [PPT laporan]({repo_docs}ML2026_B2_Kelompok12_PrediksiCustomerChurn.pptx)")
 
 st.markdown("<div class='footer'>Kelompok 12 • B2 • Muhamad Akhdan Ramadhan (J0404241102) • "
             "Thevan Erlangga (J0404241073) • Fachri Abyasa Tarid (J0404241136)</div>",

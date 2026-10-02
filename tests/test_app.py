@@ -91,6 +91,12 @@ class StreamlitTests(unittest.TestCase):
 
     def test_form_services_and_stale_result(self):
         at = self.run_app()
+        public_text = "\n".join(x.value for x in at.markdown) + "\n" + "\n".join(x.value for x in at.caption)
+        self.assertNotIn("NASKAH_VIDEO", public_text)
+        self.assertNotIn("Naskah video", public_text)
+        self.assertNotIn("cohort", public_text.lower())
+        self.assertIn("pelanggan setelah data dibersihkan", public_text)
+        self.assertTrue(any("Arti" in x.value.columns for x in at.dataframe))
         at.button[0].click().run()
         self.assertEqual([x.message for x in at.exception], [])
         self.assertTrue(any("Keputusan model:" in x.value for x in at.markdown))

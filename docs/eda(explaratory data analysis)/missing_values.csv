@@ -1,4 +1,4 @@
-Kolom,Missing CSV awal,Missing setelah konversi,Missing cohort bersih
+Kolom,Kosong pada CSV awal,Kosong setelah konversi angka,Kosong setelah data dibersihkan
 customerID,0,0,0
 gender,0,0,0
 SeniorCitizen,0,0,0

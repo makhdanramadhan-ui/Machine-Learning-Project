@@ -1,0 +1,90 @@
+{
+  "source": "https://www.kaggle.com/datasets/blastchar/telco-customer-churn",
+  "raw_rows": 7043,
+  "raw_columns": 21,
+  "clean_rows": 7032,
+  "input_features": 18,
+  "n_train": 5625,
+  "n_test": 1407,
+  "missing_totalcharges": 11,
+  "dropped_rows_tenure_zero": 11,
+  "target_clean": {
+    "No": 5163,
+    "Yes": 1869
+  },
+  "duplicates": {
+    "raw_full_rows": 0,
+    "customerID": 0,
+    "raw_without_id": 22,
+    "clean_without_id_total_including_target": 27,
+    "clean_features_only": 48,
+    "test_features_matching_train": 18
+  },
+  "outliers": [
+    {
+      "Variabel": "tenure",
+      "Minimum": 0.0,
+      "Maximum": 72.0,
+      "Batas IQR bawah": -60.0,
+      "Batas IQR atas": 124.0,
+      "Jumlah outlier IQR": 0
+    },
+    {
+      "Variabel": "MonthlyCharges",
+      "Minimum": 18.25,
+      "Maximum": 118.75,
+      "Batas IQR bawah": -46.025,
+      "Batas IQR atas": 171.375,
+      "Jumlah outlier IQR": 0
+    },
+    {
+      "Variabel": "TotalCharges",
+      "Minimum": 18.8,
+      "Maximum": 8684.8,
+      "Batas IQR bawah": -4688.4813,
+      "Batas IQR atas": 8884.6688,
+      "Jumlah outlier IQR": 0
+    }
+  ],
+  "figures": [
+    {
+      "file": "01_target_distribution.png",
+      "interpretation": "Setelah data dibersihkan, sekitar 73,4% pelanggan tidak churn dan 26,6% churn. Jumlah kedua kelompok tidak seimbang. Karena itu, akurasi perlu dilihat bersama precision, recall, dan F1 agar kemampuan mendeteksi churn tidak terlewat."
+    },
+    {
+      "file": "02_numeric_histograms_train.png",
+      "interpretation": "Tenure menunjukkan lama berlangganan, dari pelanggan baru hingga 72 bulan. Tagihan bulanan tersebar dalam beberapa kelompok, sedangkan total tagihan banyak berada pada nilai rendah. StandardScaler menyamakan skala fitur angka untuk Logistic Regression, bukan membuat distribusinya menjadi normal."
+    },
+    {
+      "file": "03_numeric_boxplots_train.png",
+      "interpretation": "Pada data training, median lama berlangganan pelanggan churn adalah 10 bulan, sedangkan pelanggan tidak churn 38 bulan. Median tagihannya masing-masing $79.90 dan $64.68. Pola ini belum membuktikan sebab-akibat. Titik outlier pada boxplot dihitung per kelompok, berbeda dari tabel IQR yang memeriksa seluruh data sekaligus."
+    },
+    {
+      "file": "04_correlation_train.png",
+      "interpretation": "Korelasi total tagihan (TotalCharges) dan lama berlangganan (tenure) adalah 0.827 pada data training. Keduanya berkaitan, tetapi tidak selalu bisa saling menggantikan. TotalCharges tidak diminta di aplikasi agar pengisian lebih mudah. Hasil model dengan dan tanpa fitur ini belum dibandingkan."
+    },
+    {
+      "file": "05_categorical_churn_train.png",
+      "interpretation": "Pada data training, 43.1% pelanggan kontrak bulanan churn, dibanding 2.9% pada kontrak dua tahun. Persentase churn juga berbeda menurut layanan internet dan cara pembayaran. Ini membantu mengenali pola pelanggan, tetapi belum membuktikan bahwa mengganti kontrak atau metode pembayaran akan mencegah churn."
+    },
+    {
+      "file": "06_categorical_distribution_train.png",
+      "interpretation": "Sebagian besar pelanggan bukan senior. Jumlah pelanggan juga berbeda di setiap jenis kontrak dan layanan internet. Saat membandingkan persentase churn, perhatikan jumlah pelanggan dalam kelompoknya: hasil kelompok kecil belum tentu mewakili semua pelanggan."
+    },
+    {
+      "file": "07_scatter_train.png",
+      "interpretation": "Pelanggan churn dan tidak churn tersebar pada lama berlangganan dan tagihan yang mirip. Dua fitur ini saja belum dapat memisahkan semua pelanggan dengan jelas. Grafik mengambil paling banyak 500 pelanggan per kelompok agar mudah dibaca; jumlah titiknya bukan perbandingan jumlah kelas."
+    }
+  ],
+  "associations_on": "train-only",
+  "numeric_medians_train": {
+    "tenure": {
+      "No": 38.0,
+      "Yes": 10.0
+    },
+    "MonthlyCharges": {
+      "No": 64.68,
+      "Yes": 79.9
+    }
+  }
+}

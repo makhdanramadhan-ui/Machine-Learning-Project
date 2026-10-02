@@ -9,16 +9,16 @@ Gunakan nama folder **ML2026_B2_Kelompok12_PrediksiCustomerChurn**.
 | Source code | https://github.com/makhdanramadhan-ui/Machine-Learning-Project |
 | Dataset | `../Telco-Customer-Churn.csv`; https://www.kaggle.com/datasets/blastchar/telco-customer-churn |
 | Model | `../model_churn.pkl`, `../calibrator.pkl`, metadata deployment |
-| EDA dan notebook | `eda/EDA.md`; `../projekk.ipynb` |
+| EDA dan notebook | `eda(explaratory data analysis)/EDA.md`; `../projekk.ipynb` |
 | Lima jurnal | `STUDI_LITERATUR.md`, `referensi.bib`, `jurnal/` |
 | Tabel studi literatur | `tabel_studi_literatur.csv`; tabel lengkap pada `STUDI_LITERATUR.md` |
-| Naskah demo | `NASKAH_VIDEO_DEMO.md`, target 6 menit 40 detik |
+| Video demo | Direkam anggota, maksimal 7 menit |
 | Aplikasi | https://machine-learning-project-u8yovshrqrc5tm5s2y2qto.streamlit.app/ |
 
 ## Yang diisi/direkam anggota
 
 1. Isi tugas aktual tiap anggota di **slide 27**; peran sengaja tidak diasumsikan.
-2. Rekam video asli dengan aplikasi benar-benar digunakan sesuai naskah; cek
+2. Rekam video asli dengan aplikasi benar-benar dijalankan; cek
    durasi final **≤7 menit**. Cantumkan link video/berkas MP4 saat pengumpulan.
 3. Cek ulang bahwa materi menjelaskan hasil dan keterbatasan yang dipahami
    seluruh anggota; gunakan notebook untuk membaca contoh kesalahan prediksi.

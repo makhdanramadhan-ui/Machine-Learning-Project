@@ -9,7 +9,7 @@ Sumber: https://www.kaggle.com/datasets/blastchar/telco-customer-churn
 
 ## 1. Informasi dataset
 
-Mentah: **7,043 pelanggan, 21 kolom**. Cohort bersih: **7,032 pelanggan, 18 fitur + 1 target**. customerID adalah ID; Churn Yes=1, No=0. Grafik hubungan fitur–target memakai train saja (5.625); test (1.407) disimpan untuk evaluasi akhir. Pemeriksaan kualitas data mentah tidak melakukan fitting preprocessing.
+Data awal: **7,043 pelanggan, 21 kolom**. Setelah dibersihkan: **7,032 pelanggan, 18 fitur + 1 target**. customerID adalah ID; Churn Yes=1, No=0. Grafik hubungan fitur–target memakai train saja (5.625); test (1.407) disimpan untuk evaluasi akhir. Pemeriksaan kualitas data mentah tidak melakukan fitting preprocessing.
 
 
 ## 2. Kamus variabel
@@ -35,7 +35,7 @@ Mentah: **7,043 pelanggan, 21 kolom**. Cohort bersih: **7,032 pelanggan, 18 fitu
 | PaperlessBilling | str | kategorikal | 2 | Penggunaan tagihan tanpa kertas (Yes/No). | fitur |
 | PaymentMethod | str | kategorikal | 4 | Metode pembayaran: cek elektronik/pos atau transfer/kartu otomatis. | fitur |
 | MonthlyCharges | float64 | numerik kontinu | 1585 | Tagihan bulanan pelanggan, dalam dolar. | fitur |
-| TotalCharges | str | numerik kontinu | 6530 | Total tagihan kumulatif; tidak digunakan model aplikasi. | dihapus |
+| TotalCharges | str | numerik kontinu | 6530 | Total tagihan selama berlangganan; tidak digunakan model aplikasi. | dihapus |
 | Churn | str | target biner | 2 | Target: Yes=berhenti berlangganan, No=tidak berhenti dalam periode label dataset. | target |
 
 
@@ -55,7 +55,7 @@ Mentah: **7,043 pelanggan, 21 kolom**. Cohort bersih: **7,032 pelanggan, 18 fitu
 
 ## 4. Missing value
 
-| Kolom | Missing CSV awal | Missing setelah konversi | Missing cohort bersih |
+| Kolom | Kosong pada CSV awal | Kosong setelah konversi angka | Kosong setelah data dibersihkan |
 | --- | --- | --- | --- |
 | customerID | 0 | 0 | 0 |
 | gender | 0 | 0 | 0 |
@@ -79,7 +79,7 @@ Mentah: **7,043 pelanggan, 21 kolom**. Cohort bersih: **7,032 pelanggan, 18 fitu
 | TotalCharges | 0 | 11 | 0 |
 | Churn | 0 | 0 | 0 |
 
-Sebelas string kosong pada TotalCharges terdeteksi setelah konversi numerik. Seluruhnya tenure=0 dan Churn=No. Cohort awal dipertahankan untuk perbandingan eksperimen; karena fitur TotalCharges akhirnya dihapus, membuang baris ini bukan keharusan model. Eksklusi pelanggan baru merupakan keterbatasan yang perlu diuji pada pengembangan berikutnya.
+Sebelas string kosong pada TotalCharges terdeteksi setelah konversi numerik. Seluruhnya tenure=0 dan Churn=No. Data pemodelan awal dipertahankan untuk perbandingan eksperimen; karena fitur TotalCharges akhirnya dihapus, membuang baris ini bukan keharusan model. Eksklusi pelanggan baru merupakan keterbatasan yang perlu diuji pada pengembangan berikutnya.
 
 
 ## 5. Duplikat
@@ -114,49 +114,49 @@ Tidak ada outlier dengan aturan 1,5×IQR pada tiga fitur numerik. Ini tidak bera
 
 ![01_target_distribution.png](01_target_distribution.png)
 
-Kelas tidak churn dominan (sekitar 73,4%) dan churn sekitar 26,6% pada cohort bersih. Accuracy saja dapat menutupi kegagalan mendeteksi kelas churn; gunakan precision, recall, dan F1.
+Setelah data dibersihkan, sekitar 73,4% pelanggan tidak churn dan 26,6% churn. Jumlah kedua kelompok tidak seimbang. Karena itu, akurasi perlu dilihat bersama precision, recall, dan F1 agar kemampuan mendeteksi churn tidak terlewat.
 
 
 ### 02_numeric_histograms_train.png
 
 ![02_numeric_histograms_train.png](02_numeric_histograms_train.png)
 
-Tenure mencakup pelanggan baru hingga 72 bulan; tagihan memiliki beberapa kelompok sesuai paket layanan. TotalCharges berhubungan dengan durasi berlangganan. Bentuk histogram tidak mengharuskan normalisasi agar normal; StandardScaler digunakan untuk skala numerik Logistic Regression.
+Tenure menunjukkan lama berlangganan, dari pelanggan baru hingga 72 bulan. Tagihan bulanan tersebar dalam beberapa kelompok, sedangkan total tagihan banyak berada pada nilai rendah. StandardScaler menyamakan skala fitur angka untuk Logistic Regression, bukan membuat distribusinya menjadi normal.
 
 
 ### 03_numeric_boxplots_train.png
 
 ![03_numeric_boxplots_train.png](03_numeric_boxplots_train.png)
 
-Median tenure pelanggan churn pada train adalah 10 bulan, dibanding 38 bulan pada tidak churn. Median tagihan churn $79.90 vs $64.68. Ini hubungan deskriptif, bukan bukti bahwa menaikkan tagihan atau mengganti kontrak menyebabkan churn. Titik outlier boxplot dihitung per kelas; berbeda dari pemeriksaan IQR seluruh cohort pada tabel kualitas data.
+Pada data training, median lama berlangganan pelanggan churn adalah 10 bulan, sedangkan pelanggan tidak churn 38 bulan. Median tagihannya masing-masing $79.90 dan $64.68. Pola ini belum membuktikan sebab-akibat. Titik outlier pada boxplot dihitung per kelompok, berbeda dari tabel IQR yang memeriksa seluruh data sekaligus.
 
 
 ### 04_correlation_train.png
 
 ![04_correlation_train.png](04_correlation_train.png)
 
-Korelasi TotalCharges–tenure pada train adalah 0.827. Korelasi tinggi tidak membuktikan keduanya identik. TotalCharges dihapus untuk menyederhanakan input; manfaat penghapusan belum diuji dengan ablation.
+Korelasi total tagihan (TotalCharges) dan lama berlangganan (tenure) adalah 0.827 pada data training. Keduanya berkaitan, tetapi tidak selalu bisa saling menggantikan. TotalCharges tidak diminta di aplikasi agar pengisian lebih mudah. Hasil model dengan dan tanpa fitur ini belum dibandingkan.
 
 
 ### 05_categorical_churn_train.png
 
 ![05_categorical_churn_train.png](05_categorical_churn_train.png)
 
-Pada train, churn rate kontrak bulanan 43.1%, sedangkan kontrak dua tahun 2.9%. Pelanggan fiber/electronic check juga memiliki profil churn berbeda. Asosiasi ini mendukung pemilihan fitur, bukan jaminan efektivitas saran retensi.
+Pada data training, 43.1% pelanggan kontrak bulanan churn, dibanding 2.9% pada kontrak dua tahun. Persentase churn juga berbeda menurut layanan internet dan cara pembayaran. Ini membantu mengenali pola pelanggan, tetapi belum membuktikan bahwa mengganti kontrak atau metode pembayaran akan mencegah churn.
 
 
 ### 06_categorical_distribution_train.png
 
 ![06_categorical_distribution_train.png](06_categorical_distribution_train.png)
 
-Distribusi kategori menunjukkan sebagian besar pelanggan bukan senior dan kategori kontrak/paket tidak sama besar. Bandingkan churn rate beserta jumlah pelanggan per kategori, sehingga kelompok kecil tidak dianggap mewakili seluruh populasi.
+Sebagian besar pelanggan bukan senior. Jumlah pelanggan juga berbeda di setiap jenis kontrak dan layanan internet. Saat membandingkan persentase churn, perhatikan jumlah pelanggan dalam kelompoknya: hasil kelompok kecil belum tentu mewakili semua pelanggan.
 
 
 ### 07_scatter_train.png
 
 ![07_scatter_train.png](07_scatter_train.png)
 
-Kedua kelas saling tumpang tindih pada tenure dan tagihan; tidak ada satu batas sederhana yang memisahkan semua pelanggan churn. Grafik memakai sampel per kelas untuk keterbacaan, bukan untuk menghitung proporsi populasi.
+Pelanggan churn dan tidak churn tersebar pada lama berlangganan dan tagihan yang mirip. Dua fitur ini saja belum dapat memisahkan semua pelanggan dengan jelas. Grafik mengambil paling banyak 500 pelanggan per kelompok agar mudah dibaca; jumlah titiknya bukan perbandingan jumlah kelas.
 
 
 ## 8. Implikasi preprocessing
