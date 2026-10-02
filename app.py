@@ -727,8 +727,8 @@ with tab4:
         st.caption("EDA adalah pemeriksaan awal untuk memahami isi dan pola data sebelum membuat model. "
                    "Grafik hubungan dengan churn menggunakan data training saja; data testing disimpan "
                    "untuk pengujian akhir.")
-        st.write(f"Dari **{count_text(summary['raw_rows'])} pelanggan**, tersisa "
-                 f"**{count_text(summary['clean_rows'])} pelanggan setelah data dibersihkan**. "
+        st.write(f"Dari **{count_text(summary['raw_rows'])} data**, tersisa "
+                 f"**{count_text(summary['clean_rows'])} data setelah dibersihkan**. "
                  f"Model menggunakan {summary['input_features']} fitur. "
                  "Churn Yes berarti berhenti berlangganan, sedangkan No berarti tidak churn.")
         with st.expander("Isi dataset dan hasil pemeriksaan data"):

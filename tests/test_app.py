@@ -95,7 +95,7 @@ class StreamlitTests(unittest.TestCase):
         self.assertNotIn("NASKAH_VIDEO", public_text)
         self.assertNotIn("Naskah video", public_text)
         self.assertNotIn("cohort", public_text.lower())
-        self.assertIn("pelanggan setelah data dibersihkan", public_text)
+        self.assertIn("data setelah dibersihkan", public_text)
         self.assertTrue(any("Arti" in x.value.columns for x in at.dataframe))
         at.button[0].click().run()
         self.assertEqual([x.message for x in at.exception], [])
