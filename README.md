@@ -179,21 +179,15 @@ Tiga PDF jurnal berhasil diunduh; kelima teks lengkap tersedia sebagai Markdown/
 dengan DOI dan tautan PDF penerbit. Hasil penelitian pada tabel adalah hasil
 yang dilaporkan penulis, bukan hasil eksperimen project.
 
-Membangun ulang laporan (dependency tambahan dipisahkan dari aplikasi):
+Membangun ulang grafik EDA (dependency tambahan dipisahkan dari aplikasi):
 
 ```bash
 python -m pip install -r requirements-report.txt
 python eda.py
-python build_literature.py
-python build_notebook.py
-python build_report.py
 ```
 
-Gunakan `python build_literature.py --download` untuk mengunduh ulang arsip
-open-access jurnal. `build_report.py` menghasilkan PPT; PDF dapat diekspor
-dari PowerPoint melalui **Export → Create PDF**. Grafik evaluasi dihitung dari
-model tersimpan. Regenerasi PPT akan menimpa edit manual, sehingga simpan
-salinan sebelum mengisi pembagian tugas.
+Laporan (PPT, PDF, notebook, studi literatur) sudah final di `docs/`.
+PDF dapat diekspor dari PowerPoint melalui **Export → Create PDF**.
 
 ## Pengujian aplikasi
 
