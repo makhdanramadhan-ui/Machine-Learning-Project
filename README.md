@@ -13,6 +13,23 @@ terkalibrasi, memberikan saran retensi berbasis aturan, dan memproses CSV massal
 | Thevan Erlangga | J0404241073 |
 | Fachri Abyasa Tarid | J0404241136 |
 
+## Tampilan
+
+Aplikasi memakai satu bahasa visual: **lembar gambar teknik**. Hairline 1px
+sebagai satu-satunya pemisah, satu tinta biru teknis (`#1F4FD8`) sebagai
+satunya warna, angka tabular di semua metrik, dan huruf Archivo serta
+JetBrains Mono yang di-host sendiri. Tidak ada gradien, tidak ada emoji,
+dan tidak ada efek kaca.
+
+Title block di atas lembar selalu menampilkan kartu model: model terpilih,
+ambang keputusan, CV-F1, akurasi, precision, recall, F1, ROC-AUC, Brier,
+ukuran data, versi sklearn, dan SHA-256 artefak model. Hasil prediksi
+digambar pada skala probabilitas terkalibrasi yang menandai ambang 32% dan
+batas kategori tinggi 60%, sehingga risiko terbaca sebagai besaran, bukan
+sebagai warna lalu lintas.
+
+Tema terang adalah bawaan; tema gelap dipilih lewat pengalih di kanan atas.
+
 ## Menjalankan aplikasi
 
 Gunakan **Python 3.12 atau lebih baru**. Versi dependensi dikunci di
@@ -144,6 +161,7 @@ tidak tertukar dengan versi model lain.
 | Berkas | Fungsi |
 |---|---|
 | `app.py` | UI Streamlit |
+| `ui.py` | Token desain, ikon garis, dan komponen markup (title block, skala risiko, matriks konfusi) |
 | `prediction.py` | Validasi bersama, probabilitas, threshold, kategori risiko, template |
 | `training_data.py` | Cleaning dan split acuan yang dipakai training/kalibrasi |
 | `train.py`, `calibrate.py` | Training, evaluasi, kalibrasi, seleksi threshold |
@@ -153,6 +171,13 @@ tidak tertukar dengan versi model lain.
 | `model_info.json`, `hasil_perbandingan.csv`, `cv_detail.csv` | Perbandingan model inti |
 | `calib_info.json`, `threshold_selection.csv` | Evaluasi probabilitas dan jejak tuning threshold |
 | `tests/test_app.py` | Uji regresi validasi, hasil prediksi, dan alur aplikasi |
+| `static/fonts/` | Archivo dan JetBrains Mono, di-host sendiri di repository |
+| `assets/brand-mark.png` | Favicon aplikasi |
+
+Huruf Archivo (judul dan isi) dan JetBrains Mono (label terukur dan angka
+tabel) sengaja di-host sendiri di `static/fonts/` supaya tampilan tidak
+bergantung pada stylesheet pihak ketiga. Bila static serving tidak aktif di
+lingkungan deploy, halaman jatuh ke stack sistem tanpa mengubah tata letak.
 
 `projekk.ipynb` adalah notebook terkini yang sudah dieksekusi: EDA, alasan metode,
 perbandingan model, evaluasi ulang holdout, interpretasi, dan sanity test.
