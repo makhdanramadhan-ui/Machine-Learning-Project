@@ -169,6 +169,37 @@ html body .stMarkdown p, html body .stMarkdown li { color: var(--ink2); }
 html body .stCaptionContainer, html body [data-testid="stCaptionContainer"] {
     color: var(--muted) !important; }
 html body [data-testid="stWidgetLabel"] p, html body label p { color: var(--muted) !important; }
+
+/* Streamlit memasang huruf tema sendiri pada isi markdown dan label widget.
+   Tanpa aturan ini Archivo hanya dimuat tapi tidak dipakai, dan teks aplikasi
+   jatuh ke huruf bawaan Streamlit. */
+html body [data-testid="stMarkdownContainer"],
+html body [data-testid="stCaptionContainer"],
+html body [data-testid="stWidgetLabel"] p,
+html body label p {
+    font-family: 'Archivo', 'Segoe UI', system-ui, -apple-system, sans-serif !important; }
+html body [data-testid="stMarkdownContainer"] p,
+html body [data-testid="stMarkdownContainer"] span,
+html body [data-testid="stMarkdownContainer"] div,
+html body [data-testid="stMarkdownContainer"] li,
+html body [data-testid="stMarkdownContainer"] h1,
+html body [data-testid="stMarkdownContainer"] h2,
+html body [data-testid="stMarkdownContainer"] h3,
+html body [data-testid="stMarkdownContainer"] h4,
+html body [data-testid="stMarkdownContainer"] h5,
+html body [data-testid="stMarkdownContainer"] h6,
+html body [data-testid="stCaptionContainer"] p {
+    font-family: 'Archivo', 'Segoe UI', system-ui, -apple-system, sans-serif !important; }
+/* Mono hanya untuk hal yang diukur, jadi specifisitasnya di atas aturan umum. */
+html body [data-testid="stMarkdownContainer"] .tb-key,
+html body [data-testid="stMarkdownContainer"] .tb-strip span,
+html body [data-testid="stMarkdownContainer"] .cm-key,
+html body [data-testid="stMarkdownContainer"] .risk-chip,
+html body [data-testid="stMarkdownContainer"] .scale-seg span,
+html body [data-testid="stMarkdownContainer"] .scale-marker-val,
+html body [data-testid="stMarkdownContainer"] .scale-tick,
+html body [data-testid="stMarkdownContainer"] .sheet-foot {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important; }
 code, pre, .stCode, [data-testid="stCode"] { font-family: 'JetBrains Mono', ui-monospace, monospace; }
 .num { font-variant-numeric: tabular-nums; }
 
@@ -249,6 +280,11 @@ div[data-testid="stFileUploader"] {
     background: var(--sheet) !important; color: var(--ink) !important;
     border: 1px solid var(--rule) !important; border-radius: 6px !important;
     font-size: .85rem !important; box-shadow: none !important; }
+html body [data-testid="stSelectbox"] [data-baseweb="select"] div,
+html body [data-testid="stSelectbox"] input,
+html body [data-testid="stNumberInput"] input,
+html body [data-testid="stTextInput"] input {
+    font-family: 'Archivo', 'Segoe UI', system-ui, -apple-system, sans-serif !important; }
 div[data-testid="stNumberInputContainer"] {
     background: var(--sheet) !important; border: 1px solid var(--rule) !important;
     border-radius: 6px !important; box-shadow: none !important; }

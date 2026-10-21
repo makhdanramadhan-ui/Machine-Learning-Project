@@ -445,6 +445,16 @@ static serving tidak aktif, halaman jatuh ke stack sistem tanpa mengubah tata
 letak. Huruf JetBrains Mono juga dipasang sebagai `--font-family-code` sehingga
 blok kode dan `st.json` mengikuti keluarga yang sama.
 
+Streamlit memasang huruf temanya sendiri pada isi markdown dan label widget,
+sehingga aturan `font-family` pada `body` saja tidak cukup: Archivo dimuat
+tetapi tidak terpakai. Karena itu `ui.py`override
+`[data-testid="stMarkdownContainer"]` beserta paragraf, span, div, li, dan
+heading di dalamnya, plus `[data-testid="stCaptionContainer"]` dan label
+widget, memakai `!important`. Elemen yang memakai mono — kunci title block,
+strip mikro, kunci matriks, chip risiko, label dan tick skala, chip penanda,
+footer — didaftarkan ulang dengan spesifisitas lebih tinggi supaya tidak
+kalah oleh aturan umum itu.
+
 **Character:** satu grotesk untuk kalimat dan angka, satu mono untuk hal yang
 diukur. Archivo selalu dirapatkan negatif (hingga -0,032em) supaya rapat pada
 ukuran kecil; JetBrains Mono untuk label huruf besar selalu dirapatkan positif
