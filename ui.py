@@ -6,6 +6,9 @@ tanpa kaca, tanpa emoji.
 """
 from __future__ import annotations
 
+import base64
+from pathlib import Path
+
 # --------------------------------------------------------------------------
 # Token
 # --------------------------------------------------------------------------
@@ -121,20 +124,6 @@ def icon_uri(name: str) -> str:
 # CSS
 # --------------------------------------------------------------------------
 _BASE_CSS = r"""
-/* ---- huruf: di-host sendiri, bukan stylesheet pihak ketiga ---- */
-@font-face {
-    font-family: 'Archivo';
-    src: url('/app/static/fonts/archivo-latin.woff2') format('woff2'),
-         url('/static/fonts/archivo-latin.woff2') format('woff2');
-    font-weight: 400 700; font-style: normal; font-display: swap;
-}
-@font-face {
-    font-family: 'JetBrains Mono';
-    src: url('/app/static/fonts/jetbrains-mono-latin.woff2') format('woff2'),
-         url('/static/fonts/jetbrains-mono-latin.woff2') format('woff2');
-    font-weight: 400 700; font-style: normal; font-display: swap;
-}
-
 *, *::before, *::after { box-sizing: border-box; }
 
 html, body, [data-testid="stAppViewContainer"], .stApp {
@@ -491,6 +480,40 @@ a:hover { text-decoration-thickness: 2px; }
 
 
 TAB_ICONS = ("user", "upload", "chart", "search")
+
+# Huruf disisipkan sebagai data URI, bukan dilayani lewat static folder.
+# Streamlit Community Cloud hanya meneruskan sebagian path ke server aplikasi,
+# sehingga /app/static/... tidak terjangkau di sana. Byte font tetap berada di
+# repository sebagai sumber tunggal: file woff2 di static/fonts/.
+_FONT_FILES = (
+    ("Archivo", "archivo-latin.woff2", "400 700"),
+    ("JetBrains Mono", "jetbrains-mono-latin.woff2", "400 700"),
+)
+_FONT_CSS_CACHE = []
+
+
+def font_face_css() -> str:
+    """Blok @font-face dengan font disisipkan langsung sebagai data URI.
+
+    Hasilnya disimpan di cache supaya string-nya tetap sama di setiap rerun;
+    dengan begitu peramban hanya menerima blok ini sekali per sesi.
+    """
+    if _FONT_CSS_CACHE:
+        return _FONT_CSS_CACHE[0]
+    base = Path(__file__).resolve().parent / "static" / "fonts"
+    blocks = []
+    for family, filename, weight in _FONT_FILES:
+        path = base / filename
+        if not path.exists():
+            continue
+        encoded = base64.b64encode(path.read_bytes()).decode("ascii")
+        blocks.append(
+            "@font-face{font-family:" + family + ";"
+            "src:url(data:font/woff2;base64," + encoded + ") format('woff2');"
+            "font-weight:" + weight + ";font-style:normal;font-display:swap;}")
+    css = "<style>\n%s\n</style>" % "\n".join(blocks)
+    _FONT_CSS_CACHE.append(css)
+    return css
 
 
 def _tab_icon_css() -> str:

@@ -438,12 +438,15 @@ sans-serif)
 **Body Font:** Archivo (fallback yang sama)
 **Label/Mono Font:** JetBrains Mono (dengan fallback ui-monospace, monospace)
 
-Kedua huruf di-host sendiri sebagai woff2 variabel di `static/fonts/`
-(`archivo-latin.woff2`, `jetbrains-mono-latin.woff2`), dibaca melalui
-`@font-face` dengan rentang bobot 400-700 dan `font-display: swap`. Bila
-static serving tidak aktif, halaman jatuh ke stack sistem tanpa mengubah tata
-letak. Huruf JetBrains Mono juga dipasang sebagai `--font-family-code` sehingga
-blok kode dan `st.json` mengikuti keluarga yang sama.
+Kedua huruf diambil dari file woff2 di `static/fonts/`
+(`archivo-latin.woff2`, `jetbrains-mono-latin.woff2`) lalu disisipkan ke
+halaman sebagai data URI di dalam blok `@font-face`, bukan dilayani lewat
+folder static: Streamlit Community Cloud hanya meneruskan sebagian path ke
+server aplikasi, sehingga `/app/static/...` tidak terjangkau di sana.
+Bootstrap-nya sudah berupa variable font, rentang bobot 400-700,
+`font-display: swap`. Huruf JetBrains Mono juga dipasang sebagai
+`--font-family-code` sehingga blok kode dan `st.json` mengikuti keluarga
+yang sama.
 
 Streamlit memasang huruf temanya sendiri pada isi markdown dan label widget,
 sehingga aturan `font-family` pada `body` saja tidak cukup: Archivo dimuat
