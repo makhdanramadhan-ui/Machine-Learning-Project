@@ -12,6 +12,17 @@ from sklearn.model_selection import train_test_split
 BASE = Path(__file__).resolve().parent
 OUT = BASE / "docs" / "eda(explaratory data analysis)"
 DATASET_URL = "https://www.kaggle.com/datasets/blastchar/telco-customer-churn"
+# Palet yang sama dengan aplikasi: satu tinta biru teknis, dan ramp nada abu
+# untuk besaran. Churn memakai ujung gelap ramp, tidak warna lalu lintas.
+INK = "#16181A"
+ACCENT = "#1F4FD8"
+ACCENT_SOFT = "#E4EAFB"
+RECESSIVE = "#9C988D"
+RULE = "#C9C4B8"
+# Peta divergen: abu hangat untuk korelasi negatif, tinta biru untuk positif,
+# kertas di titik nol. Tidak ada merah-hijau lalu lintas.
+DIVERGING = matplotlib.colors.LinearSegmentedColormap.from_list(
+    "lembar", ["#3A3833", "#9C988D", "#F7F6F2", "#9C988D", ACCENT])
 MEANINGS = {
     "customerID": "Identitas unik pelanggan; tidak digunakan model.",
     "gender": "Jenis kelamin pelanggan (Female/Male).",
@@ -50,6 +61,9 @@ def run_eda():
     OUT.mkdir(parents=True, exist_ok=True)
     plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 11,
                          "axes.spines.top": False, "axes.spines.right": False,
+                         "axes.edgecolor": RULE, "axes.labelcolor": INK,
+                         "xtick.color": "#6B6A64", "ytick.color": "#6B6A64",
+                         "axes.titlecolor": INK,
                          "figure.facecolor": "white", "axes.facecolor": "white"})
     raw = pd.read_csv(BASE / "Telco-Customer-Churn.csv")
     numeric = raw.copy()
@@ -120,7 +134,7 @@ def run_eda():
     for ax, data, title in zip(axes, [raw, complete, train],
                                ["Data awal (7.043)", "Setelah dibersihkan (7.032)", "Data training (5.625)"]):
         counts = data["Churn"].value_counts().reindex(["No", "Yes"])
-        ax.bar(["Tidak churn", "Churn"], counts, color=["#2563eb", "#ef4444"])
+        ax.bar(["Tidak churn", "Churn"], counts, color=[RECESSIVE, INK])
         ax.set_title(title)
         for i, count in enumerate(counts):
             ax.text(i, count, f"{count:,}\n{count / len(data):.1%}", ha="center", va="bottom", fontsize=10)
@@ -131,7 +145,7 @@ def run_eda():
 
     fig, axes = plt.subplots(1, 3, figsize=(12, 3.5))
     for ax, col in zip(axes, ["tenure", "MonthlyCharges", "TotalCharges"]):
-        ax.hist(train[col], bins=24, color="#7c3aed", alpha=0.85, edgecolor="white")
+        ax.hist(train[col], bins=24, color=ACCENT, alpha=0.9, edgecolor="white")
         ax.set_title(col + " — data training")
         ax.set_ylabel("Pelanggan")
         ax.set_xlabel("Bulan" if col == "tenure" else "Dolar")
@@ -144,7 +158,7 @@ def run_eda():
     for ax, col in zip(axes, ["tenure", "MonthlyCharges", "TotalCharges"]):
         ax.boxplot([train.loc[train.Churn == label, col] for label in ["No", "Yes"]],
                    tick_labels=["Tidak churn", "Churn"], patch_artist=True,
-                   boxprops={"facecolor": "#ddd6fe"}, medianprops={"color": "#7c3aed"})
+                   boxprops={"facecolor": ACCENT_SOFT}, medianprops={"color": ACCENT})
         ax.set_title(col + " — data training")
     medians = train.groupby("Churn")[["tenure", "MonthlyCharges"]].median()
     save(fig, "03_numeric_boxplots_train.png", f"Pada data training, median lama berlangganan pelanggan "
@@ -155,13 +169,13 @@ def run_eda():
          "berbeda dari tabel IQR yang memeriksa seluruh data sekaligus.")
 
     fig, ax = plt.subplots(figsize=(7, 5))
-    im = ax.imshow(correlations, vmin=-1, vmax=1, cmap="RdBu_r")
+    im = ax.imshow(correlations, vmin=-1, vmax=1, cmap=DIVERGING)
     ax.set_xticks(range(4), correlations.columns, rotation=25, ha="right")
     ax.set_yticks(range(4), correlations.index)
     for i in range(4):
         for j in range(4):
             ax.text(j, i, f"{correlations.iloc[i,j]:.2f}", ha="center", va="center",
-                    color="white" if abs(correlations.iloc[i,j]) > 0.7 else "black")
+                    color="white" if abs(correlations.iloc[i,j]) > 0.7 else INK)
     fig.colorbar(im, ax=ax)
     ax.set_title("Korelasi fitur angka — data training")
     save(fig, "04_correlation_train.png", f"Korelasi total tagihan (TotalCharges) dan lama berlangganan "
@@ -172,7 +186,7 @@ def run_eda():
     fig, axes = plt.subplots(1, 3, figsize=(13, 4.3))
     for ax, col in zip(axes, ["Contract", "InternetService", "PaymentMethod"]):
         subset = rates_df[rates_df.Fitur == col]
-        ax.bar(subset.Kategori, subset["Churn rate train"] * 100, color="#2563eb")
+        ax.bar(subset.Kategori, subset["Churn rate train"] * 100, color=ACCENT)
         ax.set_title(col + " — data training")
         ax.set_ylabel("Pelanggan churn (%)")
         ax.tick_params(axis="x", rotation=25, labelsize=8)
@@ -189,7 +203,7 @@ def run_eda():
     fig, axes = plt.subplots(1, 3, figsize=(12, 4))
     for ax, col in zip(axes, ["Contract", "InternetService", "SeniorCitizen"]):
         counts = train[col].astype(str).value_counts()
-        ax.bar(counts.index, counts.values, color="#7c3aed")
+        ax.bar(counts.index, counts.values, color=ACCENT)
         ax.set_title(col + " — data training")
         ax.set_ylabel("Pelanggan")
         ax.tick_params(axis="x", rotation=20)
@@ -198,7 +212,7 @@ def run_eda():
          "persentase churn, perhatikan jumlah pelanggan dalam kelompoknya: hasil kelompok kecil belum tentu mewakili semua pelanggan.")
 
     fig, ax = plt.subplots(figsize=(8, 4))
-    for label, color in [("No", "#2563eb"), ("Yes", "#ef4444")]:
+    for label, color in [("No", RECESSIVE), ("Yes", INK)]:
         sample = train[train.Churn == label].sample(n=min(500, int((train.Churn == label).sum())), random_state=42)
         ax.scatter(sample.tenure, sample.MonthlyCharges, s=13, alpha=0.35, color=color, label=label)
     ax.set(xlabel="Lama berlangganan (bulan)", ylabel="Tagihan bulanan ($)",

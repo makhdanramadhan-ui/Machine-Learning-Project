@@ -1,4 +1,4 @@
-"""Aplikasi Prediksi Customer Churn - Telco (UI Modern)
+"""Aplikasi Prediksi Customer Churn - Telco
 Pipeline: preprocessing + model dalam 1 file model_churn.pkl
 """
 from pathlib import Path
@@ -10,6 +10,8 @@ import json
 import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit as st
+
+import ui
 from prediction import (
     InputValidationError, example_customers, input_schema, input_notes,
     predict_customers, risk_levels, high_risk_boundary,
@@ -20,10 +22,29 @@ BASE = Path(__file__).parent
 
 st.set_page_config(
     page_title="Prediksi Customer Churn - Telco",
-    page_icon="📡",
+    page_icon=BASE / "assets" / "brand-mark.png",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
+
+st.session_state.setdefault("tema", "Terang")
+
+# ---------- Kepala lembar ----------
+head_left, head_right = st.columns([8, 2], gap="medium", vertical_alignment="bottom")
+with head_left:
+    st.markdown(
+        '<div class="app-title">Prediksi Customer Churn — Telco</div>'
+        '<p class="app-sub">Perkirakan churn pelanggan telco dari 18 fitur pelanggan, '
+        'dengan ambang keputusan 0,32 yang dipilih dari F1 out-of-fold data latih.</p>',
+        unsafe_allow_html=True,
+    )
+with head_right:
+    st.segmented_control("Tema", ["Terang", "Gelap"], key="tema",
+                         label_visibility="collapsed", width="stretch")
+
+TEMA = st.session_state.get("tema", "Terang")
+TOK = ui.THEMES[TEMA]
+st.markdown(ui.build_css(TEMA), unsafe_allow_html=True)
 
 
 @st.cache_resource
@@ -75,177 +96,6 @@ def load_charge_reference(dataset_stamp):
         }
     return reference
 
-# ---------- Theme: dark permanen ----------
-DARK = True
-
-# ---------- Top bar: brand ----------
-st.markdown(
-    "<div style='font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;opacity:.6;"
-    "font-weight:700'>Telco &nbsp;•&nbsp; Customer Churn &nbsp;•&nbsp; ML Project</div>",
-    unsafe_allow_html=True,
-)
-
-# ---------- CSS ----------
-BG = "#0B0F19" if DARK else "#F4F6FB"
-CARD = "#141B2E" if DARK else "#FFFFFF"
-CARD2 = "#1A2340" if DARK else "#F8FAFF"
-BORDER = "rgba(255,255,255,.09)" if DARK else "#E5E9F2"
-TEXT = "#E9EDF5" if DARK else "#111827"
-MUTED = "#9AA4B8" if DARK else "#6B7280"
-INPUT_BG = "#1D2540" if DARK else "#FFFFFF"
-
-CSS = f"""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-[data-testid="stAppViewContainer"] {{
-    background: {BG};
-    color: {TEXT};
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-}}
-[data-testid="stHeader"] {{ background: transparent; }}
-[data-testid="stToolbar"] {{ opacity: .7; }}
-section[data-testid="stSidebar"] {{ display: none; }}
-
-/* Hero */
-.hero {{
-    background: linear-gradient(135deg, #7C3AED 0%, #2563EB 55%, #06B6D4 100%);
-    border-radius: 22px;
-    padding: 28px 30px;
-    color: white;
-    box-shadow: 0 12px 40px rgba(37,99,235,.35);
-    margin: 6px 0 18px 0;
-    position: relative;
-    overflow: hidden;
-}}
-.hero::after {{
-    content: '';
-    position: absolute; right: -60px; top: -60px;
-    width: 260px; height: 260px;
-    background: radial-gradient(circle, rgba(255,255,255,.28), transparent 65%);
-}}
-.hero h1 {{ margin: 0; font-size: 1.9rem; font-weight: 800; letter-spacing: -.02em; }}
-.hero p {{ margin: 8px 0 14px 0; opacity: .92; font-size: .98rem; }}
-.pill {{
-    display: inline-block; padding: 6px 12px; border-radius: 999px;
-    background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.25);
-    font-size: .78rem; font-weight: 600; margin-right: 8px; margin-top: 6px;
-    backdrop-filter: blur(6px);
-}}
-
-/* KPI cards */
-.kpi {{
-    background: {CARD};
-    border: 1px solid {BORDER};
-    border-radius: 18px;
-    padding: 16px 18px;
-    box-shadow: 0 6px 22px rgba(0,0,0,{'0.28' if DARK else '0.06'});
-}}
-.kpi .label {{ font-size: .75rem; text-transform: uppercase; letter-spacing: .08em;
-    color: {MUTED}; font-weight: 700; margin-bottom: 6px; }}
-.kpi .value {{ font-size: 1.35rem; font-weight: 800; }}
-.kpi .sub {{ font-size: .82rem; color: {MUTED}; margin-top: 4px; }}
-
-/* Cards / containers */
-div[data-testid="stContainer"] {{
-    background: {CARD};
-    border: 1px solid {BORDER};
-    border-radius: 18px;
-}}
-div[data-testid="stExpander"] {{
-    background: {CARD};
-    border: 1px solid {BORDER};
-    border-radius: 16px;
-}}
-
-/* Inputs */
-div[data-testid="stSelectbox"] > div > div,
-div[data-testid="stNumberInput"] input,
-div[data-testid="stTextInput"] input {{
-    background: {INPUT_BG} !important;
-    color: {TEXT} !important;
-    border-radius: 12px !important;
-}}
-label p {{ font-weight: 600 !important; font-size: .86rem !important; }}
-
-/* Tabs */
-button[data-baseweb="tab"] {{
-    border-radius: 12px 12px 0 0 !important;
-    font-weight: 700 !important;
-    padding: 10px 18px !important;
-}}
-button[data-baseweb="tab"][aria-selected="true"] {{
-    background: linear-gradient(135deg, #7C3AED22, #2563EB22) !important;
-    border-bottom: 3px solid #7C3AED !important;
-}}
-
-/* Primary button */
-div.stButton > button[kind="primary"] {{
-    background: linear-gradient(135deg, #7C3AED, #2563EB) !important;
-    border: none !important;
-    border-radius: 14px !important;
-    padding: .7rem 1.2rem !important;
-    font-weight: 800 !important;
-    font-size: 1rem !important;
-    box-shadow: 0 8px 24px rgba(124,58,237,.4);
-    transition: transform .12s ease;
-}}
-div.stButton > button[kind="primary"]:hover {{ transform: translateY(-1px); }}
-div.stButton > button:not([kind="primary"]) {{
-    border-radius: 12px !important;
-    font-weight: 600 !important;
-}}
-
-/* Result banner */
-.result {{
-    border-radius: 18px; padding: 20px 22px; margin: 14px 0;
-    border: 1px solid {BORDER}; background: {CARD2};
-}}
-.result.low {{ border-left: 6px solid #10B981; }}
-.result.mid {{ border-left: 6px solid #F59E0B; }}
-.result.high {{ border-left: 6px solid #EF4444; }}
-.badge {{
-    display: inline-block; padding: 6px 14px; border-radius: 999px;
-    font-weight: 800; font-size: .85rem; color: white; margin-bottom: 8px;
-}}
-.badge.low {{ background: linear-gradient(135deg,#10B981,#059669); }}
-.badge.mid {{ background: linear-gradient(135deg,#F59E0B,#D97706); }}
-.badge.high {{ background: linear-gradient(135deg,#EF4444,#DC2626); }}
-.prob {{ font-size: 2rem; font-weight: 800; margin: 2px 0; }}
-
-/* Rec card */
-.rec {{
-    background: {CARD2}; border: 1px solid {BORDER};
-    border-radius: 14px; padding: 12px 14px; margin-bottom: 8px;
-}}
-
-/* Confusion matrix grid */
-.cm-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }}
-.cm-cell {{ border-radius: 14px; padding: 16px; text-align: center; border: 1px solid {BORDER}; }}
-.cm-cell b {{ font-size: 1.6rem; display: block; }}
-.cm-tp {{ background: linear-gradient(135deg,#EF444433,#EF444422); }}
-.cm-tn {{ background: linear-gradient(135deg,#10B98133,#10B98122); }}
-.cm-fp {{ background: linear-gradient(135deg,#F59E0B33,#F59E0B22); }}
-.cm-fn {{ background: linear-gradient(135deg,#8B5CF633,#8B5CF622); }}
-
-.footer {{ text-align:center; color:{MUTED}; font-size:.8rem; margin: 28px 0 10px 0; }}
-a {{ color: #60A5FA !important; }}
-</style>
-"""
-st.markdown(CSS, unsafe_allow_html=True)
-
-# ---------- Helpers for matplotlib theming ----------
-def style_fig(fig, ax_or_axes):
-    axes = ax_or_axes if isinstance(ax_or_axes, (list, tuple)) else [ax_or_axes]
-    fg = "#E5E7EB" if DARK else "#111827"
-    for ax in axes:
-        ax.set_facecolor("none")
-        ax.tick_params(colors=fg)
-        ax.yaxis.label.set_color(fg)
-        ax.xaxis.label.set_color(fg)
-        ax.title.set_color(fg)
-        for s in ax.spines.values():
-            s.set_color("#4B5563" if DARK else "#D1D5DB")
-    fig.patch.set_facecolor("none")
 
 BEST = INFO.get("best_model", "LogisticRegression") if INFO else "LogisticRegression"
 MODEL_NAMES = {"LogisticRegression": "Logistic Regression", "DecisionTree": "Decision Tree",
@@ -259,9 +109,6 @@ AUC = MET.get("ROC_AUC", "-")
 REC = MET.get("Recall", "-")
 N_TEST = DEPLOY["n_test"]
 N_DATA = DEPLOY["n_train"] + N_TEST
-
-def fmt(x):
-    return f"{x:.4f}" if isinstance(x, float) else str(x)
 
 
 def count_text(value):
@@ -285,80 +132,80 @@ def option_label(value):
     return labels.get(value, value)
 
 
-def show_confusion_matrix(metrics):
-    st.markdown(
-        f"""<div class="cm-grid">
-        <div class="cm-cell cm-tp"><span>TP • churn terdeteksi</span><b>{int(metrics['TP'])}</b>
-        <span style="opacity:.7;font-size:.8rem">Diprediksi churn, memang churn</span></div>
-        <div class="cm-cell cm-tn"><span>TN • tidak churn benar</span><b>{int(metrics['TN'])}</b>
-        <span style="opacity:.7;font-size:.8rem">Diprediksi tetap, memang tidak churn</span></div>
-        <div class="cm-cell cm-fp"><span>FP • alarm keliru</span><b>{int(metrics['FP'])}</b>
-        <span style="opacity:.7;font-size:.8rem">Diprediksi churn, ternyata tidak churn</span></div>
-        <div class="cm-cell cm-fn"><span>FN • churn terlewat</span><b>{int(metrics['FN'])}</b>
-        <span style="opacity:.7;font-size:.8rem">Diprediksi tetap, ternyata churn</span></div>
-        </div>""", unsafe_allow_html=True,
-    )
+# ---------- Grafik matplotlib ----------
+def style_fig(fig, ax_or_axes, tok=None):
+    """Sumbu mengikuti palet lembar: hairline, tanpa bingkai atas-kanan."""
+    tok = tok or TOK
+    axes = ax_or_axes if isinstance(ax_or_axes, (list, tuple)) else [ax_or_axes]
+    for ax in axes:
+        ax.set_facecolor("none")
+        ax.tick_params(colors=tok["muted"], labelsize=8, length=3, color=tok["rule"])
+        ax.yaxis.label.set_color(tok["ink"])
+        ax.xaxis.label.set_color(tok["ink"])
+        ax.title.set_color(tok["ink"])
+        for spine in ax.spines.values():
+            spine.set_color(tok["rule"])
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
+    fig.patch.set_facecolor("none")
 
-# ---------- HERO ----------
+
+# ---------- Title block: identitas model ----------
 st.markdown(
-    f"""<div class="hero">
-    <h1>📡 Prediksi Customer Churn — Telco</h1>
-    <p>Perkirakan apakah pelanggan akan <b>berhenti berlangganan (churn)</b>.
-    Coba satu pelanggan atau unggah CSV untuk melihat hasil beberapa pelanggan sekaligus.</p>
-    <span class="pill">🏆 Model: {BEST_LABEL}</span>
-    <span class="pill">🎯 CV-F1: {fmt(CVF1)}</span>
-    <span class="pill">📈 ROC-AUC: {fmt(AUC)}</span>
-    <span class="pill">🗂️ {count_text(N_DATA)} pelanggan • {DEPLOY['n_features']} fitur</span>
-    </div>""",
+    ui.title_block(
+        [
+            ("Model", BEST_LABEL, "sm"),
+            ("Ambang", ui.fmt_num(THRESHOLD)),
+            ("CV-F1", ui.fmt_num(CVF1, 4)),
+            ("Akurasi", ui.fmt_num(ACC, 4)),
+            ("Precision", ui.fmt_num(MET.get("Precision", 0), 4)),
+            ("Recall", ui.fmt_num(REC, 4)),
+            ("F1", ui.fmt_num(MET.get("F1", 0), 4)),
+            ("ROC-AUC", ui.fmt_num(AUC, 4)),
+            ("Brier", ui.fmt_num(MET.get("Brier", 0), 4)),
+        ],
+        strip=[
+            ("Data latih", count_text(DEPLOY["n_train"])),
+            ("Data uji", count_text(N_TEST)),
+            ("Fitur", str(DEPLOY["n_features"])),
+            ("Kalibrasi", "Sigmoid, 5 fold"),
+            ("Sklearn", DEPLOY["sklearn_version"]),
+            ("SHA-256 model", DEPLOY["model_sha256"][:12] + "…"),
+        ],
+    ),
     unsafe_allow_html=True,
 )
 
-# ---------- KPI ROW (pengganti sidebar) ----------
-k1, k2, k3, k4 = st.columns(4)
-with k1:
-    st.markdown(f"<div class='kpi'><div class='label'>🏆 Model Terbaik</div>"
-                f"<div class='value'>{BEST_LABEL}</div>"
-                f"<div class='sub'>CV-F1 tertinggi dari tiga model</div></div>", unsafe_allow_html=True)
-with k2:
-    st.markdown(f"<div class='kpi'><div class='label'>🎯 Akurasi & Recall</div>"
-                f"<div class='value'>{ACC:.2%} / {REC:.2%}</div>"
-                f"<div class='sub'>Diuji pada {count_text(N_TEST)} pelanggan</div></div>", unsafe_allow_html=True)
-with k3:
-    st.markdown(f"<div class='kpi'><div class='label'>📈 ROC-AUC</div>"
-                f"<div class='value'>{fmt(AUC)}</div>"
-                f"<div class='sub'>0.5 = acak, 1.0 = sempurna</div></div>", unsafe_allow_html=True)
-with k4:
-    st.markdown("<div class='kpi'><div class='label'>🗂️ Dataset</div>"
-                f"<div class='value'>{count_text(N_DATA)}</div>"
-                "<div class='sub'>Data pelanggan setelah dibersihkan</div></div>", unsafe_allow_html=True)
-
-with st.expander("ℹ️ Tentang model dan cara membaca hasil", expanded=False):
+with st.expander("Tentang model dan cara membaca hasil", expanded=False):
     c_a, c_b = st.columns([1, 2])
     with c_a:
-        st.write(f"**Model yang dipilih:** {BEST_LABEL}")
+        st.markdown(f"**Model yang dipakai: {BEST_LABEL}**")
         st.caption("Model ini mendapat rata-rata F1 tertinggi pada validasi silang lima fold. "
-                   "Akurasi, recall, dan AUC di atas dihitung setelah kalibrasi, sesuai model yang dipakai aplikasi.")
+                   "Akurasi, recall, dan AUC di atas dihitung setelah kalibrasi, sesuai model "
+                   "yang dipakai aplikasi.")
         if MET:
             st.json(MET)
     with c_b:
-        st.caption(f"Model menggunakan {DEPLOY['n_features']} informasi pelanggan. "
-                   "Data angka dan kategori diproses otomatis sebelum diprediksi. "
-                   "Kalibrasi sigmoid membantu menyesuaikan probabilitas dan dilatih hanya dengan data training.")
+        st.caption(f"Model memakai {DEPLOY['n_features']} informasi pelanggan. Angka dan kategori "
+                   "diproses otomatis sebelum diprediksi. Kalibrasi sigmoid menyesuaikan "
+                   "probabilitas dan dilatih hanya dengan data training.")
         st.write(f"**Aturan keputusan:** CHURN jika probabilitas ≥ {THRESHOLD:.0%}; "
-                 "TETAP jika di bawah threshold tersebut.")
-        st.caption("Threshold dipilih dari hasil validasi data training. Data testing dipakai untuk "
-                   "mengukur hasil akhirnya. Label CHURN menunjukkan risiko yang melewati threshold, bukan kepastian.")
+                 "TETAP jika di bawah ambang tersebut.")
+        st.caption("Ambang dipilih dari hasil validasi data training. Data testing dipakai untuk "
+                   "mengukur hasil akhirnya. Label CHURN menunjukkan risiko yang melewati ambang, "
+                   "bukan kepastian.")
 
 tab1, tab2, tab3, tab4 = st.tabs([
-    "🔮 Prediksi Single", "📁 Prediksi Batch (CSV)", "📊 Dashboard & Model", "🔎 EDA & Dokumentasi",
+    "Prediksi Single", "Prediksi Batch (CSV)", "Dashboard & Model", "EDA & Dokumentasi",
 ])
 
-# ---------- TAB 1 ----------
+# ---------- TAB 1: Prediksi single ----------
 with tab1:
     with st.container(border=True):
-        st.markdown("### 🧾 Data Pelanggan")
-        st.caption("Isi data pelanggan, lalu klik Prediksi Sekarang. Pilihan layanan tambahan "
-                   "akan menyesuaikan layanan telepon dan internet yang digunakan.")
+        st.markdown(ui.section("Data Pelanggan", "user",
+                               "Isi data pelanggan, lalu klik Prediksi. Pilihan layanan tambahan "
+                               "menyesuaikan layanan telepon dan internet yang digunakan."),
+                    unsafe_allow_html=True)
         c1, c2, c3 = st.columns(3)
         with c1:
             gender = st.selectbox("Jenis Kelamin", ["Female", "Male"], format_func=option_label)
@@ -409,7 +256,7 @@ with tab1:
 
         b1, b2, b3 = st.columns([1, 2, 1])
         with b2:
-            predict = st.button("🚀 Prediksi Sekarang", type="primary", width="stretch")
+            predict = st.button("Prediksi", type="primary", width="stretch")
 
     row = pd.DataFrame([{
         "gender": gender, "SeniorCitizen": 1 if SeniorCitizen == "Ya" else 0,
@@ -435,61 +282,59 @@ with tab1:
 
     result = st.session_state.get("single_result")
     if result and result["input"] != fingerprint:
-        st.info("Input telah berubah. Klik Prediksi Sekarang untuk memperbarui hasil.")
+        st.info("Input telah berubah. Klik Prediksi untuk memperbarui hasil.")
     if result and result["input"] == fingerprint:
         prob, pred = result["prob"], result["pred"]
         for note in input_notes(row):
             st.info(note)
 
-        if prob < THRESHOLD:
-            lvl, cls = "🟢 RISIKO RENDAH", "low"
-        elif prob < HIGH_BOUNDARY:
-            lvl, cls = "🟡 RISIKO SEDANG", "mid"
-        else:
-            lvl, cls = "🔴 RISIKO TINGGI", "high"
-
+        level = risk_levels([prob], THRESHOLD)[0]
         st.markdown(
-            f"""<div class="result {cls}">
-            <span class="badge {cls}">{lvl}</span>
-            <div class="prob">{prob*100:.2f}%</div>
-            <div style="opacity:.85">Keputusan model: <b>{'CHURN' if pred == 1 else 'TETAP'}</b>
-            • Probabilitas churn terkalibrasi</div>
-            </div>""",
+            '<div class="verdict">'
+            f'<div class="verdict-head">{ui.risk_chip(level)}'
+            '<span class="verdict-decision">Keputusan model: '
+            f'<b>{"CHURN" if pred == 1 else "TETAP"}</b></span></div>'
+            f'<div class="verdict-figure">{ui.fmt_num(prob * 100)}<span class="unit">%</span></div>'
+            '<div class="verdict-sub">Probabilitas churn terkalibrasi</div>'
+            '</div>',
             unsafe_allow_html=True,
         )
-        st.progress(prob)
-        st.caption(f"Threshold keputusan: {THRESHOLD:.0%}. Risiko rendah: < {THRESHOLD:.0%}; "
+        st.markdown(ui.calibrated_scale(prob, THRESHOLD, HIGH_BOUNDARY), unsafe_allow_html=True)
+        st.caption(f"Ambang keputusan {THRESHOLD:.0%}. Risiko rendah: < {THRESHOLD:.0%}; "
                    f"sedang: {THRESHOLD:.0%}–< {HIGH_BOUNDARY:.0%}; tinggi: ≥ {HIGH_BOUNDARY:.0%}. "
                    "Kategori risiko membantu membaca hasil; model tetap memprediksi churn atau tidak churn.")
         st.caption("TETAP berarti pelanggan diprediksi tidak churn. Probabilitas sudah disesuaikan "
                    "dengan kalibrasi sigmoid; detail pengujiannya ada di Dashboard & Model.")
 
-        st.markdown("### 💡 Saran untuk Mempertahankan Pelanggan")
-        st.caption("Saran berikut disesuaikan dengan data yang diisi. Efektivitasnya perlu diuji, "
-                   "karena model belum mengukur dampak penawaran terhadap churn.")
+        st.markdown(ui.section("Saran untuk Mempertahankan Pelanggan", "target",
+                               "Saran berikut disesuaikan dengan data yang diisi. Efektivitasnya "
+                               "perlu diuji, karena model belum mengukur dampak penawaran terhadap churn."),
+                    unsafe_allow_html=True)
         recs = []
         if Contract == "Month-to-month":
-            recs.append(("📝 Kontrak", "Pertimbangkan penawaran kontrak satu atau dua tahun dengan diskon."))
+            recs.append(("doc", "Kontrak", "Pertimbangkan penawaran kontrak satu atau dua tahun dengan diskon."))
         if InternetService == "Fiber optic" and MonthlyCharges > 75:
-            recs.append(("💸 Tagihan", "Tinjau paket fiber yang digunakan dan tawarkan paket yang lebih sesuai."))
+            recs.append(("layers", "Tagihan", "Tinjau paket fiber yang digunakan dan tawarkan paket yang lebih sesuai."))
         if PaymentMethod == "Electronic check":
-            recs.append(("💳 Pembayaran", "Tawarkan pembayaran otomatis melalui transfer atau kartu."))
+            recs.append(("check", "Pembayaran", "Tawarkan pembayaran otomatis melalui transfer atau kartu."))
         if TechSupport in ("No", "No internet service") and InternetService != "No":
-            recs.append(("🛠️ Bantuan teknis", "Pertimbangkan masa coba layanan bantuan teknis."))
+            recs.append(("flag", "Bantuan teknis", "Pertimbangkan masa coba layanan bantuan teknis."))
         if tenure < 6:
-            recs.append(("🌱 Pelanggan baru", "Bantu pelanggan memahami layanan dan tanyakan pengalamannya setelah bulan pertama."))
+            recs.append(("user", "Pelanggan baru", "Bantu pelanggan memahami layanan dan tanyakan pengalamannya setelah bulan pertama."))
         if not recs:
-            recs.append(("💎 Layanan", "Jaga kualitas layanan dan pertimbangkan penghargaan untuk pelanggan lama."))
-        for title, desc in recs:
-            st.markdown(f"<div class='rec'><b>{title}</b> — {desc}</div>", unsafe_allow_html=True)
+            recs.append(("target", "Layanan", "Jaga kualitas layanan dan pertimbangkan penghargaan untuk pelanggan lama."))
+        st.markdown("".join(ui.recommendation(n, label, t) for n, label, t in recs),
+                    unsafe_allow_html=True)
 
-# ---------- TAB 2 ----------
+# ---------- TAB 2: Prediksi batch ----------
 with tab2:
     with st.container(border=True):
-        st.markdown("### 📤 Upload CSV untuk Prediksi Massal")
-        st.caption("Gunakan template di bawah atau CSV dengan kolom yang sama. Kolom `customerID`, "
-                   "`Churn`, dan `TotalCharges` boleh disertakan, tetapi tidak dipakai untuk prediksi.")
-        st.download_button("⬇️ Download Template CSV", example_customers().to_csv(index=False).encode("utf-8"),
+        st.markdown(ui.section("Unggah CSV untuk Prediksi Massal", "upload",
+                               "Gunakan template di bawah atau CSV dengan kolom yang sama. Kolom "
+                               "`customerID`, `Churn`, dan `TotalCharges` boleh disertakan, "
+                               "tetapi tidak dipakai untuk prediksi."),
+                    unsafe_allow_html=True)
+        st.download_button("Unduh template CSV", example_customers().to_csv(index=False).encode("utf-8"),
                            "template_pelanggan.csv", "text/csv", width="stretch")
         with st.expander("Panduan mengisi CSV"):
             st.write("Kolom wajib: " + ", ".join(SCHEMA["columns"]))
@@ -529,91 +374,101 @@ with tab2:
         churn_n = int((out["Prediksi"] == "CHURN").sum())
         rate = float((out["Prediksi"] == "CHURN").mean() * 100)
 
-        m1, m2, m3 = st.columns(3)
-        with m1:
-            st.markdown(f"<div class='kpi'><div class='label'>Total Baris</div>"
-                        f"<div class='value'>{len(out)}</div></div>", unsafe_allow_html=True)
-        with m2:
-            st.markdown(f"<div class='kpi'><div class='label'>Prediksi Churn</div>"
-                        f"<div class='value'>{churn_n}</div></div>", unsafe_allow_html=True)
-        with m3:
-            st.markdown(f"<div class='kpi'><div class='label'>Persentase Prediksi Churn</div>"
-                        f"<div class='value'>{rate:.1f}%</div></div>", unsafe_allow_html=True)
-
-        st.caption(f"Threshold: {THRESHOLD:.0%}. Kolom Prob_Churn berisi probabilitas dalam persen. "
-                   f"Menampilkan {min(20, len(out))} dari {count_text(len(out))} pelanggan; unduhan memuat semua hasil.")
+        st.markdown(ui.summary_strip([
+            ("Total baris", count_text(len(out))),
+            ("Prediksi churn", count_text(churn_n)),
+            ("Persentase churn", ui.fmt_num(rate) + "%"),
+        ]), unsafe_allow_html=True)
+        st.caption(f"Ambang: {THRESHOLD:.0%}. Kolom Prob_Churn berisi probabilitas dalam persen. "
+                   f"Menampilkan {min(20, len(out))} dari {count_text(len(out))} pelanggan; "
+                   "unduhan memuat semua hasil.")
         st.dataframe(out.head(20), width="stretch", hide_index=True)
-        st.bar_chart(out["Prediksi"].value_counts())
-        st.download_button("⬇️ Download Hasil (CSV)",
+
+        fig_dist, ax_dist = plt.subplots(figsize=(6.5, 2.1))
+        counts = out["Prediksi"].value_counts().reindex(["TETAP", "CHURN"]).fillna(0)
+        ax_dist.barh(counts.index, counts.values,
+                     color=[TOK["ramp6"], TOK["accent"]], height=.55, edgecolor="none")
+        ax_dist.set_xlabel("Pelanggan", fontsize=9)
+        ax_dist.set_xlim(0, max(counts.values.max(), 1) * 1.18)
+        for i, value in enumerate(counts.values):
+            ax_dist.text(value + max(counts.values.max(), 1) * 0.02, i, f"{int(value):,}".replace(",", "."),
+                         va="center", fontsize=8, color=TOK["muted"])
+        style_fig(fig_dist, ax_dist)
+        plt.tight_layout()
+        st.pyplot(fig_dist, width="stretch")
+        plt.close(fig_dist)
+
+        st.download_button("Unduh hasil (CSV)",
                            out.to_csv(index=False).encode(), "hasil_prediksi.csv", "text/csv",
                            width="stretch")
 
-# ---------- TAB 3 ----------
+# ---------- TAB 3: Dashboard & model ----------
 with tab3:
     with st.container(border=True):
-        st.markdown("### 🎯 Hasil Pengujian Model Aplikasi")
-        st.caption(f"{BEST_LABEL} dengan kalibrasi sigmoid. Diuji pada {count_text(N_TEST)} pelanggan "
-                   "yang tidak digunakan untuk melatih model.")
+        st.markdown(ui.section("Hasil Pengujian Model Aplikasi", "chart",
+                               f"{BEST_LABEL} dengan kalibrasi sigmoid, diuji pada "
+                               f"{count_text(N_TEST)} pelanggan yang tidak digunakan untuk "
+                               "melatih model."),
+                    unsafe_allow_html=True)
         st.dataframe(pd.DataFrame([
-            {"Konfigurasi": f"Aplikasi — threshold {THRESHOLD:.2f}", **MET},
-            {"Konfigurasi": "Pembanding — threshold 0.50", **DEPLOY["metrics_at_0_5"]},
+            {"Konfigurasi": f"Aplikasi — ambang {THRESHOLD:.2f}", **MET},
+            {"Konfigurasi": "Pembanding — ambang 0,50", **DEPLOY["metrics_at_0_5"]},
         ]), width="stretch", hide_index=True)
-        show_confusion_matrix(MET)
-        st.info(f"Dari {MET['TP'] + MET['FN']} pelanggan yang benar-benar churn, "
-                f"{MET['TP']} berhasil terdeteksi dan {MET['FN']} terlewat. "
-                f"Sebanyak {MET['FP']} pelanggan yang tidak churn juga ditandai CHURN. "
-                "Menurunkan threshold membantu mendeteksi lebih banyak churn, tetapi bisa menambah prediksi yang keliru.")
-        with st.expander(f"Mengapa threshold-nya {THRESHOLD:.0%}?", expanded=False):
-            st.write(f"Kami mencoba threshold 0,10 sampai 0,60 dengan selisih 0,01. "
-                     f"Threshold {THRESHOLD:.2f} memberi F1 tertinggi pada validasi data training. "
-                     "Artinya, model memberi label CHURN ketika probabilitas mencapai threshold ini, "
+        st.markdown(ui.confusion_matrix(MET), unsafe_allow_html=True)
+        st.caption(f"Dari {MET['TP'] + MET['FN']} pelanggan yang benar-benar churn, "
+                   f"{MET['TP']} berhasil terdeteksi dan {MET['FN']} terlewat. "
+                   f"{MET['FP']} pelanggan yang tidak churn juga ditandai CHURN. "
+                   "Menurunkan ambang membantu mendeteksi lebih banyak churn, tetapi bisa menambah "
+                   "prediksi yang keliru.")
+        with st.expander(f"Mengapa ambangnya {THRESHOLD:.0%}?", expanded=False):
+            st.write(f"Ambang dicoba dari 0,10 sampai 0,60 dengan selisih 0,01. "
+                     f"Ambang {THRESHOLD:.2f} memberi F1 tertinggi pada validasi data training. "
+                     "Artinya, model memberi label CHURN ketika probabilitas mencapai ambang ini, "
                      "meskipun masih di bawah 50%.")
-            st.caption("Prediksi validasi dibuat dengan lima fold: setiap bagian diprediksi oleh model "
-                       "yang dilatih pada bagian lainnya, dengan kalibrasi di dalam proses itu. "
-                       f"F1 untuk memilih threshold: {DEPLOY['oof_tuning_f1']:.4f}. "
-                       "Skor ini dipakai untuk memilih pengaturan, bukan hasil pengujian akhir. "
-                       "Parameter model juga sudah dipilih dari data training.")
-            st.write(f"Kalibrasi sigmoid menyesuaikan probabilitas model. Pada data testing, Brier score "
-                     f"turun dari {CALINFO['brier_base']:.4f} menjadi {CALINFO['brier_cal']:.4f}. "
+            st.caption("Prediksi validasi dibuat dengan lima fold: setiap bagian diprediksi oleh "
+                       "model yang dilatih pada bagian lainnya, dengan kalibrasi di dalam proses "
+                       f"itu. F1 untuk memilih ambang: {DEPLOY['oof_tuning_f1']:.4f}. Skor ini dipakai "
+                       "untuk memilih pengaturan, bukan hasil pengujian akhir.")
+            st.write(f"Kalibrasi sigmoid menyesuaikan probabilitas model. Pada data testing, Brier "
+                     f"score turun dari {CALINFO['brier_base']:.4f} menjadi {CALINFO['brier_cal']:.4f}. "
                      "Semakin kecil Brier, semakin kecil kesalahan probabilitasnya.")
             st.dataframe(pd.DataFrame(CALINFO["reliability_test"]).rename(columns={
                 "band": "Kategori risiko", "n": "Pelanggan", "mean_pred": "Rata-rata probabilitas",
                 "empirical": "Proporsi churn aktual",
             }).replace({"Kategori risiko": {"LOW": "Rendah", "MID": "Sedang", "HIGH": "Tinggi"}}),
                          width="stretch", hide_index=True)
-            st.caption("Tabel membandingkan rata-rata probabilitas dengan proporsi pelanggan yang benar-benar "
-                       "churn pada setiap kategori risiko. Kedua kolom memakai skala 0–1.")
+            st.caption("Tabel membandingkan rata-rata probabilitas dengan proporsi pelanggan yang "
+                       "benar-benar churn pada setiap kategori risiko. Kedua kolom memakai skala 0–1.")
 
     with st.container(border=True):
-        st.markdown("### 🏆 Perbandingan Tiga Model")
-        st.caption("Ketiga model ini diuji sebelum kalibrasi, dengan threshold 50%. Model dipilih "
-                   "berdasarkan CV-F1 data training, bukan akurasi testing tertinggi. "
-                   "Hasil model setelah kalibrasi ditampilkan pada tabel aplikasi di atas.")
-        with st.expander("📖 Cara membaca metrik", expanded=False):
-            st.markdown("Label: churn = 1, tidak churn = 0. Nilai metrik pada tabel memakai skala 0–1.")
+        st.markdown(ui.section("Perbandingan Tiga Model", "layers",
+                               "Ketiga model ini diuji sebelum kalibrasi, dengan ambang 50%. Model "
+                               "dipilih berdasarkan CV-F1 data training, bukan akurasi testing "
+                               "tertinggi. Hasil setelah kalibrasi ada pada tabel aplikasi di atas."),
+                    unsafe_allow_html=True)
+        with st.expander("Cara membaca metrik"):
             st.markdown(
                 "| Metrik | Rumus | Arti |\n"
                 "|---|---|---|\n"
                 "| TP | TP | Diprediksi churn dan memang churn |\n"
-                "| TN | TN | Prediksi tidak churn (0), aktual tidak churn (0) ✅ |\n"
+                "| TN | TN | Prediksi tidak churn (0), aktual tidak churn (0) |\n"
                 "| FP | FP | Prediksi churn (1), aktual tidak churn (0) — alarm keliru |\n"
                 "| FN | FN | Prediksi tidak churn (0), aktual churn (1) — churn terlewat |\n"
                 "| Accuracy | (TP+TN)/total | Proporsi seluruh prediksi yang benar |\n"
                 "| Precision | TP/(TP+FP) | Dari yang diprediksi churn, berapa yang benar-benar churn |\n"
                 "| Recall | TP/(TP+FN) | Dari seluruh pelanggan churn, berapa yang terdeteksi |\n"
                 "| F1 | 2×P×R/(P+R) | Rata-rata harmonik precision dan recall |\n"
-                "| ROC-AUC | luas kurva ROC | 0.5 = acak, 1.0 = sempurna |")
-            st.divider()
-            st.markdown("**F1** merangkum precision dan recall. Keduanya perlu diperhatikan karena "
-                        "pelanggan churn lebih sedikit daripada pelanggan yang tidak churn. "
-                        "Akurasi tinggi saja belum berarti model berhasil mendeteksi churn.")
-            st.markdown("**CV-F1** adalah rata-rata F1 dari validasi silang lima fold. Data training "
-                        "dibagi menjadi lima bagian: model dilatih pada empat bagian lalu divalidasi "
-                        "pada satu bagian, bergantian lima kali. Skor ini dipakai untuk memilih model.")
-            st.markdown("**ROC-AUC** menunjukkan kemampuan model membedakan churn dan tidak churn "
-                        "pada berbagai threshold. Kurva ROC membandingkan recall dengan "
-                        "false positive rate `FP/(FP+TN)`. Nilai 0,5 setara urutan acak; "
-                        "semakin mendekati 1, semakin baik pemisahannya.")
+                "| ROC-AUC | luas kurva ROC | 0,5 = acak, 1,0 = sempurna |")
+            st.caption("F1 merangkum precision dan recall. Keduanya perlu diperhatikan karena "
+                       "pelanggan churn lebih sedikit daripada pelanggan yang tidak churn. "
+                       "Akurasi tinggi saja belum berarti model berhasil mendeteksi churn.")
+            st.caption("**CV-F1** adalah rata-rata F1 dari validasi silang lima fold. Data training "
+                       "dibagi menjadi lima bagian: model dilatih pada empat bagian lalu divalidasi "
+                       "pada satu bagian, bergantian lima kali. Skor ini dipakai untuk memilih model.")
+            st.caption("**ROC-AUC** menunjukkan kemampuan model membedakan churn dan tidak churn "
+                       "pada berbagai ambang. Kurva ROC membandingkan recall dengan false positive "
+                       "rate `FP/(FP+TN)`. Nilai 0,5 setara urutan acak.")
+
         if CMP is not None:
             _cmp_show = CMP.copy()
             _cmp_show["Model"] = _cmp_show["Model"].replace(MODEL_NAMES)
@@ -623,22 +478,27 @@ with tab3:
                                     format_func=lambda name: MODEL_NAMES.get(name, name))
             b = CMP[CMP["Model"] == cm_model].iloc[0]
             st.markdown(f"**Confusion matrix — {MODEL_NAMES.get(cm_model, cm_model)} "
-                        f"({count_text(N_TEST)} pelanggan testing):**")
-            show_confusion_matrix(b)
+                        f"({count_text(N_TEST)} pelanggan testing)**")
+            st.markdown(ui.confusion_matrix(b), unsafe_allow_html=True)
+
             fig, ax = plt.subplots(figsize=(6.5, 2.6))
             plot_df = CMP.set_index("Model")[["Accuracy", "Precision", "Recall", "F1"]]
             plot_df = plot_df.rename(index=MODEL_NAMES)
-            plot_df.plot(kind="barh", ax=ax, color=["#7C3AED", "#2563EB", "#06B6D4", "#10B981"])
+            colors = [TOK["accent"] if name == BEST_LABEL else TOK["ramp6"]
+                      for name in plot_df.index]
+            plot_df.plot(kind="barh", ax=ax, color=colors)
             ax.set_xlabel("Skor", fontsize=9)
             ax.tick_params(labelsize=8)
             leg = ax.legend(fontsize=7.5, loc="upper center", bbox_to_anchor=(0.5, -0.22),
-                            ncol=4, frameon=True, handlelength=1.2, handletextpad=0.4,
+                            ncol=4, frameon=False, handlelength=1.2, handletextpad=0.4,
                             columnspacing=1.0)
-            leg.get_frame().set_alpha(0.95)
+            for text in leg.get_texts():
+                text.set_color(TOK["muted"])
             style_fig(fig, ax)
             plt.tight_layout()
-            st.pyplot(fig, width="content")
+            st.pyplot(fig, width="stretch")
             plt.close(fig)
+
             selected = CMP[CMP["Model"] == BEST].iloc[0]
             top_recall = CMP.loc[CMP["Recall"].idxmax()]
             top_accuracy = CMP.loc[CMP["Accuracy"].idxmax()]
@@ -647,27 +507,28 @@ with tab3:
                 f"({selected['CV_F1']:.4f}) pada data training. Saat diuji sebelum kalibrasi, "
                 f"{MODEL_NAMES.get(top_recall['Model'], top_recall['Model'])} memiliki recall tertinggi "
                 f"({top_recall['Recall']:.2%}), sedangkan "
-                f"{MODEL_NAMES.get(top_accuracy['Model'], top_accuracy['Model'])} memiliki akurasi tertinggi "
-                f"({top_accuracy['Accuracy']:.2%}). Hasil testing ini dilaporkan tanpa mengganti model yang sudah dipilih.")
+                f"{MODEL_NAMES.get(top_accuracy['Model'], top_accuracy['Model'])} memiliki akurasi "
+                f"tertinggi ({top_accuracy['Accuracy']:.2%}). Hasil testing ini dilaporkan tanpa "
+                "mengganti model yang sudah dipilih.")
             if {"Train_F1", "CV_TRAIN_F1", "CV_F1_STD"}.issubset(CMP.columns):
-                st.markdown("**Perbandingan F1 saat training, validasi, dan testing:**")
+                st.markdown("**Perbandingan F1 saat training, validasi, dan testing**")
                 st.dataframe(CMP[["Model", "Train_F1", "CV_TRAIN_F1", "CV_F1", "CV_F1_STD", "F1"]].replace(
                     {"Model": MODEL_NAMES}),
                              width="stretch", hide_index=True)
                 largest_gap = CMP.loc[(CMP["Train_F1"] - CMP["F1"]).idxmax()]
                 st.caption(f"{MODEL_NAMES.get(largest_gap['Model'], largest_gap['Model'])} memiliki selisih "
                            f"F1 training dan testing terbesar: {largest_gap['Train_F1']:.4f} vs "
-                           f"{largest_gap['F1']:.4f}. Model jauh lebih baik pada data yang sudah dipelajari "
-                           "daripada data baru. Ini indikasi overfitting, dan terlihat juga pada skor validasinya.")
+                           f"{largest_gap['F1']:.4f}. Model jauh lebih baik pada data yang sudah "
+                           "dipelajari daripada data baru. Ini indikasi overfitting, dan terlihat "
+                           "juga pada skor validasinya.")
             if CVDET is not None:
-                st.markdown("**F1 pada setiap sesi validasi:**")
+                st.markdown("**F1 pada setiap sesi validasi**")
                 st.caption("Validasi dilakukan lima kali pada bagian data training yang berbeda. "
                            "Data testing 20% disimpan terpisah dan tidak masuk ke lima fold ini.")
                 _cv_show = CVDET.rename(columns={"Fold": "Session"}).replace({"Model": MODEL_NAMES})
                 _cv_pivot = _cv_show.pivot(index="Session", columns="Model", values="F1").reset_index()
                 _cv_pivot = _cv_pivot.rename(
                     columns={c: f"Nilai F1 {c}" for c in _cv_pivot.columns if c != "Session"})
-                # Mapping fold standar sklearn: session k -> test fold k, train = sisanya
                 _fold_map = {
                     1: ("2, 3, 4, 5", "1"),
                     2: ("1, 3, 4, 5", "2"),
@@ -677,32 +538,36 @@ with tab3:
                 }
                 _cv_pivot["Train Fold"] = _cv_pivot["Session"].map(lambda s: _fold_map.get(s, ("-", "-"))[0])
                 _cv_pivot["Validation Fold"] = _cv_pivot["Session"].map(lambda s: _fold_map.get(s, ("-", "-"))[1])
-                # Urutan kolom: Session, Train, Test, baru nilai F1
                 _f1_cols = [c for c in _cv_pivot.columns if c.startswith("Nilai F1")]
                 _cv_pivot = _cv_pivot[["Session", "Train Fold", "Validation Fold"] + _f1_cols]
                 st.dataframe(_cv_pivot, width="stretch", hide_index=True)
+
                 fig0, ax0 = plt.subplots(figsize=(6.5, 2.6))
                 for m in CVDET["Model"].unique():
                     d = CVDET[CVDET["Model"] == m].sort_values("Fold")
-                    ax0.plot(d["Fold"], d["F1"], marker="o", label=MODEL_NAMES.get(m, m), linewidth=2.2, markersize=4)
+                    ax0.plot(d["Fold"], d["F1"], marker="o", label=MODEL_NAMES.get(m, m),
+                             linewidth=2, markersize=4,
+                             color=TOK["accent"] if m == BEST else TOK["ramp6"])
                 ax0.set_xticks([1, 2, 3, 4, 5])
                 ax0.set_xlabel("Sesi validasi", fontsize=9)
                 ax0.set_ylabel("F1", fontsize=9)
                 ax0.tick_params(labelsize=8)
-                _leg0 = ax0.legend(fontsize=8, frameon=False, loc="best", labelcolor="white")
-                for _t in _leg0.get_texts():
-                    _t.set_color("white")
-                ax0.grid(alpha=.2)
+                ax0.legend(fontsize=8, frameon=False, loc="best")
+                for text in ax0.get_legend().get_texts():
+                    text.set_color(TOK["muted"])
+                ax0.grid(axis="y", alpha=.25, color=TOK["rule"])
                 style_fig(fig0, ax0)
                 plt.tight_layout()
-                st.pyplot(fig0)
+                st.pyplot(fig0, width="stretch")
                 plt.close(fig0)
 
     with st.container(border=True):
-        st.markdown("### ⭐ Hubungan Fitur dengan Prediksi")
-        st.caption("Grafik ini menampilkan koefisien model sebelum kalibrasi. Merah menunjukkan "
-                   "hubungan positif dengan churn, hijau hubungan negatif, ketika fitur lain tetap. "
-                   "Hubungan ini tidak membuktikan sebab-akibat.")
+        st.markdown(ui.section("Hubungan Fitur dengan Prediksi", "linechart",
+                               "Grafik ini menampilkan koefisien model sebelum kalibrasi. Panjang "
+                               "batang ke kanan menunjukkan hubungan positif dengan churn, ke kiri "
+                               "hubungan negatif, ketika fitur lain tetap. Hubungan ini tidak "
+                               "membuktikan sebab-akibat."),
+                    unsafe_allow_html=True)
         with st.expander("Catatan tentang koefisien"):
             st.write("Koefisien Logistic Regression bekerja pada skala log-odds. Angka dan kategori "
                      "diproses dengan cara berbeda, sehingga besar bobotnya tidak bisa langsung "
@@ -718,24 +583,25 @@ with tab3:
                 imp["Abs"] = imp["Bobot"].abs()
                 top = imp.sort_values("Abs", ascending=False).head(15).sort_values("Bobot")
                 fig2, ax2 = plt.subplots(figsize=(8, 5))
-                colors = ["#EF4444" if v > 0 else "#10B981" for v in top["Bobot"]]
+                colors = [TOK["accent"] if v > 0 else TOK["ramp6"] for v in top["Bobot"]]
                 ax2.barh(top["Fitur"], top["Bobot"], color=colors, edgecolor="none", height=.6)
+                ax2.axvline(0, color=TOK["rule"], linewidth=1)
                 ax2.set_xlabel("Koefisien model (log-odds)")
-                ax2.grid(axis="x", alpha=.2)
+                ax2.grid(axis="x", alpha=.25, color=TOK["rule"])
                 style_fig(fig2, ax2)
                 plt.tight_layout()
-                st.pyplot(fig2)
+                st.pyplot(fig2, width="stretch")
                 plt.close(fig2)
                 st.dataframe(top.drop(columns="Abs"), width="stretch", hide_index=True)
             else:
                 imp = pd.DataFrame({"Fitur": clean, "Importance": clf.feature_importances_})
                 top = imp.sort_values("Importance", ascending=False).head(15).sort_values("Importance")
                 fig2, ax2 = plt.subplots(figsize=(8, 5))
-                ax2.barh(top["Fitur"], top["Importance"], color="#7C3AED", height=.6)
+                ax2.barh(top["Fitur"], top["Importance"], color=TOK["accent"], height=.6)
                 ax2.set_xlabel("Importance")
                 style_fig(fig2, ax2)
                 plt.tight_layout()
-                st.pyplot(fig2)
+                st.pyplot(fig2, width="stretch")
                 plt.close(fig2)
                 st.dataframe(top, width="stretch", hide_index=True)
         except Exception as e:
@@ -754,34 +620,39 @@ with tab3:
                  "TETAP berarti diprediksi tidak churn, bukan jaminan pelanggan akan terus "
                  "berlangganan. Saran penawaran juga belum diuji efektivitasnya.")
 
+# ---------- TAB 4: EDA & dokumentasi ----------
 with tab4:
-    st.markdown("### 🔎 Mengenal Data Pelanggan (EDA)")
+    st.markdown(ui.section("Mengenal Data Pelanggan", "search",
+                           "EDA adalah pemeriksaan awal untuk memahami isi dan pola data sebelum "
+                           "membuat model. Grafik hubungan dengan churn memakai data training "
+                           "saja; data testing disimpan untuk pengujian akhir."),
+                unsafe_allow_html=True)
     eda_dir = BASE / "docs" / "eda(explaratory data analysis)"
     if (eda_dir / "summary.json").exists():
         summary = json.loads((eda_dir / "summary.json").read_text(encoding="utf-8"))
-        st.caption("EDA adalah pemeriksaan awal untuk memahami isi dan pola data sebelum membuat model. "
-                   "Grafik hubungan dengan churn menggunakan data training saja; data testing disimpan "
-                   "untuk pengujian akhir.")
-        st.write(f"Dari **{count_text(summary['raw_rows'])} data**, tersisa "
-                 f"**{count_text(summary['clean_rows'])} data setelah dibersihkan**. "
-                 f"Model menggunakan {summary['input_features']} fitur. "
-                 "Churn Yes berarti berhenti berlangganan, sedangkan No berarti tidak churn.")
+        st.markdown(
+            f"Dari **{count_text(summary['raw_rows'])} data**, tersisa "
+            f"**{count_text(summary['clean_rows'])} data setelah dibersihkan**. "
+            f"Model menggunakan {summary['input_features']} fitur. "
+            "Churn Yes berarti berhenti berlangganan, sedangkan No berarti tidak churn.")
         with st.expander("Isi dataset dan hasil pemeriksaan data"):
             st.markdown("**Arti setiap variabel**")
             st.dataframe(pd.read_csv(eda_dir / "data_dictionary.csv"), width="stretch", hide_index=True)
             st.markdown("**Mengapa TotalCharges dihapus?**")
-            st.write("TotalCharges adalah total tagihan selama berlangganan. Kolom ini tidak digunakan "
-                     "sebagai fitur agar pengguna cukup mengisi lama berlangganan (tenure) dan tagihan "
-                     "bulanan (MonthlyCharges), tanpa perlu mencari total tagihan dari seluruh riwayat pembayaran.")
-            st.write("TotalCharges juga berkaitan erat dengan tenure, sehingga sebagian informasinya "
-                     "beririsan dengan fitur yang tetap digunakan. Namun, nilainya tidak selalu sama "
-                     "dengan MonthlyCharges × tenure. Penghapusan ini merupakan pilihan untuk menyederhanakan "
-                     "input; kami belum membandingkan performa model dengan dan tanpa TotalCharges.")
+            st.write("TotalCharges adalah total tagihan selama berlangganan. Kolom ini tidak "
+                     "digunakan sebagai fitur agar pengguna cukup mengisi lama berlangganan "
+                     "(tenure) dan tagihan bulanan (MonthlyCharges), tanpa perlu mencari total "
+                     "tagihan dari seluruh riwayat pembayaran.")
+            st.write("TotalCharges juga berkaitan erat dengan tenure, sehingga sebagian "
+                     "informasinya beririsan dengan fitur yang tetap digunakan. Namun, nilainya "
+                     "tidak selalu sama dengan MonthlyCharges × tenure. Penghapusan ini merupakan "
+                     "pilihan untuk menyederhanakan input; kami belum membandingkan performa model "
+                     "dengan dan tanpa TotalCharges.")
             st.caption("Menghapus kolom berbeda dengan menghapus baris: pada tahap cleaning, 11 baris "
-                       "dengan TotalCharges kosong lebih dulu dihapus untuk mempertahankan data pemodelan "
-                       "yang sama dengan eksperimen awal. Setelah itu, kolom TotalCharges dibuang. "
-                       "Jika kolom tersebut sejak awal tidak dipakai, nilai kosongnya saja tidak "
-                       "mengharuskan baris data ikut dihapus.")
+                       "dengan TotalCharges kosong lebih dulu dihapus untuk mempertahankan data "
+                       "pemodelan yang sama dengan eksperimen awal. Setelah itu, kolom TotalCharges "
+                       "dibuang. Jika kolom tersebut sejak awal tidak dipakai, nilai kosongnya saja "
+                       "tidak mengharuskan baris data ikut dihapus.")
             st.markdown("**Ringkasan statistik**")
             st.dataframe(pd.read_csv(eda_dir / "descriptive_statistics.csv"), width="stretch", hide_index=True)
             st.markdown("**Data yang kosong (missing value)**")
@@ -796,8 +667,8 @@ with tab4:
                 "test_features_matching_train": "Pelanggan testing dengan profil fitur yang sama seperti training",
             }
             st.dataframe(pd.DataFrame([(duplicate_labels.get(key, key), value)
-                                      for key, value in summary["duplicates"].items()],
-                                     columns=["Pemeriksaan", "Jumlah"]),
+                                       for key, value in summary["duplicates"].items()],
+                                      columns=["Pemeriksaan", "Jumlah"]),
                          width="stretch", hide_index=True)
             st.markdown("**Nilai yang jauh dari pola umum (outlier)**")
             st.dataframe(pd.read_csv(eda_dir / "outliers_iqr.csv"), width="stretch", hide_index=True)
@@ -811,12 +682,15 @@ with tab4:
             st.caption(figure["interpretation"])
     else:
         st.info("Grafik EDA belum tersedia. Jalankan `python eda.py` untuk membuatnya.")
-    st.markdown("### 📚 Laporan Kelompok 12 — Kelas B2")
+
+    st.markdown(ui.section("Dokumentasi Kelompok 12", "doc"), unsafe_allow_html=True)
     repo_docs = "https://github.com/makhdanramadhan-ui/Machine-Learning-Project/blob/main/docs/"
     st.markdown(f"- [Laporan EDA]({repo_docs}eda%28explaratory%20data%20analysis%29/EDA.md)\n"
                 f"- [Lima jurnal dan tabel studi literatur]({repo_docs}STUDI_LITERATUR.md)\n"
                 f"- [PPT laporan]({repo_docs}ML2026_B2_Kelompok12_PrediksiCustomerChurn.pptx)")
 
-st.markdown("<div class='footer'>Kelompok 12 • B2 • Muhamad Akhdan Ramadhan (J0404241102) • "
-            "Thevan Erlangga (J0404241073) • Fachri Abyasa Tarid (J0404241136)</div>",
-            unsafe_allow_html=True)
+st.markdown(
+    '<div class="sheet-foot">Kelompok 12 · B2 · Muhamad Akhdan Ramadhan (J0404241102) · '
+    'Thevan Erlangga (J0404241073) · Fachri Abyasa Tarid (J0404241136)</div>',
+    unsafe_allow_html=True,
+)

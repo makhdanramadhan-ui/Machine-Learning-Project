@@ -1,0 +1,539 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-21T16:41:26+07:00",
+  "title": "Design System: Prediksi Customer Churn — Telco",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Kertas Gambar",
+        "canonical": "#F7F6F2",
+        "tonalRamp": ["#0C0B09", "#262522", "#43423F", "#62615E", "#83827F", "#A6A5A1", "#CAC9C5", "#EFEEEA"]
+      },
+      "paper-dark": {
+        "role": "neutral",
+        "displayName": "Kertas Gambar — Gelap",
+        "canonical": "#14161A",
+        "tonalRamp": ["#090B0F", "#232529", "#404247", "#5F6166", "#808288", "#A2A5AB", "#C6C9CF", "#EBEEF4"]
+      },
+      "sheet": {
+        "role": "neutral",
+        "displayName": "Lembar Panel",
+        "canonical": "#FFFFFF",
+        "tonalRamp": ["#0B0B0B", "#252525", "#424242", "#616161", "#828282", "#A5A5A5", "#C9C9C9", "#EEEEEE"]
+      },
+      "sheet-dark": {
+        "role": "neutral",
+        "displayName": "Lembar Panel — Gelap",
+        "canonical": "#1B1E23",
+        "tonalRamp": ["#090B10", "#22252A", "#3F4248", "#5E6167", "#7F8289", "#A1A5AC", "#C5C9D0", "#EAEFF6"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Tinta",
+        "canonical": "#16181A",
+        "tonalRamp": ["#0A0B0D", "#232527", "#404245", "#5F6164", "#808385", "#A3A5A8", "#C7C9CC", "#ECEFF2"]
+      },
+      "ink-dark": {
+        "role": "neutral",
+        "displayName": "Tinta — Gelap",
+        "canonical": "#E9E7E2",
+        "tonalRamp": ["#0C0B08", "#262521", "#43423E", "#63615D", "#84827E", "#A7A5A0", "#CBC9C4", "#F0EEE9"]
+      },
+      "ink2": {
+        "role": "neutral",
+        "displayName": "Tinta Ringan",
+        "canonical": "#3C3F45",
+        "tonalRamp": ["#090B10", "#22252B", "#3F4248", "#5E6168", "#7F8289", "#A1A5AC", "#C5C9D1", "#EBEFF6"]
+      },
+      "ink2-dark": {
+        "role": "neutral",
+        "displayName": "Tinta Ringan — Gelap",
+        "canonical": "#C6C4BE",
+        "tonalRamp": ["#0C0B07", "#262520", "#44423D", "#63615C", "#84827D", "#A7A59F", "#CBC9C3", "#F0EEE8"]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Tinta Bisu",
+        "canonical": "#6B6A64",
+        "tonalRamp": ["#0C0B07", "#262520", "#43423D", "#62615B", "#83827C", "#A6A59F", "#CAC9C3", "#F0EFE8"]
+      },
+      "muted-dark": {
+        "role": "neutral",
+        "displayName": "Tinta Bisu — Gelap",
+        "canonical": "#8E8C86",
+        "tonalRamp": ["#0D0B07", "#272520", "#44423D", "#63615B", "#84827C", "#A7A59F", "#CBC9C3", "#F1EEE8"]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Garis Rambut",
+        "canonical": "#C9C4B8",
+        "tonalRamp": ["#0E0B04", "#29251B", "#464238", "#656156", "#878277", "#A9A599", "#CEC9BD", "#F3EEE2"]
+      },
+      "rule-dark": {
+        "role": "neutral",
+        "displayName": "Garis Rambut — Gelap",
+        "canonical": "#33373E",
+        "tonalRamp": ["#080B11", "#21252C", "#3E4249", "#5D6169", "#7E838B", "#A0A5AE", "#C4C9D2", "#EAEFF8"]
+      },
+      "rule-soft": {
+        "role": "neutral",
+        "displayName": "Garis Rambut Halus",
+        "canonical": "#E3E0D8",
+        "tonalRamp": ["#0D0B06", "#27251F", "#44423B", "#64615A", "#85827B", "#A8A59D", "#CCC9C1", "#F1EEE6"]
+      },
+      "rule-soft-dark": {
+        "role": "neutral",
+        "displayName": "Garis Rambut Halus — Gelap",
+        "canonical": "#262A30",
+        "tonalRamp": ["#080B10", "#21252B", "#3E4249", "#5D6268", "#7E838A", "#A0A5AD", "#C4C9D1", "#E9EFF7"]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Tinta Biru Teknis",
+        "canonical": "#1F4FD8",
+        "tonalRamp": ["#000035", "#01027A", "#0527B1", "#2050D9", "#4377FA", "#79A2FD", "#AFC9FE", "#E7EFFF"]
+      },
+      "accent-dark": {
+        "role": "primary",
+        "displayName": "Tinta Biru Teknis — Gelap",
+        "canonical": "#7E9BFF",
+        "tonalRamp": ["#030033", "#10106C", "#263590", "#4158B5", "#607ADB", "#839FFD", "#B5C7FF", "#E8EEFF"]
+      },
+      "accent-ink": {
+        "role": "primary",
+        "displayName": "Tinta di Atas Biru",
+        "canonical": "#FFFFFF",
+        "tonalRamp": ["#0B0B0B", "#252525", "#424242", "#616161", "#828282", "#A5A5A5", "#C9C9C9", "#EEEEEE"]
+      },
+      "accent-ink-dark": {
+        "role": "primary",
+        "displayName": "Tinta di Atas Biru — Gelap",
+        "canonical": "#14161A",
+        "tonalRamp": ["#090B0F", "#232529", "#404247", "#5F6166", "#808288", "#A2A5AB", "#C6C9CF", "#EBEEF4"]
+      },
+      "accent-soft": {
+        "role": "primary",
+        "displayName": "Biru Pudar",
+        "canonical": "#E4EAFB",
+        "tonalRamp": ["#070B15", "#202531", "#3D424F", "#5C616F", "#7D8291", "#9FA5B5", "#C3C9D9", "#E8EEFE"]
+      },
+      "accent-soft-dark": {
+        "role": "primary",
+        "displayName": "Biru Pudar — Gelap",
+        "canonical": "#1E2740",
+        "tonalRamp": ["#04091F", "#1B243D", "#37415C", "#55617D", "#7682A0", "#98A5C4", "#BCC9EA", "#E8EEFF"]
+      },
+      "danger": {
+        "role": "secondary",
+        "displayName": "Merah Bahaya",
+        "canonical": "#B3272D",
+        "tonalRamp": ["#1F0001", "#4D0007", "#7E0A16", "#AF232A", "#D74C4B", "#FC7570", "#FEB3AD", "#FFE9E6"]
+      },
+      "danger-dark": {
+        "role": "secondary",
+        "displayName": "Merah Bahaya — Gelap",
+        "canonical": "#E8746F",
+        "tonalRamp": ["#1F0001", "#4D0008", "#7D0B17", "#A33636", "#CA5A56", "#F27D78", "#FEB3AD", "#FEE9E7"]
+      },
+      "ramp1": {
+        "role": "neutral",
+        "displayName": "Nada 1 — Dekat Lembar",
+        "canonical": "#EDEBE4",
+        "tonalRamp": ["#3A3833", "#5F5B53", "#817D73", "#A19D92", "#BCB8AD", "#CFCCC2", "#DFDCD4", "#EDEBE4"]
+      },
+      "ramp1-dark": {
+        "role": "neutral",
+        "displayName": "Nada 1 — Dekat Lembar, Gelap",
+        "canonical": "#232830",
+        "tonalRamp": ["#232830", "#2B3039", "#383D46", "#4B515A", "#686E77", "#888F97", "#ACB0B4", "#D2D0CA"]
+      },
+      "ramp2": {
+        "role": "neutral",
+        "displayName": "Nada 2",
+        "canonical": "#D9D6CD",
+        "tonalRamp": ["#3A3833", "#5F5B53", "#817D73", "#A19D92", "#BCB8AD", "#CFCCC2", "#DFDCD4", "#EDEBE4"]
+      },
+      "ramp2-dark": {
+        "role": "neutral",
+        "displayName": "Nada 2 — Gelap",
+        "canonical": "#2E333C",
+        "tonalRamp": ["#232830", "#2B3039", "#383D46", "#4B515A", "#686E77", "#888F97", "#ACB0B4", "#D2D0CA"]
+      },
+      "ramp4": {
+        "role": "neutral",
+        "displayName": "Nada 4",
+        "canonical": "#C2BEB3",
+        "tonalRamp": ["#3A3833", "#5F5B53", "#817D73", "#A19D92", "#BCB8AD", "#CFCCC2", "#DFDCD4", "#EDEBE4"]
+      },
+      "ramp4-dark": {
+        "role": "neutral",
+        "displayName": "Nada 4 — Gelap",
+        "canonical": "#454B54",
+        "tonalRamp": ["#232830", "#2B3039", "#383D46", "#4B515A", "#686E77", "#888F97", "#ACB0B4", "#D2D0CA"]
+      },
+      "ramp6": {
+        "role": "neutral",
+        "displayName": "Nada 6",
+        "canonical": "#9C988D",
+        "tonalRamp": ["#3A3833", "#5F5B53", "#817D73", "#A19D92", "#BCB8AD", "#CFCCC2", "#DFDCD4", "#EDEBE4"]
+      },
+      "ramp6-dark": {
+        "role": "neutral",
+        "displayName": "Nada 6 — Gelap",
+        "canonical": "#6E747D",
+        "tonalRamp": ["#232830", "#2B3039", "#383D46", "#4B515A", "#686E77", "#888F97", "#ACB0B4", "#D2D0CA"]
+      },
+      "ramp8": {
+        "role": "neutral",
+        "displayName": "Nada 8",
+        "canonical": "#6E6A61",
+        "tonalRamp": ["#3A3833", "#5F5B53", "#817D73", "#A19D92", "#BCB8AD", "#CFCCC2", "#DFDCD4", "#EDEBE4"]
+      },
+      "ramp8-dark": {
+        "role": "neutral",
+        "displayName": "Nada 8 — Gelap",
+        "canonical": "#9DA3AB",
+        "tonalRamp": ["#232830", "#2B3039", "#383D46", "#4B515A", "#686E77", "#888F97", "#ACB0B4", "#D2D0CA"]
+      },
+      "ramp10": {
+        "role": "neutral",
+        "displayName": "Nada 10 — Dekat Tinta",
+        "canonical": "#3A3833",
+        "tonalRamp": ["#3A3833", "#5F5B53", "#817D73", "#A19D92", "#BCB8AD", "#CFCCC2", "#DFDCD4", "#EDEBE4"]
+      },
+      "ramp10-dark": {
+        "role": "neutral",
+        "displayName": "Nada 10 — Dekat Tinta, Gelap",
+        "canonical": "#D2D0CA",
+        "tonalRamp": ["#232830", "#2B3039", "#383D46", "#4B515A", "#686E77", "#888F97", "#ACB0B4", "#D2D0CA"]
+      },
+      "band-low-bg": {
+        "role": "neutral",
+        "displayName": "Pita Rendah — Isian",
+        "canonical": "#EDEBE4",
+        "tonalRamp": ["#3A3833", "#5F5B53", "#817D73", "#A19D92", "#BCB8AD", "#CFCCC2", "#DFDCD4", "#EDEBE4"]
+      },
+      "band-low-bg-dark": {
+        "role": "neutral",
+        "displayName": "Pita Rendah — Isian, Gelap",
+        "canonical": "#232830",
+        "tonalRamp": ["#232830", "#2B3039", "#383D46", "#4B515A", "#686E77", "#888F97", "#ACB0B4", "#D2D0CA"]
+      },
+      "band-low-fg": {
+        "role": "neutral",
+        "displayName": "Pita Rendah — Teks",
+        "canonical": "#16181A",
+        "tonalRamp": ["#0A0B0D", "#232527", "#404245", "#5F6164", "#808385", "#A3A5A8", "#C7C9CC", "#ECEFF2"]
+      },
+      "band-low-fg-dark": {
+        "role": "neutral",
+        "displayName": "Pita Rendah — Teks, Gelap",
+        "canonical": "#E9E7E2",
+        "tonalRamp": ["#0C0B08", "#262521", "#43423E", "#63615D", "#84827E", "#A7A5A0", "#CBC9C4", "#F0EEE9"]
+      },
+      "band-mid-bg": {
+        "role": "neutral",
+        "displayName": "Pita Sedang — Isian",
+        "canonical": "#C2BEB3",
+        "tonalRamp": ["#3A3833", "#5F5B53", "#817D73", "#A19D92", "#BCB8AD", "#CFCCC2", "#DFDCD4", "#EDEBE4"]
+      },
+      "band-mid-bg-dark": {
+        "role": "neutral",
+        "displayName": "Pita Sedang — Isian, Gelap",
+        "canonical": "#454B54",
+        "tonalRamp": ["#232830", "#2B3039", "#383D46", "#4B515A", "#686E77", "#888F97", "#ACB0B4", "#D2D0CA"]
+      },
+      "band-mid-fg": {
+        "role": "neutral",
+        "displayName": "Pita Sedang — Teks",
+        "canonical": "#16181A",
+        "tonalRamp": ["#0A0B0D", "#232527", "#404245", "#5F6164", "#808385", "#A3A5A8", "#C7C9CC", "#ECEFF2"]
+      },
+      "band-mid-fg-dark": {
+        "role": "neutral",
+        "displayName": "Pita Sedang — Teks, Gelap",
+        "canonical": "#E9E7E2",
+        "tonalRamp": ["#0C0B08", "#262521", "#43423E", "#63615D", "#84827E", "#A7A5A0", "#CBC9C4", "#F0EEE9"]
+      },
+      "band-high-bg": {
+        "role": "neutral",
+        "displayName": "Pita Tinggi — Isian",
+        "canonical": "#16181A",
+        "tonalRamp": ["#3A3833", "#5F5B53", "#817D73", "#A19D92", "#BCB8AD", "#CFCCC2", "#DFDCD4", "#EDEBE4"]
+      },
+      "band-high-bg-dark": {
+        "role": "neutral",
+        "displayName": "Pita Tinggi — Isian, Gelap",
+        "canonical": "#E9E7E2",
+        "tonalRamp": ["#232830", "#2B3039", "#383D46", "#4B515A", "#686E77", "#888F97", "#ACB0B4", "#D2D0CA"]
+      },
+      "band-high-fg": {
+        "role": "neutral",
+        "displayName": "Pita Tinggi — Teks",
+        "canonical": "#FFFFFF",
+        "tonalRamp": ["#0B0B0B", "#252525", "#424242", "#616161", "#828282", "#A5A5A5", "#C9C9C9", "#EEEEEE"]
+      },
+      "band-high-fg-dark": {
+        "role": "neutral",
+        "displayName": "Pita Tinggi — Teks, Gelap",
+        "canonical": "#14161A",
+        "tonalRamp": ["#090B0F", "#232529", "#404247", "#5F6166", "#808288", "#A2A5AB", "#C6C9CF", "#EBEEF4"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Angka Vonis",
+        "purpose": "Angka probabilitas pada blok vonis, 2,5rem, satu-satunya angka sebesar ini di layar."
+      },
+      "headline": {
+        "displayName": "Nama Produk",
+        "purpose": "Judul aplikasi di kepala lembar, 1,32rem, 700."
+      },
+      "title": {
+        "displayName": "Nilai Title Block",
+        "purpose": "Nilai metrik pada title block dan judul bagian, 1,02rem, 600, angka tabular."
+      },
+      "body": {
+        "displayName": "Teks Isi",
+        "purpose": "Paragraf, isian formulir, kalimat daftar saran, dan isi panel."
+      },
+      "label": {
+        "displayName": "Label Terukur",
+        "purpose": "Kunci sel, strip mikro, label skala, dan tick; JetBrains Mono huruf besar dengan tracking lebar."
+      },
+      "mono": {
+        "displayName": "Mono Isi",
+        "purpose": "Blok kode, keluaran JSON, dan teks teknis yang ditampilkan apa adanya."
+      },
+      "control": {
+        "displayName": "Teks Tombol",
+        "purpose": "Label tombol primer dan sekunder, 0,84rem, 600."
+      },
+      "metric": {
+        "displayName": "Angka Matriks",
+        "purpose": "Angka pada sel matriks konfusi, 1,55rem, 650, angka tabular."
+      },
+      "caption": {
+        "displayName": "Keterangan",
+        "purpose": "Keterangan plate EDA dan teks penjelasan pendek, 0,78rem."
+      },
+      "field-label": {
+        "displayName": "Label Isian",
+        "purpose": "Label kontrol di atas kolom isian, 0.74rem, 500, warna bisu."
+      },
+      "switch": {
+        "displayName": "Teks Pengalih",
+        "purpose": "Tombol Terang/Gelap pada pengalih tema, 0.72rem, 600."
+      },
+      "micro-label": {
+        "displayName": "Label Skala",
+        "purpose": "Label pita pada skala risiko dan tick skala, 0.58rem, JetBrains Mono huruf besar dengan tracking lebar."
+      },
+      "scale-readout": {
+        "displayName": "Bacaan Skala",
+        "purpose": "Angka kecil pada skala probabilitas, 0.66rem, JetBrains Mono, 600."
+      },
+      "marker-chip": {
+        "displayName": "Chip Penanda",
+        "purpose": "Nilai probabilitas pada chip penanda di atas skala, 0.68rem, JetBrains Mono, 600."
+      },
+      "unit": {
+        "displayName": "Satuan Persen",
+        "purpose": "Tanda persen pada angka vonis, 1.15rem, 600, warna bisu."
+      },
+      "display-compact": {
+        "displayName": "Vonis Layar Kecil",
+        "purpose": "Angka vonis pada layar di bawah 900px, 2.1rem, 700. Satu-satunya ukuran yang berubah per breakpoint."
+      }
+    },
+    "shadows": [
+      {
+        "name": "focus-ring",
+        "value": "0 0 0 2px var(--accent-soft)",
+        "purpose": "Cincin fokus pada selectbox, number input, dan text input. Bukan bayangan: cincin datar di warna aksen pudar."
+      },
+      {
+        "name": "focus-outline",
+        "value": "outline: 2px solid var(--accent); outline-offset: 2px",
+        "purpose": "Garis fokus global untuk tombol, rail tab, dan elemen lain yang menerima :focus-visible."
+      }
+    ],
+    "motion": [
+      {
+        "name": "transition-control",
+        "value": "background .12s ease, border-color .12s ease",
+        "purpose": "Transisi tunggal pada tombol: latar dan garis berubah bersama, tanpa transformasi."
+      },
+      {
+        "name": "transition-tab",
+        "value": "color .12s ease",
+        "purpose": "Transisi warna label rail tab; indikator 2px berpindah seketika."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "900px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Title Block",
+      "kind": "custom",
+      "refersTo": "title-block",
+      "description": "Pita sembilan sel berhairline yang membawa identitas model, dengan strip mikro di bawahnya.",
+      "html": "<div class='ds-title-block'>\n  <div class='ds-tb-grid'>\n    <div class='ds-tb-cell'><span class='ds-tb-key'>Model</span><span class='ds-tb-val sm'>Logistic Regression</span></div>\n    <div class='ds-tb-cell'><span class='ds-tb-key'>Ambang</span><span class='ds-tb-val'>0,32</span></div>\n    <div class='ds-tb-cell'><span class='ds-tb-key'>CV-F1</span><span class='ds-tb-val'>0,6304</span></div>\n    <div class='ds-tb-cell'><span class='ds-tb-key'>Akurasi</span><span class='ds-tb-val'>0,7569</span></div>\n    <div class='ds-tb-cell'><span class='ds-tb-key'>Precision</span><span class='ds-tb-val'>0,5309</span></div>\n    <div class='ds-tb-cell'><span class='ds-tb-key'>Recall</span><span class='ds-tb-val'>0,7353</span></div>\n    <div class='ds-tb-cell'><span class='ds-tb-key'>F1</span><span class='ds-tb-val'>0,6166</span></div>\n    <div class='ds-tb-cell'><span class='ds-tb-key'>ROC-AUC</span><span class='ds-tb-val'>0,8324</span></div>\n    <div class='ds-tb-cell'><span class='ds-tb-key'>Brier</span><span class='ds-tb-val'>0,1414</span></div>\n  </div>\n  <div class='ds-tb-strip'>\n    <span>Data latih<b>5.625</b></span>\n    <span>Data uji<b>1.407</b></span>\n    <span>Fitur<b>18</b></span>\n    <span>Kalibrasi<b>Sigmoid, 5 fold</b></span>\n    <span>Sklearn<b>1.9.1</b></span>\n    <span>SHA-256 model<b>97b83e12f3fd</b></span>\n  </div>\n</div>",
+      "css": ".ds-title-block { border: 1px solid var(--rule, #C9C4B8); border-radius: 8px; overflow: hidden; background: var(--sheet, #FFFFFF); }\n.ds-tb-grid { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); }\n.ds-tb-cell { padding: .6rem .75rem .62rem; border-right: 1px solid var(--rule-soft, #E3E0D8); border-bottom: 1px solid var(--rule-soft, #E3E0D8); min-width: 0; }\n.ds-tb-cell:last-child { border-right: none; }\n.ds-tb-key { display: block; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .625rem; font-weight: 500; letter-spacing: .11em; text-transform: uppercase; color: var(--muted, #6B6A64); margin-bottom: .2rem; }\n.ds-tb-val { display: block; font-size: 1.02rem; font-weight: 600; color: var(--ink, #16181A); font-variant-numeric: tabular-nums; letter-spacing: -.015em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }\n.ds-tb-val.sm { font-size: .8rem; }\n.ds-tb-strip { display: flex; flex-wrap: wrap; gap: 0 1.5rem; padding: .5rem .75rem; border-top: 1px solid var(--rule-soft, #E3E0D8); background: var(--paper, #F7F6F2); }\n.ds-tb-strip span { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .625rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted, #6B6A64); }\n.ds-tb-strip b { color: var(--ink, #16181A); font-weight: 600; margin-left: .34rem; font-variant-numeric: tabular-nums; }\n.ds-dark .ds-title-block { background: #1B1E23; border-color: #33373E; }\n.ds-dark .ds-tb-cell { border-color: #262A30; }\n.ds-dark .ds-tb-key, .ds-dark .ds-tb-strip span { color: #8E8C86; }\n.ds-dark .ds-tb-val, .ds-dark .ds-tb-strip b { color: #E9E7E2; }\n.ds-dark .ds-tb-strip { background: #14161A; border-color: #262A30; }"
+    },
+    {
+      "name": "Tombol Primer",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Tombol tinta penuh untuk aksi utama, misalnya Prediksi.",
+      "html": "<button class='ds-btn-primary' type='button'>Prediksi</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: .45rem; border: 1px solid var(--ink, #16181A); border-radius: 6px; background: var(--ink, #16181A); color: var(--paper, #F7F6F2); font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; font-size: .84rem; font-weight: 600; letter-spacing: -.005em; padding: .5rem 1rem; cursor: pointer; transition: background .12s ease, border-color .12s ease; }\n.ds-btn-primary:hover { background: var(--ink2, #3C3F45); border-color: var(--ink2, #3C3F45); }\n.ds-btn-primary:focus-visible { outline: 2px solid var(--accent, #1F4FD8); outline-offset: 2px; }\n.ds-btn-primary:active { background: var(--ink2, #3C3F45); }\n.ds-btn-primary:disabled { opacity: .45; cursor: not-allowed; }\n.ds-dark .ds-btn-primary { background: #E9E7E2; border-color: #E9E7E2; color: #14161A; }\n.ds-dark .ds-btn-primary:hover { background: #C6C4BE; border-color: #C6C4BE; color: #14161A; }"
+    },
+    {
+      "name": "Tombol Sekunder",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Tombol berbingkai hairline untuk aksi penunjang, misalnya unduh template CSV.",
+      "html": "<button class='ds-btn-secondary' type='button'>Unduh template CSV</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; gap: .45rem; border: 1px solid var(--rule, #C9C4B8); border-radius: 6px; background: var(--sheet, #FFFFFF); color: var(--ink, #16181A); font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; font-size: .84rem; font-weight: 600; letter-spacing: -.005em; padding: .5rem 1rem; cursor: pointer; transition: background .12s ease, border-color .12s ease; }\n.ds-btn-secondary:hover { background: var(--paper, #F7F6F2); border-color: var(--ink2, #3C3F45); }\n.ds-btn-secondary:focus-visible { outline: 2px solid var(--accent, #1F4FD8); outline-offset: 2px; }\n.ds-btn-secondary:active { background: var(--paper, #F7F6F2); }\n.ds-dark .ds-btn-secondary { background: #1B1E23; border-color: #33373E; color: #E9E7E2; }\n.ds-dark .ds-btn-secondary:hover { background: #14161A; border-color: #C6C4BE; }"
+    },
+    {
+      "name": "Kolom Isian",
+      "kind": "input",
+      "refersTo": "input-text",
+      "description": "Satu kolom isian dengan label bisu di atas dan cincin fokus aksen.",
+      "html": "<label class='ds-field'>\n  <span class='ds-field-label'>Lama Berlangganan (bulan)</span>\n  <input class='ds-input' type='text' value='12' />\n</label>",
+      "css": ".ds-field { display: block; max-width: 18rem; font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; }\n.ds-field-label { display: block; font-size: .74rem; font-weight: 500; color: var(--muted, #6B6A64); letter-spacing: .005em; margin-bottom: .18rem; }\n.ds-input { width: 100%; background: var(--sheet, #FFFFFF); color: var(--ink, #16181A); border: 1px solid var(--rule, #C9C4B8); border-radius: 6px; font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; font-size: .85rem; padding: .45rem .6rem; box-shadow: none; transition: border-color .12s ease, box-shadow .12s ease; }\n.ds-input:hover { border-color: var(--ink2, #3C3F45); }\n.ds-input:focus { border-color: var(--accent, #1F4FD8); outline: none; box-shadow: 0 0 0 2px var(--accent-soft, #E4EAFB); }\n.ds-input::placeholder { color: var(--muted, #6B6A64); }\n.ds-dark .ds-input { background: #1B1E23; border-color: #33373E; color: #E9E7E2; }\n.ds-dark .ds-field-label { color: #8E8C86; }"
+    },
+    {
+      "name": "Rail Tab",
+      "kind": "nav",
+      "refersTo": "tab-rail",
+      "description": "Empat area kerja dengan ikon garis 15px dan indikator aktif 2px.",
+      "html": "<div class='ds-tabs' role='tablist'>\n  <button class='ds-tab' role='tab' aria-selected='true' type='button'>\n    <svg class='ds-ico' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><circle cx='12' cy='8' r='4'/><path d='M4 21a8 8 0 0 1 16 0'/></svg>\n    Prediksi Single\n  </button>\n  <button class='ds-tab' role='tab' aria-selected='false' type='button'>\n    <svg class='ds-ico' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M12 16V4M7 9l5-5 5 5'/><path d='M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3'/></svg>\n    Prediksi Batch (CSV)\n  </button>\n  <button class='ds-tab' role='tab' aria-selected='false' type='button'>\n    <svg class='ds-ico' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M4 20V10M10 20V4M16 20v-7M22 20H2'/></svg>\n    Dashboard &amp; Model\n  </button>\n  <button class='ds-tab' role='tab' aria-selected='false' type='button'>\n    <svg class='ds-ico' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><circle cx='11' cy='11' r='6'/><path d='M20 20l-4.5-4.5'/></svg>\n    EDA &amp; Dokumentasi\n  </button>\n</div>",
+      "css": ".ds-tabs { display: flex; gap: .35rem; border-bottom: 1px solid var(--rule, #C9C4B8); }\n.ds-tab { display: inline-flex; align-items: center; gap: .45rem; background: transparent; border: none; border-bottom: 2px solid transparent; margin-right: 1.35rem; padding: .5rem 0 .55rem; font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; font-size: .82rem; font-weight: 600; letter-spacing: -.01em; color: var(--muted, #6B6A64); cursor: pointer; transition: color .12s ease; }\n.ds-tab:hover { color: var(--ink2, #3C3F45); }\n.ds-tab[aria-selected='true'] { color: var(--ink, #16181A); border-bottom-color: var(--ink, #16181A); }\n.ds-tab:focus-visible { outline: 2px solid var(--accent, #1F4FD8); outline-offset: 2px; }\n.ds-tab .ds-ico { flex: none; }\n.ds-dark .ds-tabs { border-color: #33373E; }\n.ds-dark .ds-tab { color: #8E8C86; }\n.ds-dark .ds-tab:hover { color: #C6C4BE; }\n.ds-dark .ds-tab[aria-selected='true'] { color: #E9E7E2; border-bottom-color: #E9E7E2; }"
+    },
+    {
+      "name": "Chip Risiko",
+      "kind": "chip",
+      "refersTo": "risk-chip-high",
+      "description": "Label kategori risiko; isiannya diambil dari ramp nada, bukan dari warna lalu lintas.",
+      "html": "<span class='ds-chip ds-chip-low'>Rendah</span>\n<span class='ds-chip ds-chip-mid'>Sedang</span>\n<span class='ds-chip ds-chip-high'>Tinggi</span>",
+      "css": ".ds-chip { display: inline-block; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .66rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; padding: .28rem .5rem; border-radius: 4px; }\n.ds-chip-low { background: var(--band-low-bg, #EDEBE4); color: var(--band-low-fg, #16181A); }\n.ds-chip-mid { background: var(--band-mid-bg, #C2BEB3); color: var(--band-mid-fg, #16181A); }\n.ds-chip-high { background: var(--band-high-bg, #16181A); color: var(--band-high-fg, #FFFFFF); }\n.ds-dark .ds-chip-low { background: #232830; color: #E9E7E2; }\n.ds-dark .ds-chip-mid { background: #454B54; color: #E9E7E2; }\n.ds-dark .ds-chip-high { background: #E9E7E2; color: #14161A; }"
+    },
+    {
+      "name": "Blok Vonis",
+      "kind": "custom",
+      "refersTo": "verdict-block",
+      "description": "Hasil prediksi: chip risiko, kalimat keputusan, dan angka probabilitas terbesar di layar.",
+      "html": "<div class='ds-verdict'>\n  <div class='ds-verdict-head'>\n    <span class='ds-chip ds-chip-high'>Tinggi</span>\n    <span class='ds-verdict-decision'>Keputusan model: <b>CHURN</b></span>\n  </div>\n  <div class='ds-verdict-figure'>73,53<span class='ds-unit'>%</span></div>\n  <div class='ds-verdict-sub'>Probabilitas churn terkalibrasi</div>\n</div>",
+      "css": ".ds-verdict { border: 1px solid var(--rule, #C9C4B8); border-radius: 8px; background: var(--sheet, #FFFFFF); padding: 1rem 1.15rem 1.05rem; font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; }\n.ds-verdict-head { display: flex; align-items: center; gap: .7rem; flex-wrap: wrap; margin-bottom: .45rem; }\n.ds-verdict-decision { font-size: .84rem; color: var(--ink2, #3C3F45); }\n.ds-verdict-decision b { color: var(--ink, #16181A); }\n.ds-verdict-figure { font-size: 2.5rem; font-weight: 700; letter-spacing: -.032em; color: var(--ink, #16181A); font-variant-numeric: tabular-nums; line-height: 1.05; }\n.ds-verdict-figure .ds-unit { font-size: 1.15rem; font-weight: 600; color: var(--muted, #6B6A64); margin-left: .08em; letter-spacing: -.01em; }\n.ds-verdict-sub { font-size: .8rem; color: var(--muted, #6B6A64); margin-top: .18rem; }\n.ds-dark .ds-verdict { background: #1B1E23; border-color: #33373E; }\n.ds-dark .ds-verdict-decision { color: #C6C4BE; }\n.ds-dark .ds-verdict-decision b, .ds-dark .ds-verdict-figure { color: #E9E7E2; }\n.ds-dark .ds-verdict-sub, .ds-dark .ds-verdict-figure .ds-unit { color: #8E8C86; }"
+    },
+    {
+      "name": "Skala Probabilitas Terkalibrasi",
+      "kind": "custom",
+      "refersTo": "calibrated-scale",
+      "description": "Skala terukur: posisi pada ramp adalah besarnya, penanda 2px menandai ambang keputusan 32%.",
+      "html": "<div class='ds-scale'>\n  <div class='ds-scale-head'>\n    <span class='ds-scale-title'>Skala risiko terkalibrasi</span>\n    <span class='ds-scale-note'>Ambang keputusan 32% · batas kategori tinggi 60%</span>\n  </div>\n  <div class='ds-scale-track'>\n    <div class='ds-scale-seg ds-seg-low' style='width:32%'><span>Rendah</span></div>\n    <div class='ds-scale-seg ds-seg-mid' style='width:28%'><span>Sedang</span></div>\n    <div class='ds-scale-seg ds-seg-high'><span>Tinggi</span></div>\n    <div class='ds-scale-marker' style='left:73.53%'>\n      <span class='ds-scale-marker-val'>74%</span>\n    </div>\n  </div>\n  <div class='ds-scale-ticks'>\n    <span class='ds-scale-tick' style='left:0%'>0%</span>\n    <span class='ds-scale-tick hard' style='left:32%'>32% ambang</span>\n    <span class='ds-scale-tick' style='left:60%'>60%</span>\n    <span class='ds-scale-tick' style='left:100%'>100%</span>\n  </div>\n</div>",
+      "css": ".ds-scale { border: 1px solid var(--rule, #C9C4B8); border-radius: 8px; background: var(--sheet, #FFFFFF); padding: .85rem 1rem .7rem; font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; }\n.ds-scale-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.7rem; gap: 1rem; }\n.ds-scale-title { font-size: .78rem; font-weight: 600; color: var(--ink, #16181A); }\n.ds-scale-note { font-size: .72rem; color: var(--muted, #6B6A64); }\n.ds-scale-track { position: relative; height: 26px; border: 1px solid var(--rule, #C9C4B8); border-radius: 4px; display: flex; overflow: visible; }\n.ds-scale-seg { height: 100%; display: flex; align-items: center; justify-content: flex-start; padding-left: .55rem; }\n.ds-scale-seg span { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .58rem; letter-spacing: .11em; text-transform: uppercase; }\n.ds-seg-low { background: var(--band-low-bg, #EDEBE4); color: var(--band-low-fg, #16181A); flex: none; }\n.ds-seg-mid { background: var(--band-mid-bg, #C2BEB3); color: var(--band-mid-fg, #16181A); flex: none; }\n.ds-seg-high { background: var(--band-high-bg, #16181A); color: var(--band-high-fg, #FFFFFF); flex: 1; }\n.ds-scale-marker { position: absolute; top: -6px; bottom: -6px; width: 2px; background: var(--ink, #16181A); transform: translateX(-1px); }\n.ds-scale-marker::after { content: ''; position: absolute; top: -4px; left: -3px; width: 8px; height: 8px; background: var(--ink, #16181A); border-radius: 50%; }\n.ds-scale-marker-val { position: absolute; top: -1.5rem; left: 50%; transform: translateX(-50%); font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .68rem; font-weight: 600; color: var(--ink, #16181A); white-space: nowrap; background: var(--sheet, #FFFFFF); border: 1px solid var(--rule, #C9C4B8); border-radius: 3px; padding: .1rem .32rem; }\n.ds-scale-ticks { position: relative; height: 1rem; margin-top: .3rem; }\n.ds-scale-tick { position: absolute; transform: translateX(-50%); font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .58rem; letter-spacing: .08em; color: var(--muted, #6B6A64); white-space: nowrap; }\n.ds-scale-tick.hard { color: var(--ink2, #3C3F45); font-weight: 600; }\n.ds-scale-tick:first-child { transform: translateX(-8%); }\n.ds-scale-tick:last-child { transform: translateX(-92%); }\n.ds-dark .ds-scale { background: #1B1E23; border-color: #33373E; }\n.ds-dark .ds-scale-title, .ds-dark .ds-scale-marker-val { color: #E9E7E2; }\n.ds-dark .ds-scale-note, .ds-dark .ds-scale-tick { color: #8E8C86; }\n.ds-dark .ds-scale-tick.hard { color: #C6C4BE; }\n.ds-dark .ds-scale-marker, .ds-dark .ds-scale-marker::after { background: #E9E7E2; }\n.ds-dark .ds-scale-marker-val { background: #1B1E23; border-color: #33373E; }\n.ds-dark .ds-seg-low { background: #232830; color: #E9E7E2; }\n.ds-dark .ds-seg-mid { background: #454B54; color: #E9E7E2; }\n.ds-dark .ds-seg-high { background: #E9E7E2; color: #14161A; }"
+    },
+    {
+      "name": "Matriks Konfusi",
+      "kind": "custom",
+      "refersTo": "confusion-matrix",
+      "description": "Grid 2x2 hairline; dua hasil benar diberi latar ramp1, tanpa warna hijau atau merah.",
+      "html": "<div class='ds-cm'>\n  <div class='ds-cm-cell hit'><span class='ds-cm-key'>TP</span><span class='ds-cm-val'>275</span><span class='ds-cm-desc'>Diprediksi churn dan memang churn</span></div>\n  <div class='ds-cm-cell hit'><span class='ds-cm-key'>TN</span><span class='ds-cm-val'>790</span><span class='ds-cm-desc'>Diprediksi tidak churn dan memang tidak churn</span></div>\n  <div class='ds-cm-cell'><span class='ds-cm-key'>FP</span><span class='ds-cm-val'>243</span><span class='ds-cm-desc'>Diprediksi churn, ternyata tidak churn</span></div>\n  <div class='ds-cm-cell'><span class='ds-cm-key'>FN</span><span class='ds-cm-val'>99</span><span class='ds-cm-desc'>Churn terlewat</span></div>\n</div>",
+      "css": ".ds-cm { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--rule, #C9C4B8); border-radius: 8px; overflow: hidden; background: var(--sheet, #FFFFFF); font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; }\n.ds-cm-cell { padding: .6rem .85rem .7rem; border-right: 1px solid var(--rule-soft, #E3E0D8); border-bottom: 1px solid var(--rule-soft, #E3E0D8); }\n.ds-cm-cell:nth-child(2n) { border-right: none; }\n.ds-cm-cell:nth-child(n+3) { border-bottom: none; }\n.ds-cm-key { display: block; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted, #6B6A64); margin-bottom: .22rem; }\n.ds-cm-val { display: block; font-size: 1.55rem; font-weight: 650; letter-spacing: -.025em; color: var(--ink, #16181A); font-variant-numeric: tabular-nums; line-height: 1.15; }\n.ds-cm-desc { display: block; font-size: .76rem; color: var(--muted, #6B6A64); margin-top: .12rem; }\n.ds-cm-cell.hit { background: var(--ramp1, #EDEBE4); }\n.ds-dark .ds-cm { background: #1B1E23; border-color: #33373E; }\n.ds-dark .ds-cm-cell { border-color: #262A30; }\n.ds-dark .ds-cm-key, .ds-dark .ds-cm-desc { color: #8E8C86; }\n.ds-dark .ds-cm-val { color: #E9E7E2; }\n.ds-dark .ds-cm-cell.hit { background: #232830; }"
+    },
+    {
+      "name": "Strip Ringkasan",
+      "kind": "card",
+      "refersTo": "summary-strip",
+      "description": "Tiga ringkasan angka setelah proses batch CSV, dipisah garis rambut vertikal.",
+      "html": "<div class='ds-summary'>\n  <div><span class='ds-summary-key'>Total baris</span><span class='ds-summary-val'>1.407</span></div>\n  <div><span class='ds-summary-key'>Prediksi churn</span><span class='ds-summary-val'>413</span></div>\n  <div><span class='ds-summary-key'>Persentase churn</span><span class='ds-summary-val'>29,35%</span></div>\n</div>",
+      "css": ".ds-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--rule, #C9C4B8); border-radius: 8px; overflow: hidden; background: var(--sheet, #FFFFFF); font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; }\n.ds-summary > div { padding: .62rem .8rem; border-right: 1px solid var(--rule-soft, #E3E0D8); }\n.ds-summary > div:last-child { border-right: none; }\n.ds-summary-key { display: block; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .625rem; font-weight: 500; letter-spacing: .11em; text-transform: uppercase; color: var(--muted, #6B6A64); margin-bottom: .2rem; }\n.ds-summary-val { display: block; font-size: 1.02rem; font-weight: 600; color: var(--ink, #16181A); font-variant-numeric: tabular-nums; letter-spacing: -.015em; }\n.ds-dark .ds-summary { background: #1B1E23; border-color: #33373E; }\n.ds-dark .ds-summary > div { border-color: #262A30; }\n.ds-dark .ds-summary-key { color: #8E8C86; }\n.ds-dark .ds-summary-val { color: #E9E7E2; }"
+    },
+    {
+      "name": "Plate EDA",
+      "kind": "custom",
+      "refersTo": "eda-plate",
+      "description": "Grafik yang direkat ke lembar: bingkai hairline, latar putih di kedua tema, keterangan di bawahnya.",
+      "html": "<figure class='ds-plate'>\n  <div class='ds-plate-frame' role='img' aria-label='Grafik EDA'></div>\n  <figcaption class='ds-plate-cap'>Setelah data dibersihkan, sekitar 73,4% pelanggan tidak churn dan 26,6% churn.</figcaption>\n</figure>",
+      "css": ".ds-plate { margin: 0; font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; }\n.ds-plate-frame { display: block; border: 1px solid var(--rule, #C9C4B8); border-radius: 8px; background: #FFFFFF; aspect-ratio: 12 / 3.7; }\n.ds-plate-cap { font-size: .78rem; color: var(--muted, #6B6A64); padding: .5rem .05rem .55rem; line-height: 1.5; }\n.ds-dark .ds-plate-frame { border-color: #33373E; }\n.ds-dark .ds-plate-cap { color: #8E8C86; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Lembar Gambar Teknik",
+    "overview": "Aplikasi ini bukan dasbor. Ia adalah satu lembar gambar teknik: satu bidang kertas yang berisi title block sebagai pembawa identitas model, hairline 1px sebagai satu-satunya pemisah, dan satu tinta biru teknis sebagai satu-satunya warna kromatik. Evaluator membuka aplikasi untuk memeriksa apakah model churn bisa dipercaya, dan lembar gambar teknik memberi jawaban atas pertanyaan itu secara harfiah: model apa, ambang berapa, performannya bagaimana, dan di mana buktinya. Urutan baca yang dibangun di layar adalah identitas model, lalu alat kerja, lalu bukti.\n\nKepadatan dokumen ini teknis, bukan sekadar dekoratif. Angka selalu tabular sehingga kolom bisa dibandingkan sekilas, dan setiap label yang menyebut sebuah pengukuran ditulis dalam huruf monospace huruf besar dengan spasi lebar, seperti anotasi dimensi pada gambar teknik. Karena itu, dua huruf dengan peran yang berbeda: Archivo untuk kalimat dan angka, JetBrains Mono untuk label terukur, kode, dan penanda. Keduanya di-host sendiri di static/fonts/ sebagai woff2 variabel, jadi halaman tidak bergantung pada stylesheet pihak ketiga.\n\nKedalaman tidak dibangun dari bayangan. Dua nada permukaan saja yang membedakan lembar dari panel di atasnya, dan garis rambut yang memisahkan sel. Tidak ada gradien, tidak ada kaca, tidak ada emoji, tidak ada warna lalu lintas untuk menandai risiko. Risiko dibaca sebagai posisi pada satu ramp nada abu, bukan sebagai tiga warna berbeda.",
+    "keyCharacteristics": [
+      "Satu tinta biru teknis; sisanya satu ramp abu yang dibaca sebagai besaran.",
+      "Hairline 1px sebagai satu-satunya pemisah; tanpa bayangan di seluruh sistem.",
+      "Title block sembilan sel sebagai identitas model, selalu di atas lembar.",
+      "Angka tabular, label mono huruf besar, spasi lebar.",
+      "Dua nada permukaan (kertas dan panel) yang membawa kedalaman.",
+      "Radius pendek: 8px panel, 6px kontrol, 4px chip, 3px penanda."
+    ],
+    "rules": [
+      {
+        "name": "The One Ink Rule",
+        "body": "Satu tinta biru teknis adalah satu-satunya warna kromatik di seluruh aplikasi. Setiap warna lain adalah abu dari ramp yang sama. Risiko pelanggan tidak pernah memakai merah-amber-hijau, dan aksen tidak pernah dipakai sebagai isian panel atau pita.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ramp Rule",
+        "body": "Besaran selalu dibaca dari posisi pada ramp, bukan dari warna lalu lintas. Kalau sebuah besaran butuh langkah ramp yang belum ada, tambahkan langkah abu, jangan langkah baru berwarna.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ramp Anchor Rule",
+        "body": "ramp1 selalu menempel pada permukaan lembar dan ramp10 selalu menempel pada tinta, di kedua tema. Karena itu, pita risiko RENDAH selalu paling dekat kertas dan pita TINGGI selalu paling dekat tinta, apa pun temanya.",
+        "section": "colors"
+      },
+      {
+        "name": "The Measured Number Rule",
+        "body": "Setiap angka yang mungkin dibandingkan antar kolom memakai angka tabular. Setiap label yang menyebut sebuah pengukuran ditulis dalam JetBrains Mono huruf besar dengan tracking lebar. Teks biasa tidak pernah diberi tracking lebar, dan angka tidak pernah diberi huruf mono kecuali di dalam blok kode.",
+        "section": "typography"
+      },
+      {
+        "name": "The Two-Face Rule",
+        "body": "Hanya dua keluarga huruf yang boleh muncul: Archivo dan JetBrains Mono. Menambahkan huruf ketiga, memetik ikon emoji, atau memakai huruf display bawaan sistem akan memecah lembar.",
+        "section": "typography"
+      },
+      {
+        "name": "The Hairline-Only Rule",
+        "body": "Kedalaman ditanggung oleh satu garis rambut 1px dan perbedaan dua nada permukaan. Tidak ada bayangan, tidak ada glow, tidak ada gradien, tidak ada kaca. Panel datar adalah keadaan yang benar, bukan kekurangan yang perlu diperbaiki.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** bingkai setiap panel dengan `1px solid var(--rule)` dan pisahkan sel di dalamnya dengan `1px solid var(--rule-soft)`.",
+      "**Do** pakai `paper` untuk latar lembar dan `sheet` untuk panel, agar kedalaman datang dari nada, bukan dari bayangan.",
+      "**Do** baca risiko sebagai posisi pada ramp: pakai pasangan `band-low`/`band-mid`/`band-high` yang sudah ada, jangan karang warna kategori baru.",
+      "**Do** tulis label terukur dalam JetBrains Mono huruf besar dengan tracking 0,08em sampai 0,12em, dan semua angka besar dengan angka tabular.",
+      "**Do** tulis angka gaya Indonesia: koma untuk desimal, titik untuk ribuan.",
+      "**Do** tandai fokus dengan `outline: 2px solid var(--accent)` dan `outline-offset: 2px`, atau cincin `0 0 0 2px var(--accent-soft)` pada kontrol.",
+      "**Do** gunakan `accent` hanya untuk tautan, fokus, pilihan tema aktif, ikon judul bagian, ikon daftar saran, dan batang yang disorot pada grafik.",
+      "**Do** pertahankan plate EDA tetap putih di kedua tema, seperti cetakan yang dijepit di atas lembar.",
+      "**Do** nyatakan batas dan ketidakpastian di tempat yang sama dengan klaim, dan jangan pernah menampilkan angka metrik tanpa keterangan datanya."
+    ],
+    "donts": [
+      "**Don't** menambah bayangan, glow, gradien, atau efek kaca. Panel datar dengan `box-shadow: none` adalah keadaan yang benar.",
+      "**Don't** memberi warna lalu lintas pada risiko (merah-amber-hijau) atau memakai `accent` sebagai isian pita.",
+      "**Don't** menambahkan emoji, glyph ikon, font ikon, atau huruf ketiga. Ikon hanya dari katalog 24x24 stroke 1,5 di `ui.py`.",
+      "**Don't** memakai bayangan luar untuk membuat panel \"terangkat\". Tidak ada token bayangan di kedua tema; `box-shadow: none` adalah keadaan yang benar.",
+      "**Don't** membiarkan hasil prediksi lama tetap tampil setelah input berubah. Pola yang sudah berjalan: tampilkan \"Input telah berubah. Klik Prediksi untuk memperbarui hasil.\" dan jangan mengganti hasil secara diam-diam.",
+      "**Don't** menambahkan kalimat informasi seperti \"Built with Streamlit\" di footer, dan jangan memuat klaim yang tidak diuji.",
+      "**Don't** meletakkan angka yang sama di dua tempat dengan nilai berbeda; frontmatter di file ini adalah lapisan token yang normatif."
+    ]
+  }
+}
