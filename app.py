@@ -44,6 +44,7 @@ with head_right:
 
 TEMA = st.session_state.get("tema", "Terang")
 TOK = ui.THEMES[TEMA]
+st.markdown(ui.font_face_css(), unsafe_allow_html=True)
 st.markdown(ui.build_css(TEMA), unsafe_allow_html=True)
 
 

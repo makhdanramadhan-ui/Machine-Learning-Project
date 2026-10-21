@@ -171,13 +171,15 @@ tidak tertukar dengan versi model lain.
 | `model_info.json`, `hasil_perbandingan.csv`, `cv_detail.csv` | Perbandingan model inti |
 | `calib_info.json`, `threshold_selection.csv` | Evaluasi probabilitas dan jejak tuning threshold |
 | `tests/test_app.py` | Uji regresi validasi, hasil prediksi, dan alur aplikasi |
-| `static/fonts/` | Archivo dan JetBrains Mono, di-host sendiri di repository |
+| `static/fonts/` | Archivo dan JetBrains Mono, file woff2 sumber yang disisipkan ke halaman |
 | `assets/brand-mark.png` | Favicon aplikasi |
 
 Huruf Archivo (judul dan isi) dan JetBrains Mono (label terukur dan angka
-tabel) sengaja di-host sendiri di `static/fonts/` supaya tampilan tidak
-bergantung pada stylesheet pihak ketiga. Bila static serving tidak aktif di
-lingkungan deploy, halaman jatuh ke stack sistem tanpa mengubah tata letak.
+tabel) diambil dari file woff2 di `static/fonts/` lalu disisipkan ke halaman
+sebagai data URI. Alasannya: Streamlit Community Cloud hanya meneruskan
+sebagian path ke server aplikasi, sehingga folder `static/` tidak terjangkau
+di sana. Dengan cara ini tampilan tidak bergantung pada stylesheet pihak
+ketiga dan tetap sama di hosting mana pun.
 
 `projekk.ipynb` adalah notebook terkini yang sudah dieksekusi: EDA, alasan metode,
 perbandingan model, evaluasi ulang holdout, interpretasi, dan sanity test.
