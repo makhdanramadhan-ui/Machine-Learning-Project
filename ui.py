@@ -288,7 +288,15 @@ div[data-testid="stTab"]:focus-visible { outline: 2px solid var(--accent); outli
             max-width: 78ch; line-height: 1.55; }
 
 /* ---- panel ---- */
-div[data-testid="stVerticalBlockBorderWrapper"] { border: 1px solid var(--rule) !important;
+/* Streamlit 1.64 tidak lagi memakai stVerticalBlockBorderWrapper, sehingga
+   container berbingkai tidak pernah tertangkap selector lama: panel tetap
+   transparan dan ikut warna kertas, dan dua nada permukaan hilang. Pada
+   versi ini container berbingkai selalu anak langsung dari stLayoutWrapper,
+   sedangkan block susun lain adalah anak dari stColumn, stExpanderDetails,
+   atau stMainBlockContainer. Karena itu hook-nya struktural, bukan nama kelas
+   emotion yang berubah antar versi. */
+div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"] {
+    border: 1px solid var(--rule) !important;
     border-radius: 8px !important; background: var(--sheet) !important;
     box-shadow: none !important; padding: 1.1rem 1.25rem 1.15rem !important; }
 div[data-testid="stExpander"] { border: 1px solid var(--rule) !important;
@@ -319,11 +327,11 @@ div[data-testid="stNumberInput"] input {
     background: transparent !important; color: var(--ink) !important;
     border: none !important; border-radius: 6px 0 0 6px !important;
     box-shadow: none !important; font-size: .85rem !important; }
-div[data-testid="stNumberInputStepUp"], div[data-testid="stNumberInputStepDown"] {
-    background: transparent !important; color: var(--muted) !important; }
-div[data-testid="stNumberInputStepUp"] svg, div[data-testid="stNumberInputStepDown"] svg {
-    fill: var(--muted) !important; }
-div[data-testid="stNumberInputStepUp"]:hover, div[data-testid="stNumberInputStepDown"]:hover {
+[data-testid="stNumberInputStepUp"], [data-testid="stNumberInputStepDown"] {
+    background: transparent !important; color: var(--ink2) !important; }
+[data-testid="stNumberInputStepUp"] svg, [data-testid="stNumberInputStepDown"] svg {
+    fill: var(--ink2) !important; }
+[data-testid="stNumberInputStepUp"]:hover, [data-testid="stNumberInputStepDown"]:hover {
     color: var(--ink) !important; }
 div[data-testid="stSelectbox"] div[data-baseweb="select"] div,
 div[data-testid="stSelectbox"] div[data-baseweb="select"] span,
@@ -342,10 +350,11 @@ div[data-baseweb="popover"] > div { background: var(--sheet) !important; }
 div[data-baseweb="menu"] { background: var(--sheet) !important;
     border: 1px solid var(--rule) !important; }
 div[role="option"] { font-size: .85rem !important; color: var(--ink) !important; }
-div[data-testid="stNumberInputStepUp"], div[data-testid="stNumberInputStepDown"] {
-    background: var(--sheet) !important; color: var(--muted) !important;
+[data-testid="stNumberInputStepUp"], [data-testid="stNumberInputStepDown"] {
+    background: var(--sheet) !important; color: var(--ink2) !important;
     border-color: var(--rule) !important; }
-div[data-testid="stNumberInputStepUp"]:hover, div[data-testid="stNumberInputStepDown"]:hover {
+[data-testid="stNumberInputStepUp"] { border-left: 1px solid var(--rule) !important; }
+[data-testid="stNumberInputStepUp"]:hover, [data-testid="stNumberInputStepDown"]:hover {
     background: var(--accent-soft) !important; color: var(--ink) !important; }
 
 /* ---- tombol ---- */
