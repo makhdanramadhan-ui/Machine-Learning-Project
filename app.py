@@ -33,7 +33,7 @@ with head_left:
     st.markdown(
         '<div class="app-title">Prediksi Customer Churn — Telco</div>'
         '<p class="app-sub">Perkirakan churn pelanggan telco dari 18 fitur pelanggan, '
-        'dengan ambang keputusan 0,32 yang dipilih dari F1 out-of-fold data latih.</p>',
+        'dengan threshold 0,32 yang dipilih dari F1 out-of-fold data latih.</p>',
         unsafe_allow_html=True,
     )
 with head_right:
@@ -154,7 +154,7 @@ st.markdown(
     ui.title_block(
         [
             ("Model", BEST_LABEL, "sm"),
-            ("Ambang", ui.fmt_num(THRESHOLD)),
+            ("Threshold", ui.fmt_num(THRESHOLD)),
             ("CV-F1", ui.fmt_num(CVF1, 4)),
             ("Akurasi", ui.fmt_num(ACC, 4)),
             ("Precision", ui.fmt_num(MET.get("Precision", 0), 4)),
@@ -189,9 +189,9 @@ with st.expander("Tentang model dan cara membaca hasil", expanded=False):
                    "diproses otomatis sebelum diprediksi. Kalibrasi sigmoid menyesuaikan "
                    "probabilitas dan dilatih hanya dengan data training.")
         st.write(f"**Aturan keputusan:** CHURN jika probabilitas ≥ {THRESHOLD:.0%}; "
-                 "TETAP jika di bawah ambang tersebut.")
-        st.caption("Ambang dipilih dari hasil validasi data training. Data testing dipakai untuk "
-                   "mengukur hasil akhirnya. Label CHURN menunjukkan risiko yang melewati ambang, "
+                 "TETAP jika di bawah threshold tersebut.")
+        st.caption("Threshold dipilih dari hasil validasi data training. Data testing dipakai untuk "
+                   "mengukur hasil akhirnya. Label CHURN menunjukkan risiko yang melewati threshold, "
                    "bukan kepastian.")
 
 tab1, tab2, tab3 = st.tabs([
@@ -300,7 +300,7 @@ with tab1:
             unsafe_allow_html=True,
         )
         st.markdown(ui.calibrated_scale(prob, THRESHOLD, HIGH_BOUNDARY), unsafe_allow_html=True)
-        st.caption(f"Ambang keputusan {THRESHOLD:.0%}. Risiko rendah: < {THRESHOLD:.0%}; "
+        st.caption(f"Threshold {THRESHOLD:.0%}. Risiko rendah: < {THRESHOLD:.0%}; "
                    f"sedang: {THRESHOLD:.0%}–< {HIGH_BOUNDARY:.0%}; tinggi: ≥ {HIGH_BOUNDARY:.0%}. "
                    "Kategori risiko membantu membaca hasil; model tetap memprediksi churn atau tidak churn.")
         st.caption("TETAP berarti pelanggan diprediksi tidak churn. Probabilitas sudah disesuaikan "
@@ -335,23 +335,23 @@ with tab2:
                                "melatih model."),
                     unsafe_allow_html=True)
         st.dataframe(pd.DataFrame([
-            {"Konfigurasi": f"Aplikasi — ambang {THRESHOLD:.2f}", **MET},
-            {"Konfigurasi": "Pembanding — ambang 0,50", **DEPLOY["metrics_at_0_5"]},
+            {"Konfigurasi": f"Aplikasi — threshold {THRESHOLD:.2f}", **MET},
+            {"Konfigurasi": "Pembanding — threshold 0,50", **DEPLOY["metrics_at_0_5"]},
         ]), width="stretch", hide_index=True)
         st.markdown(ui.confusion_matrix(MET), unsafe_allow_html=True)
         st.caption(f"Dari {MET['TP'] + MET['FN']} pelanggan yang benar-benar churn, "
                    f"{MET['TP']} berhasil terdeteksi dan {MET['FN']} terlewat. "
                    f"{MET['FP']} pelanggan yang tidak churn juga ditandai CHURN. "
-                   "Menurunkan ambang membantu mendeteksi lebih banyak churn, tetapi bisa menambah "
+                   "Menurunkan threshold membantu mendeteksi lebih banyak churn, tetapi bisa menambah "
                    "prediksi yang keliru.")
-        with st.expander(f"Mengapa ambangnya {THRESHOLD:.0%}?", expanded=False):
-            st.write(f"Ambang dicoba dari 0,10 sampai 0,60 dengan selisih 0,01. "
-                     f"Ambang {THRESHOLD:.2f} memberi F1 tertinggi pada validasi data training. "
-                     "Artinya, model memberi label CHURN ketika probabilitas mencapai ambang ini, "
+        with st.expander(f"Mengapa threshold {THRESHOLD:.0%}?", expanded=False):
+            st.write(f"Threshold dicoba dari 0,10 sampai 0,60 dengan selisih 0,01. "
+                     f"Threshold {THRESHOLD:.2f} memberi F1 tertinggi pada validasi data training. "
+                     "Artinya, model memberi label CHURN ketika probabilitas mencapai threshold ini, "
                      "meskipun masih di bawah 50%.")
             st.caption("Prediksi validasi dibuat dengan lima fold: setiap bagian diprediksi oleh "
                        "model yang dilatih pada bagian lainnya, dengan kalibrasi di dalam proses "
-                       f"itu. F1 untuk memilih ambang: {DEPLOY['oof_tuning_f1']:.4f}. Skor ini dipakai "
+                       f"itu. F1 untuk memilih threshold: {DEPLOY['oof_tuning_f1']:.4f}. Skor ini dipakai "
                        "untuk memilih pengaturan, bukan hasil pengujian akhir.")
             st.write(f"Kalibrasi sigmoid menyesuaikan probabilitas model. Pada data testing, Brier "
                      f"score turun dari {CALINFO['brier_base']:.4f} menjadi {CALINFO['brier_cal']:.4f}. "
@@ -366,7 +366,7 @@ with tab2:
 
     with st.container(border=True):
         st.markdown(ui.section("Perbandingan Tiga Model", "layers",
-                               "Ketiga model ini diuji sebelum kalibrasi, dengan ambang 50%. Model "
+                               "Ketiga model ini diuji sebelum kalibrasi, dengan threshold 50%. Model "
                                "dipilih berdasarkan CV-F1 data training, bukan akurasi testing "
                                "tertinggi. Hasil setelah kalibrasi ada pada tabel aplikasi di atas."),
                     unsafe_allow_html=True)
@@ -390,7 +390,7 @@ with tab2:
                        "dibagi menjadi lima bagian: model dilatih pada empat bagian lalu divalidasi "
                        "pada satu bagian, bergantian lima kali. Skor ini dipakai untuk memilih model.")
             st.caption("**ROC-AUC** menunjukkan kemampuan model membedakan churn dan tidak churn "
-                       "pada berbagai ambang. Kurva ROC membandingkan recall dengan false positive "
+                       "pada berbagai threshold. Kurva ROC membandingkan recall dengan false positive "
                        "rate `FP/(FP+TN)`. Nilai 0,5 setara urutan acak.")
 
         if CMP is not None:
