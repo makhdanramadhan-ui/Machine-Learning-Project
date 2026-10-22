@@ -290,11 +290,12 @@ with tab1:
             st.info(note)
 
         level = risk_levels([prob], THRESHOLD)[0]
+        decision = "CHURN" if pred == 1 else "TETAP"
         st.markdown(
             '<div class="verdict">'
             f'<div class="verdict-head">{ui.risk_chip(level)}'
             '<span class="verdict-decision">Keputusan model: '
-            f'<b>{"CHURN" if pred == 1 else "TETAP"}</b></span></div>'
+            f'<b class="{"hot" if pred == 1 else ""}">{decision}</b></span></div>'
             f'<div class="verdict-figure">{ui.fmt_num(prob * 100)}<span class="unit">%</span></div>'
             '<div class="verdict-sub">Probabilitas churn terkalibrasi</div>'
             '</div>',
@@ -377,8 +378,8 @@ with tab2:
 
         st.markdown(ui.summary_strip([
             ("Total baris", count_text(len(out))),
-            ("Prediksi churn", count_text(churn_n)),
-            ("Persentase churn", ui.fmt_num(rate) + "%"),
+            ("Prediksi churn", count_text(churn_n), "hot"),
+            ("Persentase churn", ui.fmt_num(rate) + "%", "hot"),
         ]), unsafe_allow_html=True)
         st.caption(f"Ambang: {THRESHOLD:.0%}. Kolom Prob_Churn berisi probabilitas dalam persen. "
                    f"Menampilkan {min(20, len(out))} dari {count_text(len(out))} pelanggan; "
@@ -388,7 +389,7 @@ with tab2:
         fig_dist, ax_dist = plt.subplots(figsize=(6.5, 2.1))
         counts = out["Prediksi"].value_counts().reindex(["TETAP", "CHURN"]).fillna(0)
         ax_dist.barh(counts.index, counts.values,
-                     color=[TOK["ramp6"], TOK["accent"]], height=.55, edgecolor="none")
+                     color=[TOK["ramp6"], TOK["signal"]], height=.55, edgecolor="none")
         ax_dist.set_xlabel("Pelanggan", fontsize=9)
         ax_dist.set_xlim(0, max(counts.values.max(), 1) * 1.18)
         for i, value in enumerate(counts.values):
@@ -485,8 +486,10 @@ with tab3:
             fig, ax = plt.subplots(figsize=(6.5, 2.6))
             plot_df = CMP.set_index("Model")[["Accuracy", "Precision", "Recall", "F1"]]
             plot_df = plot_df.rename(index=MODEL_NAMES)
-            colors = [TOK["accent"] if name == BEST_LABEL else TOK["ramp6"]
-                      for name in plot_df.index]
+            # Empat metrik ini satu keluarga: semuanya skor 0-1, jadi warnanya
+            # satu ramp biru, bukan empat warna berbeda. F1 paling pekat karena
+            # di situlah model dipilih.
+            colors = [TOK["series-4"], TOK["series-3"], TOK["series-2"], TOK["series-1"]]
             plot_df.plot(kind="barh", ax=ax, color=colors)
             ax.set_xlabel("Skor", fontsize=9)
             ax.tick_params(labelsize=8)
@@ -584,7 +587,7 @@ with tab3:
                 imp["Abs"] = imp["Bobot"].abs()
                 top = imp.sort_values("Abs", ascending=False).head(15).sort_values("Bobot")
                 fig2, ax2 = plt.subplots(figsize=(8, 5))
-                colors = [TOK["accent"] if v > 0 else TOK["ramp6"] for v in top["Bobot"]]
+                colors = [TOK["signal"] if v > 0 else TOK["accent"] for v in top["Bobot"]]
                 ax2.barh(top["Fitur"], top["Bobot"], color=colors, edgecolor="none", height=.6)
                 ax2.axvline(0, color=TOK["rule"], linewidth=1)
                 ax2.set_xlabel("Koefisien model (log-odds)")

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-21T16:41:26+07:00",
+  "generatedAt": "2026-10-22T09:52:11+07:00",
   "title": "Design System: Prediksi Customer Churn — Telco",
   "extensions": {
     "colorMeta": {
@@ -8,277 +8,1141 @@
         "role": "neutral",
         "displayName": "Kertas Gambar",
         "canonical": "#F7F6F2",
-        "tonalRamp": ["#0C0B09", "#262522", "#43423F", "#62615E", "#83827F", "#A6A5A1", "#CAC9C5", "#EFEEEA"]
+        "tonalRamp": [
+          "#0B0B0A",
+          "#262523",
+          "#43423F",
+          "#62615E",
+          "#83827F",
+          "#A6A5A2",
+          "#CAC9C6",
+          "#EFEEEC"
+        ]
       },
       "paper-dark": {
         "role": "neutral",
         "displayName": "Kertas Gambar — Gelap",
         "canonical": "#14161A",
-        "tonalRamp": ["#090B0F", "#232529", "#404247", "#5F6166", "#808288", "#A2A5AB", "#C6C9CF", "#EBEEF4"]
+        "tonalRamp": [
+          "#0A0B0D",
+          "#232528",
+          "#404246",
+          "#5F6166",
+          "#808288",
+          "#A2A5AA",
+          "#C7C9CD",
+          "#EDEEF1"
+        ]
       },
       "sheet": {
         "role": "neutral",
         "displayName": "Lembar Panel",
         "canonical": "#FFFFFF",
-        "tonalRamp": ["#0B0B0B", "#252525", "#424242", "#616161", "#828282", "#A5A5A5", "#C9C9C9", "#EEEEEE"]
+        "tonalRamp": [
+          "#0B0B0B",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#A5A5A5",
+          "#C9C9C9",
+          "#EEEEEE"
+        ]
       },
       "sheet-dark": {
         "role": "neutral",
         "displayName": "Lembar Panel — Gelap",
         "canonical": "#1B1E23",
-        "tonalRamp": ["#090B10", "#22252A", "#3F4248", "#5E6167", "#7F8289", "#A1A5AC", "#C5C9D0", "#EAEFF6"]
+        "tonalRamp": [
+          "#0A0B0D",
+          "#232529",
+          "#3F4247",
+          "#5E6167",
+          "#7F8289",
+          "#A2A5AB",
+          "#C6C9CE",
+          "#ECEFF2"
+        ]
       },
       "ink": {
         "role": "neutral",
         "displayName": "Tinta",
         "canonical": "#16181A",
-        "tonalRamp": ["#0A0B0D", "#232527", "#404245", "#5F6164", "#808385", "#A3A5A8", "#C7C9CC", "#ECEFF2"]
+        "tonalRamp": [
+          "#0A0B0C",
+          "#242527",
+          "#404244",
+          "#5F6164",
+          "#808385",
+          "#A3A5A8",
+          "#C7C9CB",
+          "#EDEFF0"
+        ]
       },
       "ink-dark": {
         "role": "neutral",
         "displayName": "Tinta — Gelap",
         "canonical": "#E9E7E2",
-        "tonalRamp": ["#0C0B08", "#262521", "#43423E", "#63615D", "#84827E", "#A7A5A0", "#CBC9C4", "#F0EEE9"]
+        "tonalRamp": [
+          "#0C0B09",
+          "#262522",
+          "#43423E",
+          "#63615D",
+          "#84827E",
+          "#A6A5A1",
+          "#CAC9C5",
+          "#EFEEEC"
+        ]
       },
       "ink2": {
         "role": "neutral",
         "displayName": "Tinta Ringan",
         "canonical": "#3C3F45",
-        "tonalRamp": ["#090B10", "#22252B", "#3F4248", "#5E6168", "#7F8289", "#A1A5AC", "#C5C9D1", "#EBEFF6"]
+        "tonalRamp": [
+          "#0A0B0E",
+          "#232529",
+          "#3F4247",
+          "#5E6168",
+          "#7F8289",
+          "#A2A5AB",
+          "#C6C9CF",
+          "#ECEEF2"
+        ]
       },
       "ink2-dark": {
         "role": "neutral",
         "displayName": "Tinta Ringan — Gelap",
         "canonical": "#C6C4BE",
-        "tonalRamp": ["#0C0B07", "#262520", "#44423D", "#63615C", "#84827D", "#A7A59F", "#CBC9C3", "#F0EEE8"]
+        "tonalRamp": [
+          "#0C0B09",
+          "#262522",
+          "#43423D",
+          "#63615C",
+          "#84827D",
+          "#A7A5A0",
+          "#CAC9C5",
+          "#EFEEEB"
+        ]
       },
       "muted": {
         "role": "neutral",
         "displayName": "Tinta Bisu",
         "canonical": "#6B6A64",
-        "tonalRamp": ["#0C0B07", "#262520", "#43423D", "#62615B", "#83827C", "#A6A59F", "#CAC9C3", "#F0EFE8"]
+        "tonalRamp": [
+          "#0C0B09",
+          "#262521",
+          "#43423D",
+          "#62615C",
+          "#83827C",
+          "#A6A59F",
+          "#CAC9C4",
+          "#EFEEEB"
+        ]
       },
       "muted-dark": {
         "role": "neutral",
         "displayName": "Tinta Bisu — Gelap",
         "canonical": "#8E8C86",
-        "tonalRamp": ["#0D0B07", "#272520", "#44423D", "#63615B", "#84827C", "#A7A59F", "#CBC9C3", "#F1EEE8"]
+        "tonalRamp": [
+          "#0C0B09",
+          "#262521",
+          "#43423D",
+          "#63615C",
+          "#84827C",
+          "#A7A59F",
+          "#CBC9C4",
+          "#EFEEEB"
+        ]
       },
       "rule": {
         "role": "neutral",
         "displayName": "Garis Rambut",
         "canonical": "#C9C4B8",
-        "tonalRamp": ["#0E0B04", "#29251B", "#464238", "#656156", "#878277", "#A9A599", "#CEC9BD", "#F3EEE2"]
+        "tonalRamp": [
+          "#0D0B07",
+          "#28251E",
+          "#454239",
+          "#656156",
+          "#878277",
+          "#A9A59A",
+          "#CCC9C0",
+          "#F1EEE8"
+        ]
       },
       "rule-dark": {
         "role": "neutral",
         "displayName": "Garis Rambut — Gelap",
         "canonical": "#33373E",
-        "tonalRamp": ["#080B11", "#21252C", "#3E4249", "#5D6169", "#7E838B", "#A0A5AE", "#C4C9D2", "#EAEFF8"]
+        "tonalRamp": [
+          "#0A0B0E",
+          "#22252A",
+          "#3E4249",
+          "#5D6169",
+          "#7E838B",
+          "#A1A5AD",
+          "#C6C9D0",
+          "#ECEFF3"
+        ]
       },
       "rule-soft": {
         "role": "neutral",
         "displayName": "Garis Rambut Halus",
         "canonical": "#E3E0D8",
-        "tonalRamp": ["#0D0B06", "#27251F", "#44423B", "#64615A", "#85827B", "#A8A59D", "#CCC9C1", "#F1EEE6"]
+        "tonalRamp": [
+          "#0C0B08",
+          "#272521",
+          "#44423C",
+          "#64615A",
+          "#85827B",
+          "#A7A59E",
+          "#CBC9C3",
+          "#F0EEEA"
+        ]
       },
       "rule-soft-dark": {
         "role": "neutral",
         "displayName": "Garis Rambut Halus — Gelap",
         "canonical": "#262A30",
-        "tonalRamp": ["#080B10", "#21252B", "#3E4249", "#5D6268", "#7E838A", "#A0A5AD", "#C4C9D1", "#E9EFF7"]
+        "tonalRamp": [
+          "#0A0B0E",
+          "#22252A",
+          "#3E4248",
+          "#5D6268",
+          "#7E838A",
+          "#A1A5AC",
+          "#C6C9CF",
+          "#ECEFF3"
+        ]
       },
       "accent": {
         "role": "primary",
         "displayName": "Tinta Biru Teknis",
         "canonical": "#1F4FD8",
-        "tonalRamp": ["#000035", "#01027A", "#0527B1", "#2050D9", "#4377FA", "#79A2FD", "#AFC9FE", "#E7EFFF"]
+        "tonalRamp": [
+          "#000036",
+          "#011070",
+          "#0A2EA6",
+          "#2050D7",
+          "#4076FF",
+          "#77A2FF",
+          "#AFC9FF",
+          "#E6EFFF"
+        ]
       },
       "accent-dark": {
         "role": "primary",
         "displayName": "Tinta Biru Teknis — Gelap",
         "canonical": "#7E9BFF",
-        "tonalRamp": ["#030033", "#10106C", "#263590", "#4158B5", "#607ADB", "#839FFD", "#B5C7FF", "#E8EEFF"]
+        "tonalRamp": [
+          "#03052B",
+          "#121C59",
+          "#283888",
+          "#4258B4",
+          "#607BDA",
+          "#84A0F9",
+          "#B4C7FF",
+          "#E8EEFF"
+        ]
       },
       "accent-ink": {
         "role": "primary",
         "displayName": "Tinta di Atas Biru",
         "canonical": "#FFFFFF",
-        "tonalRamp": ["#0B0B0B", "#252525", "#424242", "#616161", "#828282", "#A5A5A5", "#C9C9C9", "#EEEEEE"]
+        "tonalRamp": [
+          "#0B0B0B",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#A5A5A5",
+          "#C9C9C9",
+          "#EEEEEE"
+        ]
       },
       "accent-ink-dark": {
         "role": "primary",
         "displayName": "Tinta di Atas Biru — Gelap",
         "canonical": "#14161A",
-        "tonalRamp": ["#090B0F", "#232529", "#404247", "#5F6166", "#808288", "#A2A5AB", "#C6C9CF", "#EBEEF4"]
+        "tonalRamp": [
+          "#0A0B0D",
+          "#232528",
+          "#404246",
+          "#5F6166",
+          "#808288",
+          "#A2A5AA",
+          "#C7C9CD",
+          "#EDEEF1"
+        ]
       },
       "accent-soft": {
         "role": "primary",
         "displayName": "Biru Pudar",
         "canonical": "#E4EAFB",
-        "tonalRamp": ["#070B15", "#202531", "#3D424F", "#5C616F", "#7D8291", "#9FA5B5", "#C3C9D9", "#E8EEFE"]
+        "tonalRamp": [
+          "#090B10",
+          "#22252E",
+          "#3D424E",
+          "#5C616F",
+          "#7D8291",
+          "#A0A5B3",
+          "#C5C9D5",
+          "#EBEEF7"
+        ]
       },
       "accent-soft-dark": {
         "role": "primary",
         "displayName": "Biru Pudar — Gelap",
         "canonical": "#1E2740",
-        "tonalRamp": ["#04091F", "#1B243D", "#37415C", "#55617D", "#7682A0", "#98A5C4", "#BCC9EA", "#E8EEFF"]
+        "tonalRamp": [
+          "#070B16",
+          "#1E2436",
+          "#384159",
+          "#56617D",
+          "#7682A0",
+          "#99A5C1",
+          "#BFC9E1",
+          "#E7EEFF"
+        ]
+      },
+      "deep": {
+        "role": "primary",
+        "displayName": "Biru Pekat",
+        "canonical": "#16307E",
+        "tonalRamp": [
+          "#010728",
+          "#0D1F54",
+          "#223C82",
+          "#3C5CAD",
+          "#5B7ED2",
+          "#80A3F2",
+          "#B0C9FF",
+          "#E7EFFF"
+        ]
+      },
+      "deep-dark": {
+        "role": "primary",
+        "displayName": "Biru Pekat — Gelap",
+        "canonical": "#3E5AD2",
+        "tonalRamp": [
+          "#030132",
+          "#0E1566",
+          "#213299",
+          "#3852C8",
+          "#5677F0",
+          "#809FFF",
+          "#B3C8FF",
+          "#E8EEFF"
+        ]
+      },
+      "deep-hi": {
+        "role": "primary",
+        "displayName": "Biru Pekat — Hover",
+        "canonical": "#24439B",
+        "tonalRamp": [
+          "#01062A",
+          "#0B1E59",
+          "#1F3A88",
+          "#385AB3",
+          "#587DDA",
+          "#7DA2F9",
+          "#B0C9FF",
+          "#E7EFFF"
+        ]
+      },
+      "deep-hi-dark": {
+        "role": "primary",
+        "displayName": "Biru Pekat — Hover — Gelap",
+        "canonical": "#4C6BE0",
+        "tonalRamp": [
+          "#020231",
+          "#0E1764",
+          "#213397",
+          "#3954C5",
+          "#5778EC",
+          "#809FFF",
+          "#B3C8FF",
+          "#E8EEFF"
+        ]
+      },
+      "deep-ink": {
+        "role": "primary",
+        "displayName": "Tinta di Atas Biru Pekat",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#A5A5A5",
+          "#C9C9C9",
+          "#EEEEEE"
+        ]
+      },
+      "deep-ink-dark": {
+        "role": "primary",
+        "displayName": "Tinta di Atas Biru Pekat — Gelap",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#A5A5A5",
+          "#C9C9C9",
+          "#EEEEEE"
+        ]
+      },
+      "deep-mute": {
+        "role": "primary",
+        "displayName": "Tinta Bisu di Atas Biru Pekat",
+        "canonical": "#A9BCEE",
+        "tonalRamp": [
+          "#050A1B",
+          "#1A233F",
+          "#334066",
+          "#505F8B",
+          "#7081AF",
+          "#93A4D0",
+          "#BAC9EE",
+          "#E8EEFF"
+        ]
+      },
+      "deep-mute-dark": {
+        "role": "primary",
+        "displayName": "Tinta Bisu di Atas Biru Pekat — Gelap",
+        "canonical": "#DCE6FF",
+        "tonalRamp": [
+          "#080B13",
+          "#202532",
+          "#3B4253",
+          "#596176",
+          "#798298",
+          "#9CA5BA",
+          "#C2C9DB",
+          "#E9EEFB"
+        ]
+      },
+      "deep-soft": {
+        "role": "primary",
+        "displayName": "Biru Pekat — Zona Gelap",
+        "canonical": "#0F2358",
+        "tonalRamp": [
+          "#030920",
+          "#132348",
+          "#2A4071",
+          "#455F99",
+          "#6581BE",
+          "#8AA4DE",
+          "#B2C9FA",
+          "#E7EFFF"
+        ]
+      },
+      "deep-soft-dark": {
+        "role": "primary",
+        "displayName": "Biru Pekat — Zona Gelap — Gelap",
+        "canonical": "#1E2E66",
+        "tonalRamp": [
+          "#040920",
+          "#162248",
+          "#2E3E72",
+          "#495E9A",
+          "#6980BE",
+          "#8DA3DE",
+          "#B5C8FA",
+          "#E8EEFF"
+        ]
+      },
+      "deep-rule": {
+        "role": "primary",
+        "displayName": "Garis Rambut di Atas Biru Pekat",
+        "canonical": "#2B4794",
+        "tonalRamp": [
+          "#020727",
+          "#0F2053",
+          "#243C80",
+          "#3E5CAA",
+          "#5D7ED0",
+          "#82A3EF",
+          "#B0C9FF",
+          "#E7EFFF"
+        ]
+      },
+      "deep-rule-dark": {
+        "role": "primary",
+        "displayName": "Garis Rambut di Atas Biru Pekat — Gelap",
+        "canonical": "#5A78DE",
+        "tonalRamp": [
+          "#03042C",
+          "#101B5C",
+          "#24378C",
+          "#3E57B9",
+          "#5C7ADF",
+          "#819FFE",
+          "#B3C8FF",
+          "#E8EEFF"
+        ]
+      },
+      "signal": {
+        "role": "secondary",
+        "displayName": "Oker Churn",
+        "canonical": "#96590C",
+        "tonalRamp": [
+          "#150700",
+          "#391D00",
+          "#613600",
+          "#8C5100",
+          "#B17230",
+          "#D2975E",
+          "#F0BE90",
+          "#FFEAD8"
+        ]
+      },
+      "signal-dark": {
+        "role": "secondary",
+        "displayName": "Oker Churn — Gelap",
+        "canonical": "#E3A94A",
+        "tonalRamp": [
+          "#130900",
+          "#342100",
+          "#593B00",
+          "#825800",
+          "#AC7600",
+          "#CE9B48",
+          "#ECC181",
+          "#FFEBCF"
+        ]
+      },
+      "signal-ink": {
+        "role": "secondary",
+        "displayName": "Tinta di Atas Oker",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#A5A5A5",
+          "#C9C9C9",
+          "#EEEEEE"
+        ]
+      },
+      "signal-ink-dark": {
+        "role": "secondary",
+        "displayName": "Tinta di Atas Oker — Gelap",
+        "canonical": "#1A1206",
+        "tonalRamp": [
+          "#0E0A06",
+          "#2A241B",
+          "#494134",
+          "#6A6051",
+          "#8B8171",
+          "#ADA495",
+          "#D0C8BC",
+          "#F4EEE5"
+        ]
+      },
+      "signal-soft": {
+        "role": "secondary",
+        "displayName": "Oker Lembut",
+        "canonical": "#F4E8D2",
+        "tonalRamp": [
+          "#0F0B04",
+          "#2B2418",
+          "#4A4131",
+          "#6A604D",
+          "#8C816D",
+          "#AEA491",
+          "#D1C8B8",
+          "#F4EEE2"
+        ]
+      },
+      "signal-soft-dark": {
+        "role": "secondary",
+        "displayName": "Oker Lembut — Gelap",
+        "canonical": "#2A2114",
+        "tonalRamp": [
+          "#0E0A05",
+          "#2B241B",
+          "#494034",
+          "#6A6051",
+          "#8C8171",
+          "#AEA395",
+          "#D1C8BC",
+          "#F4EDE5"
+        ]
+      },
+      "signal-mute": {
+        "role": "secondary",
+        "displayName": "Oker Bisu",
+        "canonical": "#7A4A0A",
+        "tonalRamp": [
+          "#150800",
+          "#381E00",
+          "#5F3700",
+          "#85551C",
+          "#A97640",
+          "#CA9A69",
+          "#E9C199",
+          "#FFEBD7"
+        ]
+      },
+      "signal-mute-dark": {
+        "role": "secondary",
+        "displayName": "Oker Bisu — Gelap",
+        "canonical": "#E3A94A",
+        "tonalRamp": [
+          "#130900",
+          "#342100",
+          "#593B00",
+          "#825800",
+          "#AC7600",
+          "#CE9B48",
+          "#ECC181",
+          "#FFEBCF"
+        ]
+      },
+      "series-1": {
+        "role": "primary",
+        "displayName": "Ramp Seri 1 — Terang",
+        "canonical": "#1B2E5E",
+        "tonalRamp": [
+          "#040A1E",
+          "#152344",
+          "#2D406C",
+          "#496093",
+          "#6981B8",
+          "#8DA5D8",
+          "#B5C9F5",
+          "#E7EFFF"
+        ]
+      },
+      "series-1-dark": {
+        "role": "primary",
+        "displayName": "Ramp Seri 1 — Terang — Gelap",
+        "canonical": "#C9D8FF",
+        "tonalRamp": [
+          "#060A17",
+          "#1D2439",
+          "#37415D",
+          "#546081",
+          "#7481A5",
+          "#98A4C6",
+          "#BEC9E5",
+          "#E8EEFF"
+        ]
+      },
+      "series-2": {
+        "role": "primary",
+        "displayName": "Ramp Seri 2",
+        "canonical": "#2B49A8",
+        "tonalRamp": [
+          "#01052C",
+          "#0C1C5C",
+          "#20398C",
+          "#3959B8",
+          "#577CDE",
+          "#7CA1FD",
+          "#B1C8FF",
+          "#E7EFFF"
+        ]
+      },
+      "series-2-dark": {
+        "role": "primary",
+        "displayName": "Ramp Seri 2 — Gelap",
+        "canonical": "#9DB6F5",
+        "tonalRamp": [
+          "#04091F",
+          "#162246",
+          "#2E3F6F",
+          "#4A5F96",
+          "#6A80BB",
+          "#8EA4DB",
+          "#B5C8F7",
+          "#E7EEFF"
+        ]
+      },
+      "series-3": {
+        "role": "primary",
+        "displayName": "Ramp Seri 3",
+        "canonical": "#4268CE",
+        "tonalRamp": [
+          "#01042D",
+          "#091C5E",
+          "#1C388F",
+          "#3558BC",
+          "#547CE2",
+          "#7AA1FF",
+          "#B0C9FF",
+          "#E7EFFF"
+        ]
+      },
+      "series-3-dark": {
+        "role": "primary",
+        "displayName": "Ramp Seri 3 — Gelap",
+        "canonical": "#6B8EEA",
+        "tonalRamp": [
+          "#020629",
+          "#0E1E57",
+          "#233B85",
+          "#3D5AB0",
+          "#5C7DD6",
+          "#80A2F6",
+          "#B1C8FF",
+          "#E7EEFF"
+        ]
+      },
+      "series-4": {
+        "role": "primary",
+        "displayName": "Ramp Seri 4 — Terang",
+        "canonical": "#6A93E8",
+        "tonalRamp": [
+          "#010727",
+          "#0A2054",
+          "#1F3D81",
+          "#395DAC",
+          "#587FD2",
+          "#7EA4F1",
+          "#AEC9FF",
+          "#E6EFFF"
+        ]
+      },
+      "series-4-dark": {
+        "role": "primary",
+        "displayName": "Ramp Seri 4 — Terang — Gelap",
+        "canonical": "#4468DC",
+        "tonalRamp": [
+          "#020231",
+          "#0A1864",
+          "#1D3497",
+          "#3455C5",
+          "#5279ED",
+          "#7DA0FF",
+          "#B2C8FF",
+          "#E7EEFF"
+        ]
       },
       "danger": {
         "role": "secondary",
         "displayName": "Merah Bahaya",
         "canonical": "#B3272D",
-        "tonalRamp": ["#1F0001", "#4D0007", "#7E0A16", "#AF232A", "#D74C4B", "#FC7570", "#FEB3AD", "#FFE9E6"]
+        "tonalRamp": [
+          "#1F0001",
+          "#4D0007",
+          "#800012",
+          "#AE242B",
+          "#D74D4B",
+          "#F87873",
+          "#FFB2AC",
+          "#FFE8E6"
+        ]
       },
       "danger-dark": {
         "role": "secondary",
         "displayName": "Merah Bahaya — Gelap",
         "canonical": "#E8746F",
-        "tonalRamp": ["#1F0001", "#4D0008", "#7D0B17", "#A33636", "#CA5A56", "#F27D78", "#FEB3AD", "#FEE9E7"]
+        "tonalRamp": [
+          "#1F0001",
+          "#4C0108",
+          "#78181C",
+          "#A33737",
+          "#CA5A57",
+          "#EB827D",
+          "#FFB2AC",
+          "#FFE8E6"
+        ]
+      },
+      "danger-soft": {
+        "role": "secondary",
+        "displayName": "Merah Lembut",
+        "canonical": "#F7E4E4",
+        "tonalRamp": [
+          "#0F0909",
+          "#2C2222",
+          "#4C3E3E",
+          "#6D5D5D",
+          "#8E7E7E",
+          "#B1A1A1",
+          "#D3C5C5",
+          "#F6ECEC"
+        ]
+      },
+      "danger-soft-dark": {
+        "role": "secondary",
+        "displayName": "Merah Lembut — Gelap",
+        "canonical": "#2C1A1B",
+        "tonalRamp": [
+          "#110909",
+          "#2F2122",
+          "#4F3D3D",
+          "#715B5C",
+          "#937C7C",
+          "#B59F9F",
+          "#D7C4C4",
+          "#F8EBEB"
+        ]
       },
       "ramp1": {
         "role": "neutral",
         "displayName": "Nada 1 — Dekat Lembar",
         "canonical": "#EDEBE4",
-        "tonalRamp": ["#3A3833", "#5F5B53", "#817D73", "#A19D92", "#BCB8AD", "#CFCCC2", "#DFDCD4", "#EDEBE4"]
+        "tonalRamp": [
+          "#0C0B09",
+          "#262521",
+          "#43423D",
+          "#63615B",
+          "#84827C",
+          "#A7A59F",
+          "#CAC9C4",
+          "#EFEEEB"
+        ]
       },
       "ramp1-dark": {
         "role": "neutral",
-        "displayName": "Nada 1 — Dekat Lembar, Gelap",
+        "displayName": "Nada 1 — Dekat Lembar — Gelap",
         "canonical": "#232830",
-        "tonalRamp": ["#232830", "#2B3039", "#383D46", "#4B515A", "#686E77", "#888F97", "#ACB0B4", "#D2D0CA"]
+        "tonalRamp": [
+          "#090B0F",
+          "#22252B",
+          "#3D424A",
+          "#5C626B",
+          "#7D838C",
+          "#A0A5AF",
+          "#C5C9D1",
+          "#EBEFF4"
+        ]
       },
       "ramp2": {
         "role": "neutral",
         "displayName": "Nada 2",
         "canonical": "#D9D6CD",
-        "tonalRamp": ["#3A3833", "#5F5B53", "#817D73", "#A19D92", "#BCB8AD", "#CFCCC2", "#DFDCD4", "#EDEBE4"]
+        "tonalRamp": [
+          "#0C0B08",
+          "#272520",
+          "#44423B",
+          "#646159",
+          "#85827A",
+          "#A7A59D",
+          "#CBC9C2",
+          "#F0EEEA"
+        ]
       },
       "ramp2-dark": {
         "role": "neutral",
         "displayName": "Nada 2 — Gelap",
         "canonical": "#2E333C",
-        "tonalRamp": ["#232830", "#2B3039", "#383D46", "#4B515A", "#686E77", "#888F97", "#ACB0B4", "#D2D0CA"]
+        "tonalRamp": [
+          "#090B0F",
+          "#22252B",
+          "#3D424B",
+          "#5C616B",
+          "#7D838D",
+          "#A0A5AF",
+          "#C5C9D2",
+          "#EBEFF5"
+        ]
       },
       "ramp4": {
         "role": "neutral",
         "displayName": "Nada 4",
         "canonical": "#C2BEB3",
-        "tonalRamp": ["#3A3833", "#5F5B53", "#817D73", "#A19D92", "#BCB8AD", "#CFCCC2", "#DFDCD4", "#EDEBE4"]
+        "tonalRamp": [
+          "#0C0B07",
+          "#27251F",
+          "#45423A",
+          "#656157",
+          "#868278",
+          "#A8A59B",
+          "#CCC9C1",
+          "#F0EEE8"
+        ]
       },
       "ramp4-dark": {
         "role": "neutral",
         "displayName": "Nada 4 — Gelap",
         "canonical": "#454B54",
-        "tonalRamp": ["#232830", "#2B3039", "#383D46", "#4B515A", "#686E77", "#888F97", "#ACB0B4", "#D2D0CA"]
+        "tonalRamp": [
+          "#090B0F",
+          "#21252B",
+          "#3D424A",
+          "#5B626B",
+          "#7C838D",
+          "#9FA5AF",
+          "#C4C9D1",
+          "#EBEFF4"
+        ]
       },
       "ramp6": {
         "role": "neutral",
         "displayName": "Nada 6",
         "canonical": "#9C988D",
-        "tonalRamp": ["#3A3833", "#5F5B53", "#817D73", "#A19D92", "#BCB8AD", "#CFCCC2", "#DFDCD4", "#EDEBE4"]
+        "tonalRamp": [
+          "#0C0B07",
+          "#27251E",
+          "#454239",
+          "#656157",
+          "#868278",
+          "#A8A59B",
+          "#CCC9C0",
+          "#F0EEE8"
+        ]
       },
       "ramp6-dark": {
         "role": "neutral",
         "displayName": "Nada 6 — Gelap",
         "canonical": "#6E747D",
-        "tonalRamp": ["#232830", "#2B3039", "#383D46", "#4B515A", "#686E77", "#888F97", "#ACB0B4", "#D2D0CA"]
+        "tonalRamp": [
+          "#090B0F",
+          "#22252B",
+          "#3D424A",
+          "#5C626A",
+          "#7D838C",
+          "#A0A5AE",
+          "#C5C9D1",
+          "#EBEFF4"
+        ]
       },
       "ramp8": {
         "role": "neutral",
         "displayName": "Nada 8",
         "canonical": "#6E6A61",
-        "tonalRamp": ["#3A3833", "#5F5B53", "#817D73", "#A19D92", "#BCB8AD", "#CFCCC2", "#DFDCD4", "#EDEBE4"]
+        "tonalRamp": [
+          "#0C0B08",
+          "#27251F",
+          "#45423A",
+          "#656158",
+          "#868279",
+          "#A9A59C",
+          "#CCC9C1",
+          "#F1EEE9"
+        ]
       },
       "ramp8-dark": {
         "role": "neutral",
         "displayName": "Nada 8 — Gelap",
         "canonical": "#9DA3AB",
-        "tonalRamp": ["#232830", "#2B3039", "#383D46", "#4B515A", "#686E77", "#888F97", "#ACB0B4", "#D2D0CA"]
+        "tonalRamp": [
+          "#090B0E",
+          "#22252A",
+          "#3E4249",
+          "#5C6269",
+          "#7D838A",
+          "#A0A6AD",
+          "#C5CAD0",
+          "#EBEFF3"
+        ]
       },
       "ramp10": {
         "role": "neutral",
         "displayName": "Nada 10 — Dekat Tinta",
         "canonical": "#3A3833",
-        "tonalRamp": ["#3A3833", "#5F5B53", "#817D73", "#A19D92", "#BCB8AD", "#CFCCC2", "#DFDCD4", "#EDEBE4"]
+        "tonalRamp": [
+          "#0C0B09",
+          "#262521",
+          "#44423D",
+          "#63615C",
+          "#84827C",
+          "#A7A59F",
+          "#CBC9C4",
+          "#F0EEEB"
+        ]
       },
       "ramp10-dark": {
         "role": "neutral",
-        "displayName": "Nada 10 — Dekat Tinta, Gelap",
+        "displayName": "Nada 10 — Dekat Tinta — Gelap",
         "canonical": "#D2D0CA",
-        "tonalRamp": ["#232830", "#2B3039", "#383D46", "#4B515A", "#686E77", "#888F97", "#ACB0B4", "#D2D0CA"]
+        "tonalRamp": [
+          "#0C0B09",
+          "#262522",
+          "#43423D",
+          "#63615C",
+          "#84827D",
+          "#A7A5A0",
+          "#CAC9C5",
+          "#EFEEEB"
+        ]
       },
       "band-low-bg": {
-        "role": "neutral",
+        "role": "primary",
         "displayName": "Pita Rendah — Isian",
-        "canonical": "#EDEBE4",
-        "tonalRamp": ["#3A3833", "#5F5B53", "#817D73", "#A19D92", "#BCB8AD", "#CFCCC2", "#DFDCD4", "#EDEBE4"]
+        "canonical": "#DCE5FA",
+        "tonalRamp": [
+          "#080B12",
+          "#202530",
+          "#3B4251",
+          "#5A6173",
+          "#7A8295",
+          "#9DA5B7",
+          "#C3C9D8",
+          "#EAEEF9"
+        ]
       },
       "band-low-bg-dark": {
-        "role": "neutral",
-        "displayName": "Pita Rendah — Isian, Gelap",
-        "canonical": "#232830",
-        "tonalRamp": ["#232830", "#2B3039", "#383D46", "#4B515A", "#686E77", "#888F97", "#ACB0B4", "#D2D0CA"]
+        "role": "primary",
+        "displayName": "Pita Rendah — Isian — Gelap",
+        "canonical": "#1E2740",
+        "tonalRamp": [
+          "#070B16",
+          "#1E2436",
+          "#384159",
+          "#56617D",
+          "#7682A0",
+          "#99A5C1",
+          "#BFC9E1",
+          "#E7EEFF"
+        ]
       },
       "band-low-fg": {
         "role": "neutral",
         "displayName": "Pita Rendah — Teks",
-        "canonical": "#16181A",
-        "tonalRamp": ["#0A0B0D", "#232527", "#404245", "#5F6164", "#808385", "#A3A5A8", "#C7C9CC", "#ECEFF2"]
+        "canonical": "#1B2C57",
+        "tonalRamp": [
+          "#040A1C",
+          "#172442",
+          "#2F4069",
+          "#4B608F",
+          "#6B81B3",
+          "#8FA5D3",
+          "#B7C9F1",
+          "#E7EFFF"
+        ]
       },
       "band-low-fg-dark": {
         "role": "neutral",
-        "displayName": "Pita Rendah — Teks, Gelap",
-        "canonical": "#E9E7E2",
-        "tonalRamp": ["#0C0B08", "#262521", "#43423E", "#63615D", "#84827E", "#A7A5A0", "#CBC9C4", "#F0EEE9"]
+        "displayName": "Pita Rendah — Teks — Gelap",
+        "canonical": "#C9D6F8",
+        "tonalRamp": [
+          "#070B16",
+          "#1E2437",
+          "#38415A",
+          "#56607D",
+          "#7682A0",
+          "#99A5C2",
+          "#BFC9E1",
+          "#E8EEFF"
+        ]
       },
       "band-mid-bg": {
-        "role": "neutral",
+        "role": "primary",
         "displayName": "Pita Sedang — Isian",
-        "canonical": "#C2BEB3",
-        "tonalRamp": ["#3A3833", "#5F5B53", "#817D73", "#A19D92", "#BCB8AD", "#CFCCC2", "#DFDCD4", "#EDEBE4"]
+        "canonical": "#9DB6F2",
+        "tonalRamp": [
+          "#04091E",
+          "#162345",
+          "#2E406D",
+          "#4A5F94",
+          "#6A81B8",
+          "#8EA4D9",
+          "#B6C9F5",
+          "#E7EEFF"
+        ]
       },
       "band-mid-bg-dark": {
-        "role": "neutral",
-        "displayName": "Pita Sedang — Isian, Gelap",
-        "canonical": "#454B54",
-        "tonalRamp": ["#232830", "#2B3039", "#383D46", "#4B515A", "#686E77", "#888F97", "#ACB0B4", "#D2D0CA"]
+        "role": "primary",
+        "displayName": "Pita Sedang — Isian — Gelap",
+        "canonical": "#3E5AB5",
+        "tonalRamp": [
+          "#02052A",
+          "#0F1D58",
+          "#243987",
+          "#3E59B3",
+          "#5D7CD9",
+          "#81A1F8",
+          "#B2C8FF",
+          "#E7EEFF"
+        ]
       },
       "band-mid-fg": {
         "role": "neutral",
         "displayName": "Pita Sedang — Teks",
-        "canonical": "#16181A",
-        "tonalRamp": ["#0A0B0D", "#232527", "#404245", "#5F6164", "#808385", "#A3A5A8", "#C7C9CC", "#ECEFF2"]
+        "canonical": "#15264D",
+        "tonalRamp": [
+          "#040A1B",
+          "#172440",
+          "#304166",
+          "#4C608C",
+          "#6C82B0",
+          "#90A5D0",
+          "#B7C9EE",
+          "#E6EFFF"
+        ]
       },
       "band-mid-fg-dark": {
         "role": "neutral",
-        "displayName": "Pita Sedang — Teks, Gelap",
-        "canonical": "#E9E7E2",
-        "tonalRamp": ["#0C0B08", "#262521", "#43423E", "#63615D", "#84827E", "#A7A5A0", "#CBC9C4", "#F0EEE9"]
+        "displayName": "Pita Sedang — Teks — Gelap",
+        "canonical": "#EAF0FF",
+        "tonalRamp": [
+          "#090B10",
+          "#22252D",
+          "#3E424C",
+          "#5C616E",
+          "#7D828F",
+          "#A0A5B1",
+          "#C5C9D4",
+          "#EBEEF6"
+        ]
       },
       "band-high-bg": {
-        "role": "neutral",
+        "role": "secondary",
         "displayName": "Pita Tinggi — Isian",
-        "canonical": "#16181A",
-        "tonalRamp": ["#3A3833", "#5F5B53", "#817D73", "#A19D92", "#BCB8AD", "#CFCCC2", "#DFDCD4", "#EDEBE4"]
+        "canonical": "#96590C",
+        "tonalRamp": [
+          "#150700",
+          "#391D00",
+          "#613600",
+          "#8C5100",
+          "#B17230",
+          "#D2975E",
+          "#F0BE90",
+          "#FFEAD8"
+        ]
       },
       "band-high-bg-dark": {
-        "role": "neutral",
-        "displayName": "Pita Tinggi — Isian, Gelap",
-        "canonical": "#E9E7E2",
-        "tonalRamp": ["#232830", "#2B3039", "#383D46", "#4B515A", "#686E77", "#888F97", "#ACB0B4", "#D2D0CA"]
+        "role": "secondary",
+        "displayName": "Pita Tinggi — Isian — Gelap",
+        "canonical": "#E3A94A",
+        "tonalRamp": [
+          "#130900",
+          "#342100",
+          "#593B00",
+          "#825800",
+          "#AC7600",
+          "#CE9B48",
+          "#ECC181",
+          "#FFEBCF"
+        ]
       },
       "band-high-fg": {
         "role": "neutral",
         "displayName": "Pita Tinggi — Teks",
         "canonical": "#FFFFFF",
-        "tonalRamp": ["#0B0B0B", "#252525", "#424242", "#616161", "#828282", "#A5A5A5", "#C9C9C9", "#EEEEEE"]
+        "tonalRamp": [
+          "#0B0B0B",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#A5A5A5",
+          "#C9C9C9",
+          "#EEEEEE"
+        ]
       },
       "band-high-fg-dark": {
         "role": "neutral",
-        "displayName": "Pita Tinggi — Teks, Gelap",
-        "canonical": "#14161A",
-        "tonalRamp": ["#090B0F", "#232529", "#404247", "#5F6166", "#808288", "#A2A5AB", "#C6C9CF", "#EBEEF4"]
+        "displayName": "Pita Tinggi — Teks — Gelap",
+        "canonical": "#1A1206",
+        "tonalRamp": [
+          "#0E0A06",
+          "#2A241B",
+          "#494134",
+          "#6A6051",
+          "#8B8171",
+          "#ADA495",
+          "#D0C8BC",
+          "#F4EEE5"
+        ]
       }
     },
     "typographyMeta": {
@@ -320,31 +1184,31 @@
       },
       "field-label": {
         "displayName": "Label Isian",
-        "purpose": "Label kontrol di atas kolom isian, 0.74rem, 500, warna bisu."
+        "purpose": "Label kontrol di atas kolom isian, 0,74rem, 500, warna bisu."
       },
       "switch": {
         "displayName": "Teks Pengalih",
-        "purpose": "Tombol Terang/Gelap pada pengalih tema, 0.72rem, 600."
+        "purpose": "Tombol Terang/Gelap pada pengalih tema, 0,72rem, 600."
       },
       "micro-label": {
         "displayName": "Label Skala",
-        "purpose": "Label pita pada skala risiko dan tick skala, 0.58rem, JetBrains Mono huruf besar dengan tracking lebar."
+        "purpose": "Label pita pada skala risiko dan tick skala, 0,58rem, JetBrains Mono huruf besar dengan tracking lebar."
       },
       "scale-readout": {
         "displayName": "Bacaan Skala",
-        "purpose": "Angka kecil pada skala probabilitas, 0.66rem, JetBrains Mono, 600."
+        "purpose": "Angka kecil pada skala probabilitas, 0,66rem, JetBrains Mono, 600."
       },
       "marker-chip": {
         "displayName": "Chip Penanda",
-        "purpose": "Nilai probabilitas pada chip penanda di atas skala, 0.68rem, JetBrains Mono, 600."
+        "purpose": "Nilai probabilitas pada chip penanda di atas skala, 0,68rem, JetBrains Mono, 600."
       },
       "unit": {
         "displayName": "Satuan Persen",
-        "purpose": "Tanda persen pada angka vonis, 1.15rem, 600, warna bisu."
+        "purpose": "Tanda persen pada angka vonis, 1,15rem, 600, warna bisu."
       },
       "display-compact": {
         "displayName": "Vonis Layar Kecil",
-        "purpose": "Angka vonis pada layar di bawah 900px, 2.1rem, 700. Satu-satunya ukuran yang berubah per breakpoint."
+        "purpose": "Angka vonis pada layar di bawah 900px, 2,1rem, 700. Satu-satunya ukuran yang berubah per breakpoint."
       }
     },
     "shadows": [
@@ -361,6 +1225,16 @@
     ],
     "motion": [
       {
+        "name": "marker-in",
+        "value": "marker-in .5s cubic-bezier(.16,.84,.44,1) both",
+        "purpose": "Momen tunggal: penanda skala tumbuh dari tinggi 35% ke 100% sambil memudar masuk saat hasil prediksi keluar."
+      },
+      {
+        "name": "chip-in",
+        "value": "chip-in .5s .08s cubic-bezier(.16,.84,.44,1) both",
+        "purpose": "Chip nilai penanda mengikuti 0,08s kemudian, muncul dari bawah 5px."
+      },
+      {
         "name": "transition-control",
         "value": "background .12s ease, border-color .12s ease",
         "purpose": "Transisi tunggal pada tombol: latar dan garis berubah bersama, tanpa transformasi."
@@ -369,6 +1243,16 @@
         "name": "transition-tab",
         "value": "color .12s ease",
         "purpose": "Transisi warna label rail tab; indikator 2px berpindah seketika."
+      },
+      {
+        "name": "transition-surface",
+        "value": "background-color .2s ease, border-color .2s ease, color .2s ease",
+        "purpose": "Transisi crosfade pada permukaan besar — title block, blok vonis, skala, matriks, strip ringkasan, panel, expander — supaya pergantian tema terasa larut, bukan melompat."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "@media (prefers-reduced-motion: reduce) { animation-duration: .001ms; transition-duration: .001ms }",
+        "purpose": "Seluruh animasi dan transisi dimatikan bila pengguna meminta reduced motion."
       }
     ],
     "breakpoints": [
@@ -387,17 +1271,17 @@
       "name": "Title Block",
       "kind": "custom",
       "refersTo": "title-block",
-      "description": "Pita sembilan sel berhairline yang membawa identitas model, dengan strip mikro di bawahnya.",
+      "description": "Pita sembilan sel biru pekat yang membawa identitas model, dengan strip mikro sebagai zona kedua yang lebih gelap.",
       "html": "<div class='ds-title-block'>\n  <div class='ds-tb-grid'>\n    <div class='ds-tb-cell'><span class='ds-tb-key'>Model</span><span class='ds-tb-val sm'>Logistic Regression</span></div>\n    <div class='ds-tb-cell'><span class='ds-tb-key'>Ambang</span><span class='ds-tb-val'>0,32</span></div>\n    <div class='ds-tb-cell'><span class='ds-tb-key'>CV-F1</span><span class='ds-tb-val'>0,6304</span></div>\n    <div class='ds-tb-cell'><span class='ds-tb-key'>Akurasi</span><span class='ds-tb-val'>0,7569</span></div>\n    <div class='ds-tb-cell'><span class='ds-tb-key'>Precision</span><span class='ds-tb-val'>0,5309</span></div>\n    <div class='ds-tb-cell'><span class='ds-tb-key'>Recall</span><span class='ds-tb-val'>0,7353</span></div>\n    <div class='ds-tb-cell'><span class='ds-tb-key'>F1</span><span class='ds-tb-val'>0,6166</span></div>\n    <div class='ds-tb-cell'><span class='ds-tb-key'>ROC-AUC</span><span class='ds-tb-val'>0,8324</span></div>\n    <div class='ds-tb-cell'><span class='ds-tb-key'>Brier</span><span class='ds-tb-val'>0,1414</span></div>\n  </div>\n  <div class='ds-tb-strip'>\n    <span>Data latih<b>5.625</b></span>\n    <span>Data uji<b>1.407</b></span>\n    <span>Fitur<b>18</b></span>\n    <span>Kalibrasi<b>Sigmoid, 5 fold</b></span>\n    <span>Sklearn<b>1.9.1</b></span>\n    <span>SHA-256 model<b>97b83e12f3fd</b></span>\n  </div>\n</div>",
-      "css": ".ds-title-block { border: 1px solid var(--rule, #C9C4B8); border-radius: 8px; overflow: hidden; background: var(--sheet, #FFFFFF); }\n.ds-tb-grid { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); }\n.ds-tb-cell { padding: .6rem .75rem .62rem; border-right: 1px solid var(--rule-soft, #E3E0D8); border-bottom: 1px solid var(--rule-soft, #E3E0D8); min-width: 0; }\n.ds-tb-cell:last-child { border-right: none; }\n.ds-tb-key { display: block; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .625rem; font-weight: 500; letter-spacing: .11em; text-transform: uppercase; color: var(--muted, #6B6A64); margin-bottom: .2rem; }\n.ds-tb-val { display: block; font-size: 1.02rem; font-weight: 600; color: var(--ink, #16181A); font-variant-numeric: tabular-nums; letter-spacing: -.015em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }\n.ds-tb-val.sm { font-size: .8rem; }\n.ds-tb-strip { display: flex; flex-wrap: wrap; gap: 0 1.5rem; padding: .5rem .75rem; border-top: 1px solid var(--rule-soft, #E3E0D8); background: var(--paper, #F7F6F2); }\n.ds-tb-strip span { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .625rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted, #6B6A64); }\n.ds-tb-strip b { color: var(--ink, #16181A); font-weight: 600; margin-left: .34rem; font-variant-numeric: tabular-nums; }\n.ds-dark .ds-title-block { background: #1B1E23; border-color: #33373E; }\n.ds-dark .ds-tb-cell { border-color: #262A30; }\n.ds-dark .ds-tb-key, .ds-dark .ds-tb-strip span { color: #8E8C86; }\n.ds-dark .ds-tb-val, .ds-dark .ds-tb-strip b { color: #E9E7E2; }\n.ds-dark .ds-tb-strip { background: #14161A; border-color: #262A30; }"
+      "css": ".ds-title-block { border: 1px solid var(--deep, #16307E); border-radius: 8px; overflow: hidden; background: var(--deep, #16307E); }\n.ds-tb-grid { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); }\n.ds-tb-cell { padding: .6rem .75rem .62rem; border-right: 1px solid var(--deep-rule, #2B4794); border-bottom: 1px solid var(--deep-rule, #2B4794); min-width: 0; }\n.ds-tb-cell:last-child { border-right: none; }\n.ds-tb-key { display: block; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .625rem; font-weight: 500; letter-spacing: .11em; text-transform: uppercase; color: var(--deep-mute, #A9BCEE); margin-bottom: .2rem; }\n.ds-tb-val { display: block; font-size: 1.02rem; font-weight: 600; color: var(--deep-ink, #FFFFFF); font-variant-numeric: tabular-nums; letter-spacing: -.015em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }\n.ds-tb-val.sm { font-size: .8rem; }\n.ds-tb-strip { display: flex; flex-wrap: wrap; gap: 0 1.5rem; padding: .5rem .75rem; border-top: 1px solid var(--deep-rule, #2B4794); background: var(--deep-soft, #0F2358); }\n.ds-tb-strip span { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .625rem; letter-spacing: .1em; text-transform: uppercase; color: var(--deep-mute, #A9BCEE); }\n.ds-tb-strip b { color: var(--deep-ink, #FFFFFF); font-weight: 600; margin-left: .34rem; font-variant-numeric: tabular-nums; }\n.ds-dark .ds-title-block { background: #3E5AD2; border-color: #3E5AD2; }\n.ds-dark .ds-tb-cell { border-color: #5A78DE; }\n.ds-dark .ds-tb-key, .ds-dark .ds-tb-strip span { color: #DCE6FF; }\n.ds-dark .ds-tb-val, .ds-dark .ds-tb-strip b { color: #FFFFFF; }\n.ds-dark .ds-tb-strip { background: #1E2E66; border-color: #5A78DE; }"
     },
     {
       "name": "Tombol Primer",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Tombol tinta penuh untuk aksi utama, misalnya Prediksi.",
+      "description": "Tombol biru pekat penuh untuk aksi utama, misalnya Prediksi.",
       "html": "<button class='ds-btn-primary' type='button'>Prediksi</button>",
-      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: .45rem; border: 1px solid var(--ink, #16181A); border-radius: 6px; background: var(--ink, #16181A); color: var(--paper, #F7F6F2); font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; font-size: .84rem; font-weight: 600; letter-spacing: -.005em; padding: .5rem 1rem; cursor: pointer; transition: background .12s ease, border-color .12s ease; }\n.ds-btn-primary:hover { background: var(--ink2, #3C3F45); border-color: var(--ink2, #3C3F45); }\n.ds-btn-primary:focus-visible { outline: 2px solid var(--accent, #1F4FD8); outline-offset: 2px; }\n.ds-btn-primary:active { background: var(--ink2, #3C3F45); }\n.ds-btn-primary:disabled { opacity: .45; cursor: not-allowed; }\n.ds-dark .ds-btn-primary { background: #E9E7E2; border-color: #E9E7E2; color: #14161A; }\n.ds-dark .ds-btn-primary:hover { background: #C6C4BE; border-color: #C6C4BE; color: #14161A; }"
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: .45rem; border: 1px solid var(--deep, #16307E); border-radius: 6px; background: var(--deep, #16307E); color: var(--deep-ink, #FFFFFF); font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; font-size: .84rem; font-weight: 600; letter-spacing: -.005em; padding: .5rem 1rem; cursor: pointer; transition: background .12s ease, border-color .12s ease; }\n.ds-btn-primary:hover { background: var(--deep-hi, #24439B); border-color: var(--deep-hi, #24439B); }\n.ds-btn-primary:focus-visible { outline: 2px solid var(--accent, #1F4FD8); outline-offset: 2px; }\n.ds-btn-primary:active { background: var(--deep-hi, #24439B); }\n.ds-btn-primary:disabled { opacity: .45; cursor: not-allowed; }\n.ds-dark .ds-btn-primary { background: #3E5AD2; border-color: #3E5AD2; color: #FFFFFF; }\n.ds-dark .ds-btn-primary:hover { background: #4C6BE0; border-color: #4C6BE0; }"
     },
     {
       "name": "Tombol Sekunder",
@@ -408,132 +1292,113 @@
       "css": ".ds-btn-secondary { display: inline-flex; align-items: center; gap: .45rem; border: 1px solid var(--rule, #C9C4B8); border-radius: 6px; background: var(--sheet, #FFFFFF); color: var(--ink, #16181A); font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; font-size: .84rem; font-weight: 600; letter-spacing: -.005em; padding: .5rem 1rem; cursor: pointer; transition: background .12s ease, border-color .12s ease; }\n.ds-btn-secondary:hover { background: var(--paper, #F7F6F2); border-color: var(--ink2, #3C3F45); }\n.ds-btn-secondary:focus-visible { outline: 2px solid var(--accent, #1F4FD8); outline-offset: 2px; }\n.ds-btn-secondary:active { background: var(--paper, #F7F6F2); }\n.ds-dark .ds-btn-secondary { background: #1B1E23; border-color: #33373E; color: #E9E7E2; }\n.ds-dark .ds-btn-secondary:hover { background: #14161A; border-color: #C6C4BE; }"
     },
     {
-      "name": "Kolom Isian",
-      "kind": "input",
-      "refersTo": "input-text",
-      "description": "Satu kolom isian dengan label bisu di atas dan cincin fokus aksen.",
-      "html": "<label class='ds-field'>\n  <span class='ds-field-label'>Lama Berlangganan (bulan)</span>\n  <input class='ds-input' type='text' value='12' />\n</label>",
-      "css": ".ds-field { display: block; max-width: 18rem; font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; }\n.ds-field-label { display: block; font-size: .74rem; font-weight: 500; color: var(--muted, #6B6A64); letter-spacing: .005em; margin-bottom: .18rem; }\n.ds-input { width: 100%; background: var(--sheet, #FFFFFF); color: var(--ink, #16181A); border: 1px solid var(--rule, #C9C4B8); border-radius: 6px; font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; font-size: .85rem; padding: .45rem .6rem; box-shadow: none; transition: border-color .12s ease, box-shadow .12s ease; }\n.ds-input:hover { border-color: var(--ink2, #3C3F45); }\n.ds-input:focus { border-color: var(--accent, #1F4FD8); outline: none; box-shadow: 0 0 0 2px var(--accent-soft, #E4EAFB); }\n.ds-input::placeholder { color: var(--muted, #6B6A64); }\n.ds-dark .ds-input { background: #1B1E23; border-color: #33373E; color: #E9E7E2; }\n.ds-dark .ds-field-label { color: #8E8C86; }"
-    },
-    {
-      "name": "Rail Tab",
-      "kind": "nav",
-      "refersTo": "tab-rail",
-      "description": "Empat area kerja dengan ikon garis 15px dan indikator aktif 2px.",
-      "html": "<div class='ds-tabs' role='tablist'>\n  <button class='ds-tab' role='tab' aria-selected='true' type='button'>\n    <svg class='ds-ico' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><circle cx='12' cy='8' r='4'/><path d='M4 21a8 8 0 0 1 16 0'/></svg>\n    Prediksi Single\n  </button>\n  <button class='ds-tab' role='tab' aria-selected='false' type='button'>\n    <svg class='ds-ico' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M12 16V4M7 9l5-5 5 5'/><path d='M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3'/></svg>\n    Prediksi Batch (CSV)\n  </button>\n  <button class='ds-tab' role='tab' aria-selected='false' type='button'>\n    <svg class='ds-ico' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M4 20V10M10 20V4M16 20v-7M22 20H2'/></svg>\n    Dashboard &amp; Model\n  </button>\n  <button class='ds-tab' role='tab' aria-selected='false' type='button'>\n    <svg class='ds-ico' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><circle cx='11' cy='11' r='6'/><path d='M20 20l-4.5-4.5'/></svg>\n    EDA &amp; Dokumentasi\n  </button>\n</div>",
-      "css": ".ds-tabs { display: flex; gap: .35rem; border-bottom: 1px solid var(--rule, #C9C4B8); }\n.ds-tab { display: inline-flex; align-items: center; gap: .45rem; background: transparent; border: none; border-bottom: 2px solid transparent; margin-right: 1.35rem; padding: .5rem 0 .55rem; font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; font-size: .82rem; font-weight: 600; letter-spacing: -.01em; color: var(--muted, #6B6A64); cursor: pointer; transition: color .12s ease; }\n.ds-tab:hover { color: var(--ink2, #3C3F45); }\n.ds-tab[aria-selected='true'] { color: var(--ink, #16181A); border-bottom-color: var(--ink, #16181A); }\n.ds-tab:focus-visible { outline: 2px solid var(--accent, #1F4FD8); outline-offset: 2px; }\n.ds-tab .ds-ico { flex: none; }\n.ds-dark .ds-tabs { border-color: #33373E; }\n.ds-dark .ds-tab { color: #8E8C86; }\n.ds-dark .ds-tab:hover { color: #C6C4BE; }\n.ds-dark .ds-tab[aria-selected='true'] { color: #E9E7E2; border-bottom-color: #E9E7E2; }"
-    },
-    {
       "name": "Chip Risiko",
       "kind": "chip",
       "refersTo": "risk-chip-high",
-      "description": "Label kategori risiko; isiannya diambil dari ramp nada, bukan dari warna lalu lintas.",
+      "description": "Chip kategori risiko: biru pucat, biru tengah, atau oker pada kategori tinggi.",
       "html": "<span class='ds-chip ds-chip-low'>Rendah</span>\n<span class='ds-chip ds-chip-mid'>Sedang</span>\n<span class='ds-chip ds-chip-high'>Tinggi</span>",
-      "css": ".ds-chip { display: inline-block; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .66rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; padding: .28rem .5rem; border-radius: 4px; }\n.ds-chip-low { background: var(--band-low-bg, #EDEBE4); color: var(--band-low-fg, #16181A); }\n.ds-chip-mid { background: var(--band-mid-bg, #C2BEB3); color: var(--band-mid-fg, #16181A); }\n.ds-chip-high { background: var(--band-high-bg, #16181A); color: var(--band-high-fg, #FFFFFF); }\n.ds-dark .ds-chip-low { background: #232830; color: #E9E7E2; }\n.ds-dark .ds-chip-mid { background: #454B54; color: #E9E7E2; }\n.ds-dark .ds-chip-high { background: #E9E7E2; color: #14161A; }"
+      "css": ".ds-chip { display: inline-block; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .66rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; padding: .28rem .5rem; border-radius: 4px; }\n.ds-chip-low { background: var(--band-low-bg, #DCE5FA); color: var(--band-low-fg, #1B2C57); }\n.ds-chip-mid { background: var(--band-mid-bg, #9DB6F2); color: var(--band-mid-fg, #15264D); }\n.ds-chip-high { background: var(--band-high-bg, #96590C); color: var(--band-high-fg, #FFFFFF); }\n.ds-dark .ds-chip-low { background: #1E2740; color: #C9D6F8; }\n.ds-dark .ds-chip-mid { background: #3E5AB5; color: #EAF0FF; }\n.ds-dark .ds-chip-high { background: #E3A94A; color: #1A1206; }"
     },
     {
-      "name": "Blok Vonis",
-      "kind": "custom",
-      "refersTo": "verdict-block",
-      "description": "Hasil prediksi: chip risiko, kalimat keputusan, dan angka probabilitas terbesar di layar.",
-      "html": "<div class='ds-verdict'>\n  <div class='ds-verdict-head'>\n    <span class='ds-chip ds-chip-high'>Tinggi</span>\n    <span class='ds-verdict-decision'>Keputusan model: <b>CHURN</b></span>\n  </div>\n  <div class='ds-verdict-figure'>73,53<span class='ds-unit'>%</span></div>\n  <div class='ds-verdict-sub'>Probabilitas churn terkalibrasi</div>\n</div>",
-      "css": ".ds-verdict { border: 1px solid var(--rule, #C9C4B8); border-radius: 8px; background: var(--sheet, #FFFFFF); padding: 1rem 1.15rem 1.05rem; font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; }\n.ds-verdict-head { display: flex; align-items: center; gap: .7rem; flex-wrap: wrap; margin-bottom: .45rem; }\n.ds-verdict-decision { font-size: .84rem; color: var(--ink2, #3C3F45); }\n.ds-verdict-decision b { color: var(--ink, #16181A); }\n.ds-verdict-figure { font-size: 2.5rem; font-weight: 700; letter-spacing: -.032em; color: var(--ink, #16181A); font-variant-numeric: tabular-nums; line-height: 1.05; }\n.ds-verdict-figure .ds-unit { font-size: 1.15rem; font-weight: 600; color: var(--muted, #6B6A64); margin-left: .08em; letter-spacing: -.01em; }\n.ds-verdict-sub { font-size: .8rem; color: var(--muted, #6B6A64); margin-top: .18rem; }\n.ds-dark .ds-verdict { background: #1B1E23; border-color: #33373E; }\n.ds-dark .ds-verdict-decision { color: #C6C4BE; }\n.ds-dark .ds-verdict-decision b, .ds-dark .ds-verdict-figure { color: #E9E7E2; }\n.ds-dark .ds-verdict-sub, .ds-dark .ds-verdict-figure .ds-unit { color: #8E8C86; }"
-    },
-    {
-      "name": "Skala Probabilitas Terkalibrasi",
+      "name": "Skala Risiko Terkalibrasi",
       "kind": "custom",
       "refersTo": "calibrated-scale",
-      "description": "Skala terukur: posisi pada ramp adalah besarnya, penanda 2px menandai ambang keputusan 32%.",
-      "html": "<div class='ds-scale'>\n  <div class='ds-scale-head'>\n    <span class='ds-scale-title'>Skala risiko terkalibrasi</span>\n    <span class='ds-scale-note'>Ambang keputusan 32% · batas kategori tinggi 60%</span>\n  </div>\n  <div class='ds-scale-track'>\n    <div class='ds-scale-seg ds-seg-low' style='width:32%'><span>Rendah</span></div>\n    <div class='ds-scale-seg ds-seg-mid' style='width:28%'><span>Sedang</span></div>\n    <div class='ds-scale-seg ds-seg-high'><span>Tinggi</span></div>\n    <div class='ds-scale-marker' style='left:73.53%'>\n      <span class='ds-scale-marker-val'>74%</span>\n    </div>\n  </div>\n  <div class='ds-scale-ticks'>\n    <span class='ds-scale-tick' style='left:0%'>0%</span>\n    <span class='ds-scale-tick hard' style='left:32%'>32% ambang</span>\n    <span class='ds-scale-tick' style='left:60%'>60%</span>\n    <span class='ds-scale-tick' style='left:100%'>100%</span>\n  </div>\n</div>",
-      "css": ".ds-scale { border: 1px solid var(--rule, #C9C4B8); border-radius: 8px; background: var(--sheet, #FFFFFF); padding: .85rem 1rem .7rem; font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; }\n.ds-scale-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.7rem; gap: 1rem; }\n.ds-scale-title { font-size: .78rem; font-weight: 600; color: var(--ink, #16181A); }\n.ds-scale-note { font-size: .72rem; color: var(--muted, #6B6A64); }\n.ds-scale-track { position: relative; height: 26px; border: 1px solid var(--rule, #C9C4B8); border-radius: 4px; display: flex; overflow: visible; }\n.ds-scale-seg { height: 100%; display: flex; align-items: center; justify-content: flex-start; padding-left: .55rem; }\n.ds-scale-seg span { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .58rem; letter-spacing: .11em; text-transform: uppercase; }\n.ds-seg-low { background: var(--band-low-bg, #EDEBE4); color: var(--band-low-fg, #16181A); flex: none; }\n.ds-seg-mid { background: var(--band-mid-bg, #C2BEB3); color: var(--band-mid-fg, #16181A); flex: none; }\n.ds-seg-high { background: var(--band-high-bg, #16181A); color: var(--band-high-fg, #FFFFFF); flex: 1; }\n.ds-scale-marker { position: absolute; top: -6px; bottom: -6px; width: 2px; background: var(--ink, #16181A); transform: translateX(-1px); }\n.ds-scale-marker::after { content: ''; position: absolute; top: -4px; left: -3px; width: 8px; height: 8px; background: var(--ink, #16181A); border-radius: 50%; }\n.ds-scale-marker-val { position: absolute; top: -1.5rem; left: 50%; transform: translateX(-50%); font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .68rem; font-weight: 600; color: var(--ink, #16181A); white-space: nowrap; background: var(--sheet, #FFFFFF); border: 1px solid var(--rule, #C9C4B8); border-radius: 3px; padding: .1rem .32rem; }\n.ds-scale-ticks { position: relative; height: 1rem; margin-top: .3rem; }\n.ds-scale-tick { position: absolute; transform: translateX(-50%); font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .58rem; letter-spacing: .08em; color: var(--muted, #6B6A64); white-space: nowrap; }\n.ds-scale-tick.hard { color: var(--ink2, #3C3F45); font-weight: 600; }\n.ds-scale-tick:first-child { transform: translateX(-8%); }\n.ds-scale-tick:last-child { transform: translateX(-92%); }\n.ds-dark .ds-scale { background: #1B1E23; border-color: #33373E; }\n.ds-dark .ds-scale-title, .ds-dark .ds-scale-marker-val { color: #E9E7E2; }\n.ds-dark .ds-scale-note, .ds-dark .ds-scale-tick { color: #8E8C86; }\n.ds-dark .ds-scale-tick.hard { color: #C6C4BE; }\n.ds-dark .ds-scale-marker, .ds-dark .ds-scale-marker::after { background: #E9E7E2; }\n.ds-dark .ds-scale-marker-val { background: #1B1E23; border-color: #33373E; }\n.ds-dark .ds-seg-low { background: #232830; color: #E9E7E2; }\n.ds-dark .ds-seg-mid { background: #454B54; color: #E9E7E2; }\n.ds-dark .ds-seg-high { background: #E9E7E2; color: #14161A; }"
+      "description": "Skala probabilitas dengan ambang 32% dan batas tinggi 60%; suhu warna pita naik bersama besaran.",
+      "html": "<div class='ds-scale'>\n  <div class='ds-scale-head'><span class='ds-scale-title'>Skala risiko terkalibrasi</span><span class='ds-scale-note'>Ambang keputusan 32% &middot; batas kategori tinggi 60%</span></div>\n  <div class='ds-scale-track'>\n    <div class='ds-seg ds-seg-low' style='width:32%'><span>Rendah</span></div>\n    <div class='ds-seg ds-seg-mid' style='width:28%'><span>Sedang</span></div>\n    <div class='ds-seg ds-seg-high'><span>Tinggi</span></div>\n    <div class='ds-marker' style='left:78.56%'><span class='ds-marker-val'>78,56%</span></div>\n  </div>\n  <div class='ds-ticks'><span class='ds-tick'>0%</span><span class='ds-tick hard'>32% ambang</span><span class='ds-tick'>60%</span><span class='ds-tick'>100%</span></div>\n</div>",
+      "css": ".ds-scale { border: 1px solid var(--rule, #C9C4B8); border-radius: 8px; background: var(--sheet, #FFFFFF); padding: .85rem 1rem .7rem; }\n.ds-scale-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.7rem; gap: 1rem; }\n.ds-scale-title { font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; font-size: .78rem; font-weight: 600; color: var(--ink, #16181A); }\n.ds-scale-note { font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; font-size: .72rem; color: var(--muted, #6B6A64); }\n.ds-scale-track { position: relative; height: 26px; border: 1px solid var(--rule, #C9C4B8); border-radius: 4px; display: flex; overflow: visible; }\n.ds-seg { height: 100%; display: flex; align-items: center; padding-left: .55rem; }\n.ds-seg span { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .58rem; letter-spacing: .11em; text-transform: uppercase; }\n.ds-seg-low { background: var(--band-low-bg, #DCE5FA); color: var(--band-low-fg, #1B2C57); flex: none; }\n.ds-seg-mid { background: var(--band-mid-bg, #9DB6F2); color: var(--band-mid-fg, #15264D); flex: none; }\n.ds-seg-high { background: var(--band-high-bg, #96590C); color: var(--band-high-fg, #FFFFFF); flex: 1; }\n.ds-marker { position: absolute; top: -6px; bottom: -6px; width: 2px; background: var(--ink, #16181A); transform: translateX(-1px); animation: ds-marker-in .5s cubic-bezier(.16,.84,.44,1) both; }\n.ds-marker::after { content: ''; position: absolute; top: -4px; left: -3px; width: 8px; height: 8px; background: var(--ink, #16181A); border-radius: 50%; }\n.ds-marker-val { position: absolute; top: -1.5rem; left: 50%; transform: translateX(-50%); font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .68rem; font-weight: 600; color: var(--ink, #16181A); white-space: nowrap; background: var(--sheet, #FFFFFF); border: 1px solid var(--rule, #C9C4B8); border-radius: 3px; padding: .1rem .32rem; animation: ds-chip-in .5s .08s cubic-bezier(.16,.84,.44,1) both; }\n.ds-ticks { position: relative; height: 1rem; margin-top: .3rem; }\n.ds-tick { position: absolute; transform: translateX(-50%); font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .58rem; letter-spacing: .08em; color: var(--muted, #6B6A64); white-space: nowrap; }\n.ds-tick.hard { color: var(--ink2, #3C3F45); font-weight: 600; }\n@keyframes ds-marker-in { from { opacity: 0; transform: translateX(-1px) scaleY(.35); } to { opacity: 1; transform: translateX(-1px) scaleY(1); } }\n@keyframes ds-chip-in { from { opacity: 0; transform: translateX(-50%) translateY(5px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }\n.ds-dark .ds-scale { background: #1B1E23; border-color: #33373E; }\n.ds-dark .ds-seg-low { background: #1E2740; color: #C9D6F8; }\n.ds-dark .ds-seg-mid { background: #3E5AB5; color: #EAF0FF; }\n.ds-dark .ds-seg-high { background: #E3A94A; color: #1A1206; }\n.ds-dark .ds-marker-val { background: #1B1E23; border-color: #33373E; color: #E9E7E2; }"
     },
     {
       "name": "Matriks Konfusi",
       "kind": "custom",
       "refersTo": "confusion-matrix",
-      "description": "Grid 2x2 hairline; dua hasil benar diberi latar ramp1, tanpa warna hijau atau merah.",
-      "html": "<div class='ds-cm'>\n  <div class='ds-cm-cell hit'><span class='ds-cm-key'>TP</span><span class='ds-cm-val'>275</span><span class='ds-cm-desc'>Diprediksi churn dan memang churn</span></div>\n  <div class='ds-cm-cell hit'><span class='ds-cm-key'>TN</span><span class='ds-cm-val'>790</span><span class='ds-cm-desc'>Diprediksi tidak churn dan memang tidak churn</span></div>\n  <div class='ds-cm-cell'><span class='ds-cm-key'>FP</span><span class='ds-cm-val'>243</span><span class='ds-cm-desc'>Diprediksi churn, ternyata tidak churn</span></div>\n  <div class='ds-cm-cell'><span class='ds-cm-key'>FN</span><span class='ds-cm-val'>99</span><span class='ds-cm-desc'>Churn terlewat</span></div>\n</div>",
-      "css": ".ds-cm { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--rule, #C9C4B8); border-radius: 8px; overflow: hidden; background: var(--sheet, #FFFFFF); font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; }\n.ds-cm-cell { padding: .6rem .85rem .7rem; border-right: 1px solid var(--rule-soft, #E3E0D8); border-bottom: 1px solid var(--rule-soft, #E3E0D8); }\n.ds-cm-cell:nth-child(2n) { border-right: none; }\n.ds-cm-cell:nth-child(n+3) { border-bottom: none; }\n.ds-cm-key { display: block; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted, #6B6A64); margin-bottom: .22rem; }\n.ds-cm-val { display: block; font-size: 1.55rem; font-weight: 650; letter-spacing: -.025em; color: var(--ink, #16181A); font-variant-numeric: tabular-nums; line-height: 1.15; }\n.ds-cm-desc { display: block; font-size: .76rem; color: var(--muted, #6B6A64); margin-top: .12rem; }\n.ds-cm-cell.hit { background: var(--ramp1, #EDEBE4); }\n.ds-dark .ds-cm { background: #1B1E23; border-color: #33373E; }\n.ds-dark .ds-cm-cell { border-color: #262A30; }\n.ds-dark .ds-cm-key, .ds-dark .ds-cm-desc { color: #8E8C86; }\n.ds-dark .ds-cm-val { color: #E9E7E2; }\n.ds-dark .ds-cm-cell.hit { background: #232830; }"
+      "description": "Empat sel hairline; sel yang benar diberi isian biru pudar.",
+      "html": "<div class='ds-cm'>\n  <div class='ds-cm-cell hit'><span class='ds-cm-key'>TP</span><span class='ds-cm-val'>294</span><span class='ds-cm-desc'>Diprediksi churn dan memang churn</span></div>\n  <div class='ds-cm-cell hit'><span class='ds-cm-key'>TN</span><span class='ds-cm-val'>728</span><span class='ds-cm-desc'>Diprediksi tidak churn dan memang tidak churn</span></div>\n  <div class='ds-cm-cell'><span class='ds-cm-key'>FP</span><span class='ds-cm-val'>305</span><span class='ds-cm-desc'>Diprediksi churn, ternyata tidak churn</span></div>\n  <div class='ds-cm-cell'><span class='ds-cm-key'>FN</span><span class='ds-cm-val'>80</span><span class='ds-cm-desc'>Churn terlewat</span></div>\n</div>",
+      "css": ".ds-cm { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--rule, #C9C4B8); border-radius: 8px; overflow: hidden; background: var(--sheet, #FFFFFF); }\n.ds-cm-cell { padding: .6rem .85rem .7rem; border-right: 1px solid var(--rule-soft, #E3E0D8); border-bottom: 1px solid var(--rule-soft, #E3E0D8); }\n.ds-cm-cell:nth-child(2n) { border-right: none; }\n.ds-cm-cell:nth-child(n+3) { border-bottom: none; }\n.ds-cm-cell.hit { background: var(--accent-soft, #E4EAFB); }\n.ds-cm-key { display: block; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .6rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--muted, #6B6A64); margin-bottom: .22rem; }\n.ds-cm-val { display: block; font-size: 1.55rem; font-weight: 650; letter-spacing: -.025em; color: var(--ink, #16181A); font-variant-numeric: tabular-nums; line-height: 1.15; }\n.ds-cm-desc { display: block; font-size: .76rem; color: var(--muted, #6B6A64); margin-top: .12rem; }\n.ds-dark .ds-cm { background: #1B1E23; border-color: #33373E; }\n.ds-dark .ds-cm-cell { border-color: #262A30; }\n.ds-dark .ds-cm-cell.hit { background: #1E2740; }"
     },
     {
-      "name": "Strip Ringkasan",
-      "kind": "card",
-      "refersTo": "summary-strip",
-      "description": "Tiga ringkasan angka setelah proses batch CSV, dipisah garis rambut vertikal.",
-      "html": "<div class='ds-summary'>\n  <div><span class='ds-summary-key'>Total baris</span><span class='ds-summary-val'>1.407</span></div>\n  <div><span class='ds-summary-key'>Prediksi churn</span><span class='ds-summary-val'>413</span></div>\n  <div><span class='ds-summary-key'>Persentase churn</span><span class='ds-summary-val'>29,35%</span></div>\n</div>",
-      "css": ".ds-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--rule, #C9C4B8); border-radius: 8px; overflow: hidden; background: var(--sheet, #FFFFFF); font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; }\n.ds-summary > div { padding: .62rem .8rem; border-right: 1px solid var(--rule-soft, #E3E0D8); }\n.ds-summary > div:last-child { border-right: none; }\n.ds-summary-key { display: block; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .625rem; font-weight: 500; letter-spacing: .11em; text-transform: uppercase; color: var(--muted, #6B6A64); margin-bottom: .2rem; }\n.ds-summary-val { display: block; font-size: 1.02rem; font-weight: 600; color: var(--ink, #16181A); font-variant-numeric: tabular-nums; letter-spacing: -.015em; }\n.ds-dark .ds-summary { background: #1B1E23; border-color: #33373E; }\n.ds-dark .ds-summary > div { border-color: #262A30; }\n.ds-dark .ds-summary-key { color: #8E8C86; }\n.ds-dark .ds-summary-val { color: #E9E7E2; }"
+      "name": "Rail Tab",
+      "kind": "nav",
+      "refersTo": "tab-rail",
+      "description": "Empat area kerja dengan ikon garis; tab aktif memakai biru pekat dan indikator 2px.",
+      "html": "<div class='ds-tabs' role='tablist'>\n  <div class='ds-tab active'><span class='ds-tab-ico'></span>Prediksi Single</div>\n  <div class='ds-tab'><span class='ds-tab-ico'></span>Prediksi Batch (CSV)</div>\n  <div class='ds-tab'><span class='ds-tab-ico'></span>Dashboard &amp; Model</div>\n  <div class='ds-tab'><span class='ds-tab-ico'></span>EDA &amp; Dokumentasi</div>\n</div>",
+      "css": ".ds-tabs { display: flex; gap: .35rem; border-bottom: 1px solid var(--rule, #C9C4B8); }\n.ds-tab { display: flex; align-items: center; gap: .45rem; margin-right: 1.35rem; padding: .5rem 0 .55rem; font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; font-size: .82rem; font-weight: 600; letter-spacing: -.01em; color: var(--muted, #6B6A64); cursor: pointer; transition: color .12s ease; }\n.ds-tab:hover { color: var(--deep-hi, #24439B); }\n.ds-tab:focus-visible { outline: 2px solid var(--accent, #1F4FD8); outline-offset: 2px; }\n.ds-tab.active { color: var(--deep, #16307E); border-bottom: 2px solid var(--deep, #16307E); margin-bottom: -1px; }\n.ds-tab-ico { width: 15px; height: 15px; border: 1.5px solid currentColor; border-radius: 3px; }\n.ds-dark .ds-tab { color: #8E8C86; }\n.ds-dark .ds-tab:hover { color: #4C6BE0; }\n.ds-dark .ds-tab.active { color: #C9D8FF; border-bottom-color: #C9D8FF; }"
     },
     {
-      "name": "Plate EDA",
-      "kind": "custom",
-      "refersTo": "eda-plate",
-      "description": "Grafik yang direkat ke lembar: bingkai hairline, latar putih di kedua tema, keterangan di bawahnya.",
-      "html": "<figure class='ds-plate'>\n  <div class='ds-plate-frame' role='img' aria-label='Grafik EDA'></div>\n  <figcaption class='ds-plate-cap'>Setelah data dibersihkan, sekitar 73,4% pelanggan tidak churn dan 26,6% churn.</figcaption>\n</figure>",
-      "css": ".ds-plate { margin: 0; font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; }\n.ds-plate-frame { display: block; border: 1px solid var(--rule, #C9C4B8); border-radius: 8px; background: #FFFFFF; aspect-ratio: 12 / 3.7; }\n.ds-plate-cap { font-size: .78rem; color: var(--muted, #6B6A64); padding: .5rem .05rem .55rem; line-height: 1.5; }\n.ds-dark .ds-plate-frame { border-color: #33373E; }\n.ds-dark .ds-plate-cap { color: #8E8C86; }"
+      "name": "Kolom Isian",
+      "kind": "input",
+      "refersTo": "input-text",
+      "description": "Kontrol isian dengan label mono bisu dan cincin fokus biru pudar.",
+      "html": "<label class='ds-field'><span class='ds-field-label'>Layanan Internet</span><span class='ds-field-control'>Fiber optic</span></label>",
+      "css": ".ds-field { display: block; }\n.ds-field-label { display: block; font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; font-size: .74rem; font-weight: 500; letter-spacing: .005em; color: var(--muted, #6B6A64); margin-bottom: .18rem; }\n.ds-field-control { display: flex; align-items: center; justify-content: space-between; gap: .5rem; border: 1px solid var(--rule, #C9C4B8); border-radius: 6px; background: var(--sheet, #FFFFFF); color: var(--ink, #16181A); font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif; font-size: .85rem; padding: .4rem .75rem; }\n.ds-field:focus-within .ds-field-control { border-color: var(--accent, #1F4FD8); box-shadow: 0 0 0 2px var(--accent-soft, #E4EAFB); }\n.ds-dark .ds-field-label { color: #8E8C86; }\n.ds-dark .ds-field-control { background: #1B1E23; border-color: #33373E; color: #E9E7E2; }"
     }
   ],
   "narrative": {
     "northStar": "Lembar Gambar Teknik",
-    "overview": "Aplikasi ini bukan dasbor. Ia adalah satu lembar gambar teknik: satu bidang kertas yang berisi title block sebagai pembawa identitas model, hairline 1px sebagai satu-satunya pemisah, dan satu tinta biru teknis sebagai satu-satunya warna kromatik. Evaluator membuka aplikasi untuk memeriksa apakah model churn bisa dipercaya, dan lembar gambar teknik memberi jawaban atas pertanyaan itu secara harfiah: model apa, ambang berapa, performannya bagaimana, dan di mana buktinya. Urutan baca yang dibangun di layar adalah identitas model, lalu alat kerja, lalu bukti.\n\nKepadatan dokumen ini teknis, bukan sekadar dekoratif. Angka selalu tabular sehingga kolom bisa dibandingkan sekilas, dan setiap label yang menyebut sebuah pengukuran ditulis dalam huruf monospace huruf besar dengan spasi lebar, seperti anotasi dimensi pada gambar teknik. Karena itu, dua huruf dengan peran yang berbeda: Archivo untuk kalimat dan angka, JetBrains Mono untuk label terukur, kode, dan penanda. Keduanya di-host sendiri di static/fonts/ sebagai woff2 variabel, jadi halaman tidak bergantung pada stylesheet pihak ketiga.\n\nKedalaman tidak dibangun dari bayangan. Dua nada permukaan saja yang membedakan lembar dari panel di atasnya, dan garis rambut yang memisahkan sel. Tidak ada gradien, tidak ada kaca, tidak ada emoji, tidak ada warna lalu lintas untuk menandai risiko. Risiko dibaca sebagai posisi pada satu ramp nada abu, bukan sebagai tiga warna berbeda.",
+    "overview": "**Creative North Star: \"Lembar Gambar Teknik\"**\n\nAplikasi ini bukan dasbor. Ia adalah satu lembar gambar teknik: satu bidang\nkertas yang berisi title block sebagai pembawa identitas model, hairline 1px\nsebagai satu-satunya pemisah, dan dua tinta kromatik dengan tugas yang jelas\n— biru teknis untuk sistem, oker untuk arah menuju churn. Evaluator membuka\naplikasi untuk memeriksa apakah model churn bisa dipercaya, dan lembar gambar\nteknik memberi jawaban atas pertanyaan itu secara harfiah: model apa, ambang\nberapa, performannya bagaimana, dan di mana buktinya. Urutan baca yang\ndibangun di layar adalah identitas model, lalu alat kerja, lalu bukti.\n\nKepadatan dokumen ini teknis, bukan sekadar dekoratif. Angka selalu tabular sehingga\nkolom bisa dibandingkan sekilas, dan setiap label yang menyebut sebuah\npengukuran ditulis dalam huruf monospace huruf besar dengan spasi lebar,\nseperti anotasi dimensi pada gambar teknik. Karena itu, dua huruf dengan\nperan yang berbeda: Archivo untuk kalimat dan angka, JetBrains Mono\nuntuk label terukur, kode, dan penanda. Keduanya diambil dari\n`static/fonts/` sebagai woff2 variabel dan disisipkan ke halaman, jadi\nhalaman tidak bergantung pada stylesheet pihak ketiga.\n\nKedalaman tidak dibangun dari bayangan. Dua nada permukaan saja yang\nmembedakan lembar dari panel di atasnya, dan garis rambut yang memisahkan\nsel. Tidak ada gradien, tidak ada kaca, tidak ada emoji, tidak ada warna\nlalu lintas untuk menandai risiko: risiko dibaca dari posisi pada skala\nyang suhunya naik bersama besaran, dari biru pucat ke oker.",
     "keyCharacteristics": [
-      "Satu tinta biru teknis; sisanya satu ramp abu yang dibaca sebagai besaran.",
+      "Dua tinta kromatik: biru teknis untuk sistem, oker untuk arah churn; sisanya",
       "Hairline 1px sebagai satu-satunya pemisah; tanpa bayangan di seluruh sistem.",
-      "Title block sembilan sel sebagai identitas model, selalu di atas lembar.",
+      "Title block sembilan sel sebagai identitas model, selalu di atas lembar,",
       "Angka tabular, label mono huruf besar, spasi lebar.",
       "Dua nada permukaan (kertas dan panel) yang membawa kedalaman.",
       "Radius pendek: 8px panel, 6px kontrol, 4px chip, 3px penanda."
     ],
     "rules": [
       {
-        "name": "The One Ink Rule",
-        "body": "Satu tinta biru teknis adalah satu-satunya warna kromatik di seluruh aplikasi. Setiap warna lain adalah abu dari ramp yang sama. Risiko pelanggan tidak pernah memakai merah-amber-hijau, dan aksen tidak pernah dipakai sebagai isian panel atau pita.",
-        "section": "colors"
+        "name": "The Two Ink Rule",
+        "body": "Hanya ada dua tinta kromatik: biru teknis dan oker.",
+        "section": "Colors"
+      },
+      {
+        "name": "The Field Rule",
+        "body": "Warna terkuat memegang satu bidang, bukan ditebar jadi",
+        "section": "Colors"
+      },
+      {
+        "name": "The Warm Means Churn Rule",
+        "body": "Setiap kali dua hal dibandingkan, yang",
+        "section": "Colors"
       },
       {
         "name": "The Ramp Rule",
-        "body": "Besaran selalu dibaca dari posisi pada ramp, bukan dari warna lalu lintas. Kalau sebuah besaran butuh langkah ramp yang belum ada, tambahkan langkah abu, jangan langkah baru berwarna.",
-        "section": "colors"
+        "body": "Besaran selalu dibaca dari posisi pada ramp, bukan dari",
+        "section": "Colors"
       },
       {
         "name": "The Ramp Anchor Rule",
-        "body": "ramp1 selalu menempel pada permukaan lembar dan ramp10 selalu menempel pada tinta, di kedua tema. Karena itu, pita risiko RENDAH selalu paling dekat kertas dan pita TINGGI selalu paling dekat tinta, apa pun temanya.",
-        "section": "colors"
+        "body": "`ramp1` selalu menempel pada permukaan lembar dan",
+        "section": "Colors"
       },
       {
         "name": "The Measured Number Rule",
-        "body": "Setiap angka yang mungkin dibandingkan antar kolom memakai angka tabular. Setiap label yang menyebut sebuah pengukuran ditulis dalam JetBrains Mono huruf besar dengan tracking lebar. Teks biasa tidak pernah diberi tracking lebar, dan angka tidak pernah diberi huruf mono kecuali di dalam blok kode.",
-        "section": "typography"
-      },
-      {
-        "name": "The Two-Face Rule",
-        "body": "Hanya dua keluarga huruf yang boleh muncul: Archivo dan JetBrains Mono. Menambahkan huruf ketiga, memetik ikon emoji, atau memakai huruf display bawaan sistem akan memecah lembar.",
-        "section": "typography"
-      },
-      {
-        "name": "The Hairline-Only Rule",
-        "body": "Kedalaman ditanggung oleh satu garis rambut 1px dan perbedaan dua nada permukaan. Tidak ada bayangan, tidak ada glow, tidak ada gradien, tidak ada kaca. Panel datar adalah keadaan yang benar, bukan kekurangan yang perlu diperbaiki.",
-        "section": "elevation"
+        "body": "Setiap angka yang mungkin dibandingkan antar",
+        "section": "Typography"
       }
     ],
     "dos": [
-      "**Do** bingkai setiap panel dengan `1px solid var(--rule)` dan pisahkan sel di dalamnya dengan `1px solid var(--rule-soft)`.",
-      "**Do** pakai `paper` untuk latar lembar dan `sheet` untuk panel, agar kedalaman datang dari nada, bukan dari bayangan.",
-      "**Do** baca risiko sebagai posisi pada ramp: pakai pasangan `band-low`/`band-mid`/`band-high` yang sudah ada, jangan karang warna kategori baru.",
-      "**Do** tulis label terukur dalam JetBrains Mono huruf besar dengan tracking 0,08em sampai 0,12em, dan semua angka besar dengan angka tabular.",
+      "**Do** bingkai setiap panel dengan `1px solid var(--rule)` dan pisahkan",
+      "**Do** pakai `paper` untuk latar lembar dan `sheet` untuk panel, agar",
+      "**Do** baca risiko sebagai posisi pada skala: pakai pasangan",
+      "**Do** tulis label terukur dalam JetBrains Mono huruf besar dengan",
       "**Do** tulis angka gaya Indonesia: koma untuk desimal, titik untuk ribuan.",
-      "**Do** tandai fokus dengan `outline: 2px solid var(--accent)` dan `outline-offset: 2px`, atau cincin `0 0 0 2px var(--accent-soft)` pada kontrol.",
-      "**Do** gunakan `accent` hanya untuk tautan, fokus, pilihan tema aktif, ikon judul bagian, ikon daftar saran, dan batang yang disorot pada grafik.",
-      "**Do** pertahankan plate EDA tetap putih di kedua tema, seperti cetakan yang dijepit di atas lembar.",
-      "**Do** nyatakan batas dan ketidakpastian di tempat yang sama dengan klaim, dan jangan pernah menampilkan angka metrik tanpa keterangan datanya."
+      "**Do** tandai fokus dengan `outline: 2px solid var(--accent)` dan",
+      "**Do** gunakan `accent` hanya untuk tautan, fokus, pilihan tema aktif,",
+      "**Do** pakai `deep` hanya untuk bidang: title block dan tombol utama.",
+      "**Do** pakai `signal` hanya untuk arah menuju churn: pita kategori tinggi,",
+      "**Do** pakai `series-1`..`series-4` untuk empat metrik yang satu keluarga",
+      "**Do** pertahankan plate EDA tetap putih di kedua tema, seperti cetakan",
+      "**Do** nyatakan batas dan ketidakpastian di tempat yang sama dengan"
     ],
     "donts": [
-      "**Don't** menambah bayangan, glow, gradien, atau efek kaca. Panel datar dengan `box-shadow: none` adalah keadaan yang benar.",
-      "**Don't** memberi warna lalu lintas pada risiko (merah-amber-hijau) atau memakai `accent` sebagai isian pita.",
-      "**Don't** menambahkan emoji, glyph ikon, font ikon, atau huruf ketiga. Ikon hanya dari katalog 24x24 stroke 1,5 di `ui.py`.",
-      "**Don't** memakai bayangan luar untuk membuat panel \"terangkat\". Tidak ada token bayangan di kedua tema; `box-shadow: none` adalah keadaan yang benar.",
-      "**Don't** membiarkan hasil prediksi lama tetap tampil setelah input berubah. Pola yang sudah berjalan: tampilkan \"Input telah berubah. Klik Prediksi untuk memperbarui hasil.\" dan jangan mengganti hasil secara diam-diam.",
-      "**Don't** menambahkan kalimat informasi seperti \"Built with Streamlit\" di footer, dan jangan memuat klaim yang tidak diuji.",
-      "**Don't** meletakkan angka yang sama di dua tempat dengan nilai berbeda; frontmatter di file ini adalah lapisan token yang normatif."
+      "**Don't** menambah bayangan, glow, gradien, atau efek kaca. Panel datar",
+      "**Don't** memberi warna lalu lintas pada risiko (merah-amber-hijau) atau",
+      "**Don't** menambah tinta kromatik keempat. Kalau sebuah grafik seeming",
+      "**Don't** menaruh oker di luar tempat yang maknanya: bukan di",
+      "**Don't** menambahkan emoji, glyph ikon, font ikon, atau huruf ketiga.",
+      "**Don't** memakai `shadow` atau bayangan luar untuk membuat panel",
+      "**Don't** membiarkan hasil prediksi lama tetap tampil setelah input",
+      "**Don't** menambahkan kalimat informasi seperti \"Built with Streamlit\" di",
+      "**Don't** meletakkan angka yang sama di dua tempat dengan nilai berbeda;"
     ]
   }
 }

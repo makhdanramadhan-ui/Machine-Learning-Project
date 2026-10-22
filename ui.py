@@ -12,9 +12,15 @@ from pathlib import Path
 # --------------------------------------------------------------------------
 # Token
 # --------------------------------------------------------------------------
-# Ramp nada: satu skala abu dari kertas ke tinta. Tingkat risiko dibaca dari
-# posisi pada ramp, bukan dari warna lalu lintas; itu sebabnya satu-satunya
-# warna di seluruh aplikasi adalah tinta biru aksen.
+# Ramp risiko: satu skala dari biru pucat ke biru tengah, lalu oker pada
+# kategori tinggi. Warna di sini bukan hiasan — besaran dibaca dari posisi
+# dan dari suhu warna: dingin = tenang, hangat = mendekati churn. Tidak ada
+# hijau, jadi tidak pernah terbaca sebagai lampu lalu lintas.
+#
+# Biru pekat (deep) adalah bidang brand: title block dan tombol utama.
+# Biru aksen (accent) adalah tandanya: tautan, ikon, sorotan.
+# Oker (signal) hanya untuk arah churn: koefisien positif, kategori tinggi,
+# dan deret churn pada grafik.
 LIGHT = {
     "paper": "#F7F6F2",
     "sheet": "#FFFFFF",
@@ -26,18 +32,33 @@ LIGHT = {
     "accent": "#1F4FD8",
     "accent-ink": "#FFFFFF",
     "accent-soft": "#E4EAFB",
+    "deep": "#16307E",
+    "deep-hi": "#24439B",
+    "deep-ink": "#FFFFFF",
+    "deep-mute": "#A9BCEE",
+    "deep-soft": "#0F2358",
+    "deep-rule": "#2B4794",
+    "signal": "#96590C",
+    "signal-ink": "#FFFFFF",
+    "signal-soft": "#F4E8D2",
+    "signal-mute": "#7A4A0A",
+    "series-1": "#1B2E5E",
+    "series-2": "#2B49A8",
+    "series-3": "#4268CE",
+    "series-4": "#6A93E8",
     "danger": "#B3272D",
+    "danger-soft": "#F7E4E4",
     "ramp1": "#EDEBE4",
     "ramp2": "#D9D6CD",
     "ramp4": "#C2BEB3",
     "ramp6": "#9C988D",
     "ramp8": "#6E6A61",
     "ramp10": "#3A3833",
-    "band-low-bg": "#EDEBE4",
-    "band-low-fg": "#16181A",
-    "band-mid-bg": "#C2BEB3",
-    "band-mid-fg": "#16181A",
-    "band-high-bg": "#16181A",
+    "band-low-bg": "#DCE5FA",
+    "band-low-fg": "#1B2C57",
+    "band-mid-bg": "#9DB6F2",
+    "band-mid-fg": "#15264D",
+    "band-high-bg": "#96590C",
     "band-high-fg": "#FFFFFF",
 }
 
@@ -52,19 +73,34 @@ DARK = {
     "accent": "#7E9BFF",
     "accent-ink": "#14161A",
     "accent-soft": "#1E2740",
+    "deep": "#3E5AD2",
+    "deep-hi": "#4C6BE0",
+    "deep-ink": "#FFFFFF",
+    "deep-mute": "#DCE6FF",
+    "deep-soft": "#1E2E66",
+    "deep-rule": "#5A78DE",
+    "signal": "#E3A94A",
+    "signal-ink": "#1A1206",
+    "signal-soft": "#2A2114",
+    "signal-mute": "#E3A94A",
+    "series-1": "#C9D8FF",
+    "series-2": "#9DB6F5",
+    "series-3": "#6B8EEA",
+    "series-4": "#4468DC",
     "danger": "#E8746F",
+    "danger-soft": "#2C1A1B",
     "ramp1": "#232830",
     "ramp2": "#2E333C",
     "ramp4": "#454B54",
     "ramp6": "#6E747D",
     "ramp8": "#9DA3AB",
     "ramp10": "#D2D0CA",
-    "band-low-bg": "#232830",
-    "band-low-fg": "#E9E7E2",
-    "band-mid-bg": "#454B54",
-    "band-mid-fg": "#E9E7E2",
-    "band-high-bg": "#E9E7E2",
-    "band-high-fg": "#14161A",
+    "band-low-bg": "#1E2740",
+    "band-low-fg": "#C9D6F8",
+    "band-mid-bg": "#3E5AB5",
+    "band-mid-fg": "#EAF0FF",
+    "band-high-bg": "#E3A94A",
+    "band-high-fg": "#1A1206",
 }
 
 THEMES = {"Terang": LIGHT, "Gelap": DARK}
@@ -200,25 +236,27 @@ code, pre, .stCode, [data-testid="stCode"] { font-family: 'JetBrains Mono', ui-m
            line-height: 1.55; }
 .head-tools { display: flex; align-items: center; gap: .6rem; }
 
-/* ---- title block ---- */
-.title-block { border: 1px solid var(--rule); border-radius: 8px; overflow: hidden;
-               background: var(--sheet); margin-bottom: 1.1rem; }
+/* ---- title block: bidang biru pekat, seperti blok judul gambar teknik ---- */
+.title-block { border: 1px solid var(--deep); border-radius: 8px; overflow: hidden;
+               background: var(--deep); margin-bottom: 1.1rem; }
 .tb-grid { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); }
-.tb-cell { padding: .6rem .75rem .62rem; border-right: 1px solid var(--rule-soft);
-           border-bottom: 1px solid var(--rule-soft); min-width: 0; }
+.tb-cell { padding: .6rem .75rem .62rem; border-right: 1px solid var(--deep-rule);
+           border-bottom: 1px solid var(--deep-rule); min-width: 0; }
 .tb-cell:last-child { border-right: none; }
 .tb-key { display: block; font-family: 'JetBrains Mono', monospace; font-size: .625rem;
           font-weight: 500; letter-spacing: .11em; text-transform: uppercase;
           color: var(--muted); margin-bottom: .2rem; }
+.title-block .tb-key { color: var(--deep-mute); }
 .tb-val { display: block; font-size: 1.02rem; font-weight: 600; color: var(--ink);
           font-variant-numeric: tabular-nums; letter-spacing: -0.015em;
           white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.title-block .tb-val { color: var(--deep-ink); }
 .tb-val.sm { font-size: .8rem; font-weight: 600; }
 .tb-strip { display: flex; flex-wrap: wrap; gap: 0 1.5rem; padding: .5rem .75rem;
-            border-top: 1px solid var(--rule-soft); background: var(--paper); }
+            border-top: 1px solid var(--deep-rule); background: var(--deep-soft); }
 .tb-strip span { font-family: 'JetBrains Mono', monospace; font-size: .625rem;
-                 letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
-.tb-strip b { color: var(--ink); font-weight: 600; margin-left: .34rem;
+                 letter-spacing: .1em; text-transform: uppercase; color: var(--deep-mute); }
+.tb-strip b { color: var(--deep-ink); font-weight: 600; margin-left: .34rem;
               font-variant-numeric: tabular-nums; }
 
 /* ---- rail tab ---- */
@@ -235,10 +273,10 @@ div[data-testid="stTab"] p::before { content: ""; display: inline-block;
     width: 15px; height: 15px; margin-right: .45rem; vertical-align: -2px;
     background: currentColor; -webkit-mask: var(--tabicon) center/contain no-repeat;
     mask: var(--tabicon) center/contain no-repeat; }
-div[data-testid="stTab"][aria-selected="true"] { color: var(--ink) !important; }
-div[data-testid="stTab"] .react-aria-SelectionIndicator { background: var(--ink) !important;
+div[data-testid="stTab"][aria-selected="true"] { color: var(--deep) !important; }
+div[data-testid="stTab"] .react-aria-SelectionIndicator { background: var(--deep) !important;
     height: 2px !important; }
-div[data-testid="stTab"]:hover { color: var(--ink2) !important; }
+div[data-testid="stTab"]:hover { color: var(--deep-hi) !important; }
 div[data-testid="stTab"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* ---- judul bagian ---- */
@@ -320,10 +358,10 @@ div[data-testid="stNumberInputStepUp"]:hover, div[data-testid="stNumberInputStep
 .stButton > button:hover, .stDownloadButton > button:hover {
     border-color: var(--ink2) !important; background: var(--paper) !important; }
 .stButton > button[kind="primary"], .stDownloadButton > button[kind="primary"] {
-    background: var(--ink) !important; color: var(--paper) !important;
-    border-color: var(--ink) !important; }
-.stButton > button[kind="primary"]:hover { background: var(--ink2) !important;
-    border-color: var(--ink2) !important; color: var(--paper) !important; }
+    background: var(--deep) !important; color: var(--deep-ink) !important;
+    border-color: var(--deep) !important; }
+.stButton > button[kind="primary"]:hover { background: var(--deep-hi) !important;
+    border-color: var(--deep-hi) !important; color: var(--deep-ink) !important; }
 .stButton > button:focus-visible, .stDownloadButton > button:focus-visible {
     outline: 2px solid var(--accent) !important; outline-offset: 2px !important; }
 .stButton > button:disabled { opacity: .45 !important; }
@@ -343,7 +381,7 @@ div[data-testid="stButtonGroup"] button:hover { color: var(--ink) !important;
 div[data-testid="stButtonGroup"] button[aria-checked="true"],
 div[data-testid="stButtonGroup"] button[data-checked="true"],
 div[data-testid="stButtonGroup"] button[aria-pressed="true"] {
-    background: var(--accent-soft) !important; color: var(--ink) !important;
+    background: var(--accent-soft) !important; color: var(--deep) !important;
     border-color: var(--accent) !important; }
 
 /* ---- blok vonis ---- */
@@ -359,6 +397,7 @@ div[data-testid="stButtonGroup"] button[aria-pressed="true"] {
 .risk-high { background: var(--band-high-bg); color: var(--band-high-fg); }
 .verdict-decision { font-size: .84rem; color: var(--ink2) !important; }
 .verdict-decision b { color: var(--ink); }
+.verdict-decision b.hot { color: var(--signal-mute); }
 .verdict-figure { font-size: 2.5rem; font-weight: 700; letter-spacing: -0.032em;
                   color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1.05; }
 .verdict-figure .unit { font-size: 1.15rem; font-weight: 600; color: var(--muted);
@@ -410,7 +449,7 @@ div[data-testid="stButtonGroup"] button[aria-pressed="true"] {
 .cm-val { display: block; font-size: 1.55rem; font-weight: 650; letter-spacing: -0.025em;
           color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1.15; }
 .cm-desc { display: block; font-size: .76rem; color: var(--muted) !important; margin-top: .12rem; }
-.cm-cell.hit { background: var(--ramp1); }
+.cm-cell.hit { background: var(--accent-soft); }
 
 /* ---- daftar saran ---- */
 .rec { display: flex; gap: .6rem; padding: .62rem .1rem; border-bottom: 1px solid var(--rule-soft);
@@ -425,6 +464,7 @@ div[data-testid="stButtonGroup"] button[aria-pressed="true"] {
                   background: var(--sheet); margin: .3rem 0 .8rem; }
 .summary-strip > div { padding: .62rem .8rem; border-right: 1px solid var(--rule-soft); }
 .summary-strip > div:last-child { border-right: none; }
+.summary-strip .tb-val.hot { color: var(--signal-mute); }
 
 /* ---- plate gambar EDA ---- */
 [data-testid="stImage"] img { border: 1px solid var(--rule); border-radius: 8px;
@@ -442,10 +482,36 @@ div[data-testid="stButtonGroup"] button[aria-pressed="true"] {
 [data-testid="stAlert"] { border-radius: 6px !important; border: 1px solid var(--rule) !important;
                           background: var(--sheet) !important; font-size: .85rem !important; }
 [data-testid="stAlertContainer"] { background: var(--sheet) !important; color: var(--ink2) !important; }
-div[data-testid="stAlert"][data-baseweb="callout"][kind="error"],
+div[data-testid="stAlert"][data-baseweb="callout"][kind="error"] {
+    border-color: var(--danger) !important; background: var(--danger-soft) !important; }
+div[data-testid="stAlert"][data-baseweb="callout"][kind="error"] [data-testid="stAlertContainer"] {
+    background: var(--danger-soft) !important; }
 div[data-testid="stAlert"][data-baseweb="callout"][kind="success"] {
-    border-color: var(--danger) !important; }
-div[data-testid="stAlert"][data-baseweb="callout"][kind="warning"] { border-left: 3px solid var(--ramp8) !important; }
+    border-color: var(--accent) !important; background: var(--accent-soft) !important; }
+div[data-testid="stAlert"][data-baseweb="callout"][kind="success"] [data-testid="stAlertContainer"] {
+    background: var(--accent-soft) !important; }
+div[data-testid="stAlert"][data-baseweb="callout"][kind="warning"] {
+    border-color: var(--signal) !important; background: var(--signal-soft) !important; }
+div[data-testid="stAlert"][data-baseweb="callout"][kind="warning"] [data-testid="stAlertContainer"] {
+    background: var(--signal-soft) !important; }
+
+/* ---- gerak ---- */
+/* Satu momen: penanda skala muncul saat hasil keluar. Sisanya hanya
+   transisi keadaan antarmuka, tanpa gerak dekoratif. */
+.scale-marker { animation: marker-in .5s cubic-bezier(.16,.84,.44,1) both; }
+.scale-marker-val { animation: chip-in .5s .08s cubic-bezier(.16,.84,.44,1) both; }
+@keyframes marker-in {
+    from { opacity: 0; transform: translateX(-1px) scaleY(.35); }
+    to { opacity: 1; transform: translateX(-1px) scaleY(1); } }
+@keyframes chip-in {
+    from { opacity: 0; transform: translateX(-50%) translateY(5px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+.title-block, .verdict, .scale, .cm, .summary-strip,
+div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stExpander"] {
+    transition: background-color .2s ease, border-color .2s ease, color .2s ease; }
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important; transition-duration: .001ms !important; } }
 
 /* ---- footer ---- */
 .sheet-foot { margin-top: 2.2rem; padding-top: .85rem; border-top: 1px solid var(--rule);
@@ -457,7 +523,7 @@ div[data-testid="stAlert"][data-baseweb="callout"][kind="warning"] { border-left
     [data-testid="stMainBlockContainer"] { padding: 1rem .9rem 2rem; }
     .app-head { flex-direction: column; gap: .8rem; }
     .tb-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .tb-cell { border-bottom: 1px solid var(--rule-soft) !important; }
+    .tb-cell { border-bottom: 1px solid var(--deep-rule) !important; }
     .summary-strip { grid-template-columns: 1fr; }
     .summary-strip > div { border-right: none; border-bottom: 1px solid var(--rule-soft); }
     .verdict-figure { font-size: 2.1rem; }
@@ -594,7 +660,7 @@ def section(title: str, icon_name: str, note: str = "") -> str:
 
 
 def risk_chip(level: str) -> str:
-    """Chip kategori risiko. Warna berasal dari ramp nada, bukan palet lalu lintas."""
+    """Chip kategori risiko: biru pucat, biru tengah, atau oker untuk tinggi."""
     slug = {"RENDAH": "low", "SEDANG": "mid", "TINGGI": "high"}.get(level, "low")
     return '<span class="risk-chip risk-%s">%s</span>' % (slug, level)
 
@@ -602,9 +668,10 @@ def risk_chip(level: str) -> str:
 def calibrated_scale(prob: float, threshold: float, high: float) -> str:
     """Skala probabilitas terkalibrasi dengan penanda ambang keputusan.
 
-    Posisi pada ramp adalah besaran; warna hanya langkah dari ramp nada yang
-    sama. Angka posisi ditulis dengan titik desimal karena nilainya masuk ke
-    inline CSS, bukan ke teks.
+    Pita pada track: biru pucat di bawah ambang, biru tengah di antaranya,
+    oker di atas batas kategori tinggi. Suhu warna ikut naik bersama besaran,
+    jadi arahnya terbaca tanpa harus membaca angka. Angka posisi ditulis
+    dengan titik desimal karena nilainya masuk ke inline CSS, bukan ke teks.
     """
     lo_pct = threshold * 100
     hi_pct = high * 100
@@ -651,11 +718,16 @@ def confusion_matrix(metrics) -> str:
 
 
 def summary_strip(cells) -> str:
-    """Strip ringkasan: label mono di atas, angka tabular di bawah."""
+    """Strip ringkasan: label mono di atas, angka tabular di bawah.
+
+    Sel boleh punya kelas tambahan, dipakai untuk menandai angka churn.
+    """
     out = ['<div class="summary-strip">']
-    for key, value in cells:
+    for cell in cells:
+        key, value = cell[0], cell[1]
+        extra = cell[2] if len(cell) > 2 else ""
         out.append('<div><span class="tb-key">%s</span>'
-                   '<span class="tb-val">%s</span></div>' % (key, value))
+                   '<span class="tb-val %s">%s</span></div>' % (key, extra, value))
     out.append("</div>")
     return "".join(out)
 
