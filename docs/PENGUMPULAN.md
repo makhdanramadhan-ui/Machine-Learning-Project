@@ -4,15 +4,12 @@ Gunakan nama folder **ML2026_B2_Kelompok12_PrediksiCustomerChurn**.
 
 | Komponen | Lokasi / tautan |
 |---|---|
-| PPT laporan | `ML2026_B2_Kelompok12_PrediksiCustomerChurn.pptx` |
-| Versi PDF | `ML2026_B2_Kelompok12_PrediksiCustomerChurn.pdf` |
 | Source code | https://github.com/makhdanramadhan-ui/Machine-Learning-Project |
 | Dataset | `../Telco-Customer-Churn.csv`; https://www.kaggle.com/datasets/blastchar/telco-customer-churn |
 | Model | `../model_churn.pkl`, `../calibrator.pkl`, metadata deployment |
 | EDA dan notebook | `eda(explaratory data analysis)/EDA.md`; `../projekk.ipynb` |
 | Lima jurnal | `STUDI_LITERATUR.md`, `referensi.bib`, `jurnal/` |
 | Tabel studi literatur | `tabel_studi_literatur.csv`; tabel lengkap pada `STUDI_LITERATUR.md` |
-| Video demo | Direkam anggota, maksimal 7 menit |
 | Aplikasi | https://machine-learning-project-u8yovshrqrc5tm5s2y2qto.streamlit.app/ |
 
 ## Yang diisi/direkam anggota
