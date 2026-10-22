@@ -360,10 +360,24 @@ div[data-testid="stTextInput"] input:focus {
     border-color: var(--accent) !important; outline: none !important;
     box-shadow: 0 0 0 2px var(--accent-soft) !important; }
 div[data-testid="stSelectbox"] svg { fill: var(--muted); }
-div[data-baseweb="popover"] > div { background: var(--sheet) !important; }
-div[data-baseweb="menu"] { background: var(--sheet) !important;
+/* Dropdown Streamlit 1.64 dirender lewat portal dengan
+   data-testid="stSelectboxVirtualDropdown", bukan data-baseweb="popover".
+   Tanpa aturan ini latarnya tetap terang sedangkan teks opsi sudah pakai
+   tinta tema gelap, jadi opsinya tidak terbaca. */
+div[data-testid="stSelectboxVirtualDropdown"] {
+    background: var(--sheet) !important; color: var(--ink) !important;
     border: 1px solid var(--rule) !important; }
-div[role="option"] { font-size: .85rem !important; color: var(--ink) !important; }
+div[data-testid="stSelectboxVirtualDropdown"] [role="listbox"],
+div[data-testid="stSelectboxVirtualDropdown"] [role="presentation"] {
+    background: transparent !important; color: var(--ink) !important; }
+div[data-testid="stSelectboxVirtualDropdown"] [role="option"] {
+    font-size: .85rem !important; color: var(--ink) !important; }
+div[data-testid="stSelectboxVirtualDropdown"] [role="option"][aria-selected="true"],
+div[data-testid="stSelectboxVirtualDropdown"] [role="option"]:hover {
+    background: var(--accent-soft) !important; color: var(--ink) !important; }
+div[data-testid="stPopoverBody"], div[role="tooltip"] {
+    background: var(--sheet) !important; color: var(--ink) !important;
+    border: 1px solid var(--rule) !important; }
 [data-testid="stNumberInputStepUp"], [data-testid="stNumberInputStepDown"] {
     background: var(--sheet) !important; color: var(--ink2) !important;
     border-color: var(--rule) !important; }
