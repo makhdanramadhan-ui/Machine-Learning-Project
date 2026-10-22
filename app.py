@@ -2,9 +2,7 @@
 Pipeline: preprocessing + model dalam 1 file model_churn.pkl
 """
 from pathlib import Path
-import csv
 import hashlib
-import io
 import joblib
 import json
 import pandas as pd
@@ -13,7 +11,7 @@ import streamlit as st
 
 import ui
 from prediction import (
-    InputValidationError, example_customers, input_schema, input_notes,
+    InputValidationError, input_schema, input_notes,
     predict_customers, risk_levels, high_risk_boundary,
 )
 from training_data import load_training_split
@@ -196,8 +194,8 @@ with st.expander("Tentang model dan cara membaca hasil", expanded=False):
                    "mengukur hasil akhirnya. Label CHURN menunjukkan risiko yang melewati ambang, "
                    "bukan kepastian.")
 
-tab1, tab2, tab3, tab4 = st.tabs([
-    "Prediksi Single", "Prediksi Batch (CSV)", "Dashboard & Model", "EDA & Dokumentasi",
+tab1, tab2, tab3 = st.tabs([
+    "Prediksi Single", "Dashboard & Model", "EDA & Dokumentasi",
 ])
 
 # ---------- TAB 1: Prediksi single ----------
@@ -328,84 +326,8 @@ with tab1:
         st.markdown("".join(ui.recommendation(n, label, t) for n, label, t in recs),
                     unsafe_allow_html=True)
 
-# ---------- TAB 2: Prediksi batch ----------
+# ---------- TAB 2: Dashboard & model ----------
 with tab2:
-    with st.container(border=True):
-        st.markdown(ui.section("Unggah CSV untuk Prediksi Massal", "upload",
-                               "Gunakan template di bawah atau CSV dengan kolom yang sama. Kolom "
-                               "`customerID`, `Churn`, dan `TotalCharges` boleh disertakan, "
-                               "tetapi tidak dipakai untuk prediksi."),
-                    unsafe_allow_html=True)
-        st.download_button("Unduh template CSV", example_customers().to_csv(index=False).encode("utf-8"),
-                           "template_pelanggan.csv", "text/csv", width="stretch")
-        with st.expander("Panduan mengisi CSV"):
-            st.write("Kolom wajib: " + ", ".join(SCHEMA["columns"]))
-            st.caption("Simpan CSV sebagai UTF-8 dengan pemisah koma. SeniorCitizen diisi 0 atau 1, "
-                       "tenure dengan bulan bulat 0–72, dan MonthlyCharges dengan angka 0–120. "
-                       "Pilihan layanan tambahan harus sesuai dengan layanan telepon dan internet. "
-                       "Jika ada data yang salah, perbaiki dulu agar seluruh pelanggan bisa diproses.")
-            st.json(SCHEMA["categories"])
-        f = st.file_uploader("Pilih file CSV", type="csv")
-    out = None
-    if f is not None:
-        try:
-            text = f.getvalue().decode("utf-8-sig")
-            header = next(csv.reader(io.StringIO(text)), [])
-            header = [col.strip() for col in header]
-            if len(header) != len(set(header)):
-                raise InputValidationError("Nama kolom CSV tidak boleh duplikat.")
-            df = pd.read_csv(io.StringIO(text))
-            df.columns = df.columns.str.strip()
-            probs, preds = predict_customers(df, CAL, SCHEMA, THRESHOLD)
-            for note in input_notes(df):
-                st.info(note)
-            extra = [col for col in df.columns if col not in SCHEMA["columns"]]
-            if extra:
-                st.caption("Kolom tidak digunakan oleh model: " + ", ".join(extra))
-            out = df.copy()
-            out["Prob_Churn"] = (probs * 100).round(2)
-            out["Prediksi"] = ["CHURN" if p == 1 else "TETAP" for p in preds]
-            out["Risiko"] = risk_levels(probs, THRESHOLD)
-            out["Threshold_Churn"] = THRESHOLD
-        except (InputValidationError, pd.errors.EmptyDataError, pd.errors.ParserError,
-                UnicodeDecodeError, ValueError) as exc:
-            st.error("CSV belum bisa diproses. Periksa bagian berikut, lalu unggah ulang:")
-            st.text(str(exc))
-
-    if out is not None:
-        churn_n = int((out["Prediksi"] == "CHURN").sum())
-        rate = float((out["Prediksi"] == "CHURN").mean() * 100)
-
-        st.markdown(ui.summary_strip([
-            ("Total baris", count_text(len(out))),
-            ("Prediksi churn", count_text(churn_n), "hot"),
-            ("Persentase churn", ui.fmt_num(rate) + "%", "hot"),
-        ]), unsafe_allow_html=True)
-        st.caption(f"Ambang: {THRESHOLD:.0%}. Kolom Prob_Churn berisi probabilitas dalam persen. "
-                   f"Menampilkan {min(20, len(out))} dari {count_text(len(out))} pelanggan; "
-                   "unduhan memuat semua hasil.")
-        st.dataframe(out.head(20), width="stretch", hide_index=True)
-
-        fig_dist, ax_dist = plt.subplots(figsize=(6.5, 2.1))
-        counts = out["Prediksi"].value_counts().reindex(["TETAP", "CHURN"]).fillna(0)
-        ax_dist.barh(counts.index, counts.values,
-                     color=[TOK["ramp6"], TOK["signal"]], height=.55, edgecolor="none")
-        ax_dist.set_xlabel("Pelanggan", fontsize=9)
-        ax_dist.set_xlim(0, max(counts.values.max(), 1) * 1.18)
-        for i, value in enumerate(counts.values):
-            ax_dist.text(value + max(counts.values.max(), 1) * 0.02, i, f"{int(value):,}".replace(",", "."),
-                         va="center", fontsize=8, color=TOK["muted"])
-        style_fig(fig_dist, ax_dist)
-        plt.tight_layout()
-        st.pyplot(fig_dist, width="stretch")
-        plt.close(fig_dist)
-
-        st.download_button("Unduh hasil (CSV)",
-                           out.to_csv(index=False).encode(), "hasil_prediksi.csv", "text/csv",
-                           width="stretch")
-
-# ---------- TAB 3: Dashboard & model ----------
-with tab3:
     with st.container(border=True):
         st.markdown(ui.section("Hasil Pengujian Model Aplikasi", "chart",
                                f"{BEST_LABEL} dengan kalibrasi sigmoid, diuji pada "
@@ -624,8 +546,8 @@ with tab3:
                  "TETAP berarti diprediksi tidak churn, bukan jaminan pelanggan akan terus "
                  "berlangganan. Saran penawaran juga belum diuji efektivitasnya.")
 
-# ---------- TAB 4: EDA & dokumentasi ----------
-with tab4:
+# ---------- TAB 3: EDA & dokumentasi ----------
+with tab3:
     st.markdown(ui.section("Mengenal Data Pelanggan", "search",
                            "EDA adalah pemeriksaan awal untuk memahami isi dan pola data sebelum "
                            "membuat model. Grafik hubungan dengan churn memakai data training "
@@ -690,8 +612,7 @@ with tab4:
     st.markdown(ui.section("Dokumentasi Kelompok 12", "doc"), unsafe_allow_html=True)
     repo_docs = "https://github.com/makhdanramadhan-ui/Machine-Learning-Project/blob/main/docs/"
     st.markdown(f"- [Laporan EDA]({repo_docs}eda%28explaratory%20data%20analysis%29/EDA.md)\n"
-                f"- [Lima jurnal dan tabel studi literatur]({repo_docs}STUDI_LITERATUR.md)\n"
-                f"- [PPT laporan]({repo_docs}ML2026_B2_Kelompok12_PrediksiCustomerChurn.pptx)")
+                f"- [Lima jurnal dan tabel studi literatur]({repo_docs}STUDI_LITERATUR.md)\n")
 
 st.markdown(
     '<div class="sheet-foot">Kelompok 12 · B2 · Muhamad Akhdan Ramadhan (J0404241102) · '

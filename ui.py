@@ -310,8 +310,7 @@ label p, [data-testid="stWidgetLabel"] p { font-size: .74rem !important;
     font-weight: 500 !important; color: var(--muted) !important;
     letter-spacing: .005em; margin-bottom: .18rem !important; }
 div[data-testid="stSelectbox"] > div > div,
-div[data-testid="stTextInput"] input,
-div[data-testid="stFileUploader"] {
+div[data-testid="stTextInput"] input {
     background: var(--sheet) !important; color: var(--ink) !important;
     border: 1px solid var(--rule) !important; border-radius: 6px !important;
     font-size: .85rem !important; box-shadow: none !important; }
@@ -358,20 +357,20 @@ div[role="option"] { font-size: .85rem !important; color: var(--ink) !important;
     background: var(--accent-soft) !important; color: var(--ink) !important; }
 
 /* ---- tombol ---- */
-.stButton > button, .stDownloadButton > button {
+.stButton > button {
     border-radius: 6px !important; font-family: 'Archivo', sans-serif !important;
     font-size: .84rem !important; font-weight: 600 !important;
     letter-spacing: -0.005em; box-shadow: none !important;
     border: 1px solid var(--rule) !important; background: var(--sheet) !important;
     color: var(--ink) !important; transition: background .12s ease, border-color .12s ease; }
-.stButton > button:hover, .stDownloadButton > button:hover {
+.stButton > button:hover {
     border-color: var(--ink2) !important; background: var(--paper) !important; }
-.stButton > button[kind="primary"], .stDownloadButton > button[kind="primary"] {
+.stButton > button[kind="primary"] {
     background: var(--deep) !important; color: var(--deep-ink) !important;
     border-color: var(--deep) !important; }
 .stButton > button[kind="primary"]:hover { background: var(--deep-hi) !important;
     border-color: var(--deep-hi) !important; color: var(--deep-ink) !important; }
-.stButton > button:focus-visible, .stDownloadButton > button:focus-visible {
+.stButton > button:focus-visible {
     outline: 2px solid var(--accent) !important; outline-offset: 2px !important; }
 .stButton > button:disabled { opacity: .45 !important; }
 .btn { display: inline-flex; align-items: center; gap: .45rem; }
@@ -467,14 +466,6 @@ div[data-testid="stButtonGroup"] button[aria-pressed="true"] {
 .rec .ico { color: var(--accent); flex: none; margin-top: .12rem; }
 .rec b { color: var(--ink); font-weight: 600; }
 
-/* ---- strip ringkasan ---- */
-.summary-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
-                  border: 1px solid var(--rule); border-radius: 8px; overflow: hidden;
-                  background: var(--sheet); margin: .3rem 0 .8rem; }
-.summary-strip > div { padding: .62rem .8rem; border-right: 1px solid var(--rule-soft); }
-.summary-strip > div:last-child { border-right: none; }
-.summary-strip .tb-val.hot { color: var(--signal-mute); }
-
 /* ---- plate gambar EDA ---- */
 [data-testid="stImage"] img { border: 1px solid var(--rule); border-radius: 8px;
     background: #FFFFFF; display: block; }
@@ -515,7 +506,7 @@ div[data-testid="stAlert"][data-baseweb="callout"][kind="warning"] [data-testid=
 @keyframes chip-in {
     from { opacity: 0; transform: translateX(-50%) translateY(5px); }
     to { opacity: 1; transform: translateX(-50%) translateY(0); } }
-.title-block, .verdict, .scale, .cm, .summary-strip,
+.title-block, .verdict, .scale, .cm,
 div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stExpander"] {
     transition: background-color .2s ease, border-color .2s ease, color .2s ease; }
 @media (prefers-reduced-motion: reduce) {
@@ -533,8 +524,6 @@ div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stExpander"] {
     .app-head { flex-direction: column; gap: .8rem; }
     .tb-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .tb-cell { border-bottom: 1px solid var(--deep-rule) !important; }
-    .summary-strip { grid-template-columns: 1fr; }
-    .summary-strip > div { border-right: none; border-bottom: 1px solid var(--rule-soft); }
     .verdict-figure { font-size: 2.1rem; }
     button[data-baseweb="tab"] { margin-right: .9rem !important; font-size: .78rem !important; }
 }
@@ -554,7 +543,7 @@ a:hover { text-decoration-thickness: 2px; }
 """
 
 
-TAB_ICONS = ("user", "upload", "chart", "search")
+TAB_ICONS = ("user", "chart", "search")
 
 # Huruf disisipkan sebagai data URI, bukan dilayani lewat static folder.
 # Streamlit Community Cloud hanya meneruskan sebagian path ke server aplikasi,
@@ -722,21 +711,6 @@ def confusion_matrix(metrics) -> str:
         out.append('<div class="cm-cell %s"><span class="cm-key">%s</span>'
                    '<span class="cm-val">%s</span>'
                    '<span class="cm-desc">%s</span></div>' % (cls, key, f"{int(value):,}".replace(",", "."), desc))
-    out.append("</div>")
-    return "".join(out)
-
-
-def summary_strip(cells) -> str:
-    """Strip ringkasan: label mono di atas, angka tabular di bawah.
-
-    Sel boleh punya kelas tambahan, dipakai untuk menandai angka churn.
-    """
-    out = ['<div class="summary-strip">']
-    for cell in cells:
-        key, value = cell[0], cell[1]
-        extra = cell[2] if len(cell) > 2 else ""
-        out.append('<div><span class="tb-key">%s</span>'
-                   '<span class="tb-val %s">%s</span></div>' % (key, extra, value))
     out.append("</div>")
     return "".join(out)
 
