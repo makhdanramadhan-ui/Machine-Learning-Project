@@ -1,6 +1,6 @@
 ---
 name: "Prediksi Customer Churn — Telco"
-description: "Lembar gambar teknik: hairline sebagai satu-satunya pemisah, title block sebagai pembawa identitas model, dan satu tinta biru teknis."
+description: "Lembar gambar teknik: hairline sebagai satu-satunya pemisah, title block biru pekat sebagai pembawa identitas model, dan dua tinta — biru teknis untuk sistem, oker untuk arah churn."
 colors:
   paper: "#F7F6F2"
   paper-dark: "#14161A"
@@ -22,8 +22,38 @@ colors:
   accent-ink-dark: "#14161A"
   accent-soft: "#E4EAFB"
   accent-soft-dark: "#1E2740"
+  deep: "#16307E"
+  deep-dark: "#3E5AD2"
+  deep-hi: "#24439B"
+  deep-hi-dark: "#4C6BE0"
+  deep-ink: "#FFFFFF"
+  deep-ink-dark: "#FFFFFF"
+  deep-mute: "#A9BCEE"
+  deep-mute-dark: "#DCE6FF"
+  deep-soft: "#0F2358"
+  deep-soft-dark: "#1E2E66"
+  deep-rule: "#2B4794"
+  deep-rule-dark: "#5A78DE"
+  signal: "#96590C"
+  signal-dark: "#E3A94A"
+  signal-ink: "#FFFFFF"
+  signal-ink-dark: "#1A1206"
+  signal-soft: "#F4E8D2"
+  signal-soft-dark: "#2A2114"
+  signal-mute: "#7A4A0A"
+  signal-mute-dark: "#E3A94A"
+  series-1: "#1B2E5E"
+  series-1-dark: "#C9D8FF"
+  series-2: "#2B49A8"
+  series-2-dark: "#9DB6F5"
+  series-3: "#4268CE"
+  series-3-dark: "#6B8EEA"
+  series-4: "#6A93E8"
+  series-4-dark: "#4468DC"
   danger: "#B3272D"
   danger-dark: "#E8746F"
+  danger-soft: "#F7E4E4"
+  danger-soft-dark: "#2C1A1B"
   ramp1: "#EDEBE4"
   ramp1-dark: "#232830"
   ramp2: "#D9D6CD"
@@ -36,18 +66,18 @@ colors:
   ramp8-dark: "#9DA3AB"
   ramp10: "#3A3833"
   ramp10-dark: "#D2D0CA"
-  band-low-bg: "#EDEBE4"
-  band-low-bg-dark: "#232830"
-  band-low-fg: "#16181A"
-  band-low-fg-dark: "#E9E7E2"
-  band-mid-bg: "#C2BEB3"
-  band-mid-bg-dark: "#454B54"
-  band-mid-fg: "#16181A"
-  band-mid-fg-dark: "#E9E7E2"
-  band-high-bg: "#16181A"
-  band-high-bg-dark: "#E9E7E2"
+  band-low-bg: "#DCE5FA"
+  band-low-bg-dark: "#1E2740"
+  band-low-fg: "#1B2C57"
+  band-low-fg-dark: "#C9D6F8"
+  band-mid-bg: "#9DB6F2"
+  band-mid-bg-dark: "#3E5AB5"
+  band-mid-fg: "#15264D"
+  band-mid-fg-dark: "#EAF0FF"
+  band-high-bg: "#96590C"
+  band-high-bg-dark: "#E3A94A"
   band-high-fg: "#FFFFFF"
-  band-high-fg-dark: "#14161A"
+  band-high-fg-dark: "#1A1206"
 typography:
   display:
     fontFamily: "'Archivo', 'Segoe UI', system-ui, -apple-system, sans-serif"
@@ -161,36 +191,36 @@ spacing:
   xxxl: "3.5rem"
 components:
   title-block:
-    backgroundColor: "{colors.sheet}"
-    textColor: "{colors.ink}"
+    backgroundColor: "{colors.deep}"
+    textColor: "{colors.deep-ink}"
     rounded: "{rounded.panel}"
     padding: "0.6rem 0.75rem 0.62rem"
   title-block-cell-key:
     typography: "{typography.label}"
-    textColor: "{colors.muted}"
+    textColor: "{colors.deep-mute}"
   title-block-cell-value:
     typography: "{typography.title}"
-    textColor: "{colors.ink}"
+    textColor: "{colors.deep-ink}"
   title-block-strip:
-    backgroundColor: "{colors.paper}"
-    textColor: "{colors.muted}"
+    backgroundColor: "{colors.deep-soft}"
+    textColor: "{colors.deep-mute}"
     padding: "0.5rem 0.75rem"
   tab-rail:
     typography: "{typography.label}"
     textColor: "{colors.muted}"
   tab-rail-active:
     typography: "{typography.label}"
-    textColor: "{colors.ink}"
+    textColor: "{colors.deep}"
     height: "2px"
   button-primary:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.paper}"
+    backgroundColor: "{colors.deep}"
+    textColor: "{colors.deep-ink}"
     rounded: "{rounded.control}"
     typography: "{typography.control}"
     padding: "0.5rem 1rem"
   button-primary-hover:
-    backgroundColor: "{colors.ink2}"
-    textColor: "{colors.paper}"
+    backgroundColor: "{colors.deep-hi}"
+    textColor: "{colors.deep-ink}"
   button-secondary:
     backgroundColor: "{colors.sheet}"
     textColor: "{colors.ink}"
@@ -214,7 +244,7 @@ components:
     rounded: "{rounded.control}"
   theme-toggle-active:
     backgroundColor: "{colors.accent-soft}"
-    textColor: "{colors.ink}"
+    textColor: "{colors.deep}"
     rounded: "{rounded.chip}"
   risk-chip-low:
     backgroundColor: "{colors.band-low-bg}"
@@ -255,7 +285,7 @@ components:
     textColor: "{colors.ink}"
     rounded: "{rounded.panel}"
   confusion-matrix-hit:
-    backgroundColor: "{colors.ramp1}"
+    backgroundColor: "{colors.accent-soft}"
   summary-strip:
     backgroundColor: "{colors.sheet}"
     textColor: "{colors.ink}"
@@ -299,33 +329,35 @@ komponen) serta `eda.py` (palet grafik), bukan dari rencana.
 
 Aplikasi ini bukan dasbor. Ia adalah satu lembar gambar teknik: satu bidang
 kertas yang berisi title block sebagai pembawa identitas model, hairline 1px
-sebagai satu-satunya pemisah, dan satu tinta biru teknis sebagai satu-satunya
-warna kromatik. Evaluator membuka aplikasi untuk memeriksa apakah model
-churn bisa dipercaya, dan lembar gambar teknik memberi jawaban atas
-pertanyaan itu secara harfiah: model apa, ambang berapa, performannya
-bagaimana, dan di mana buktinya. Urutan baca yang dibangun di layar adalah
-identitas model, lalu alat kerja, lalu bukti.
+sebagai satu-satunya pemisah, dan dua tinta kromatik dengan tugas yang jelas
+— biru teknis untuk sistem, oker untuk arah menuju churn. Evaluator membuka
+aplikasi untuk memeriksa apakah model churn bisa dipercaya, dan lembar gambar
+teknik memberi jawaban atas pertanyaan itu secara harfiah: model apa, ambang
+berapa, performannya bagaimana, dan di mana buktinya. Urutan baca yang
+dibangun di layar adalah identitas model, lalu alat kerja, lalu bukti.
 
 Kepadatan dokumen ini teknis, bukan sekadar dekoratif. Angka selalu tabular sehingga
 kolom bisa dibandingkan sekilas, dan setiap label yang menyebut sebuah
 pengukuran ditulis dalam huruf monospace huruf besar dengan spasi lebar,
 seperti anotasi dimensi pada gambar teknik. Karena itu, dua huruf dengan
 peran yang berbeda: Archivo untuk kalimat dan angka, JetBrains Mono
-untuk label terukur, kode, dan penanda. Keduanya di-host sendiri di
-`static/fonts/` sebagai woff2 variabel, jadi halaman tidak bergantung pada
-stylesheet pihak ketiga.
+untuk label terukur, kode, dan penanda. Keduanya diambil dari
+`static/fonts/` sebagai woff2 variabel dan disisipkan ke halaman, jadi
+halaman tidak bergantung pada stylesheet pihak ketiga.
 
 Kedalaman tidak dibangun dari bayangan. Dua nada permukaan saja yang
 membedakan lembar dari panel di atasnya, dan garis rambut yang memisahkan
 sel. Tidak ada gradien, tidak ada kaca, tidak ada emoji, tidak ada warna
-lalu lintas untuk menandai risiko. Risiko dibaca sebagai posisi pada satu
-ramp nada abu, bukan sebagai tiga warna berbeda.
+lalu lintas untuk menandai risiko: risiko dibaca dari posisi pada skala
+yang suhunya naik bersama besaran, dari biru pucat ke oker.
 
 **Key Characteristics:**
 
-- Satu tinta biru teknis; sisanya satu ramp abu yang dibaca sebagai besaran.
+- Dua tinta kromatik: biru teknis untuk sistem, oker untuk arah churn; sisanya
+  satu ramp abu yang dibaca sebagai besaran.
 - Hairline 1px sebagai satu-satunya pemisah; tanpa bayangan di seluruh sistem.
-- Title block sembilan sel sebagai identitas model, selalu di atas lembar.
+- Title block sembilan sel sebagai identitas model, selalu di atas lembar,
+  dan sebagai satu-satunya bidang biru pekat di halaman.
 - Angka tabular, label mono huruf besar, spasi lebar.
 - Dua nada permukaan (kertas dan panel) yang membawa kedalaman.
 - Radius pendek: 8px panel, 6px kontrol, 4px chip, 3px penanda.
@@ -340,32 +372,50 @@ lembar, `ramp10` selalu menempel pada tinta.
 
 ## Colors
 
-Palet ini satu tinta biru teknis di atas kertas hangat, dengan satu ramp abu
-untuk besaran; tidak ada warna lain yang berdiri sendiri.
+Palet ini dua tinta kromatik di atas kertas hangat: biru teknis yang menjadi
+identitas sistem, dan oker yang menandai arah churn. Sisanya abu dari satu
+ramp. Warna di sini punya pekerjaan, bukan hiasan: biru pekat memegang satu
+bidang besar, oker hanya muncul di tempat yang benar-benar bermakna.
 
 ### Primary
 
-- **Tinta Biru Teknis** (`accent`, #1F4FD8 terang / #7E9BFF gelap): satu-satunya
-  warna kromatik. Dipakai untuk tautan, cincin fokus, tombol tema yang aktif,
-  ikon judul bagian, ikon daftar saran, dan batang yang disorot pada grafik
-  matplotlib. Tidak pernah dipakai sebagai isian panel atau latar tabel.
-- **Tinta di Atas Biru** (`accent-ink`, #FFFFFF terang / #14161A gelap): warna
-  teks di atas tinta biru, dipakai pada seleksi teks (`::selection`).
+- **Tinta Biru Teknis** (`accent`, #1F4FD8 terang / #7E9BFF gelap): warna
+  kromatik yang menandai hal yang bisa diklik. Dipakai untuk tautan, cincin
+  fokus, tombol tema yang aktif, ikon judul bagian, ikon daftar saran, dan
+  batang yang disorot pada grafik matplotlib. Tidak pernah dipakai sebagai
+  isian panel atau latar tabel.
+- **Biru Pekat** (`deep`, #16307E terang / #24429E gelap): warna brand yang
+  memegang bidang. Satu-satunya pemakai besarnya adalah title block, yang
+  menjadi blok biru pekat berisi identitas model, lalu tombol utama.
+  `deep-hi` dipakai untuk keadaan hover.
+- **Tinta di Atas Biru** (`deep-ink`, #FFFFFF di kedua tema): teks di atas
+  bidang biru pekat.
+- **Tinta Bisu di Atas Biru** (`deep-mute`, #A9BCEE terang / #B4C4F0 gelap):
+  label mono di atas bidang biru pekat. Diturunkan dari warna bidangnya,
+  bukan abu generik, supaya tetap terbaca sebagai satu blok.
 - **Biru Pudar** (`accent-soft`, #E4EAFB terang / #1E2740 gelap): isian
   cincin fokus pada kontrol, tombol tema yang aktif, dan arah kursor pada
   tombol angka.
 
 ### Secondary
 
+- **Oker Churn** (`signal`, #96590C terang / #E3A94A gelap): satu-satunya
+  warna yang berarti "menuju churn". Dipakai pada pita kategori tinggi,
+  kata CHURN pada blok vonis, angka churn pada strip ringkasan, koefisien
+  positif pada grafik fitur, dan deret churn pada grafik EDA. Tidak pernah
+  dipakai untuk dekorasi.
+- **Oker Lembut** (`signal-soft`, #F4E8D2 terang / #2A2114 gelap): isian
+  pesan peringatan.
+- **Oker Bisu** (`signal-mute`, #7A4A0A terang / #E3A94A gelap): teks oker di
+  atas kertas, untuk kata CHURN dan angka churn.
 - **Merah Bahaya** (`danger`, #B3272D terang / #E8746F gelap): satu-satunya
-  warna untuk border pesan galat dan sukses. Tidak dipakai untuk menandai
-  risiko pelanggan.
+  warna untuk pesan galat. Tidak dipakai untuk menandai risiko pelanggan.
 
 ### Neutral
 
 - **Kertas Gambar** (`paper`, #F7F6F2 terang / #14161A gelap): latar lembar.
 - **Lembar Panel** (`sheet`, #FFFFFF terang / #1B1E23 gelap): latar panel,
-  kartu, tabel, dan pita mikro title block.
+  kartu, tabel, dan isi panel di luar title block.
 - **Tinta** (`ink`, #16181A terang / #E9E7E2 gelap): teks utama dan nilai
   angka besar.
 - **Tinta Ringan** (`ink2`, #3C3F45 terang / #C6C4BE gelap): teks paragraf
@@ -373,7 +423,7 @@ untuk besaran; tidak ada warna lain yang berdiri sendiri.
 - **Tinta Bisu** (`muted`, #6B6A64 terang / #8E8C86 gelap): label, caption,
   dan anotasi mikro.
 - **Garis Rambut** (`rule`, #C9C4B8 terang / #33373E gelap): bingkai luar
-  panel, title block, tabel, dan garis dasar rail tab.
+  panel, tabel, dan garis dasar rail tab.
 - **Garis Rambut Halus** (`rule-soft`, #E3E0D8 terang / #262A30 gelap):
   pemisah antar sel di dalam satu panel.
 - **Ramp Nada** (`ramp1`, `ramp2`, `ramp4`, `ramp6`, `ramp8`, `ramp10`):
@@ -382,10 +432,17 @@ untuk besaran; tidak ada warna lain yang berdiri sendiri.
   pada tema gelap. Satu keluarga abu untuk besaran: `ramp1` menempel pada
   permukaan lembar, `ramp10` menempel pada tinta, langkah di antaranya
   menandai besaran.
+- **Ramp Seri** (`series-1`..`series-4`): empat langkah biru untuk empat
+  metrik yang satu keluarga — Accuracy, Precision, Recall, F1. Semuanya
+  skor 0-1, jadi warnanya ramp satu hue, bukan empat warna berbeda. F1
+  paling pekat karena di situlah model dipilih. Pada tema gelap urutannya
+  dibalik: yang paling terang paling pekat di atas dasar gelap.
 - **Pita Risiko** (`band-low-bg`/`band-low-fg`, `band-mid-bg`/`band-mid-fg`,
   `band-high-bg`/`band-high-fg`): pasangan isian dan teks untuk tiga kategori
-  risiko. Isian LOW adalah `ramp1`, isian MID adalah `ramp4`, isian HIGH adalah
-  tinta. Teksnya kebalikan dari isiannya.
+  risiko. Isian LOW adalah biru pucat `#DCE5FA`, isian MID adalah biru
+  tengah `#9DB6F2`, isian HIGH adalah oker `#96590C`. Suhu warna naik
+  bersama besaran, jadi arahnya terbaca tanpa harus membaca angka. Teksnya
+  kebalikan dari isiannya.
 
 ### Tabel Token Warna
 
@@ -401,35 +458,64 @@ untuk besaran; tidak ada warna lain yang berdiri sendiri.
 | `accent` | #1F4FD8 | #7E9BFF |
 | `accent-ink` | #FFFFFF | #14161A |
 | `accent-soft` | #E4EAFB | #1E2740 |
+| `deep` | #16307E | #3E5AD2 |
+| `deep-hi` | #24439B | #4C6BE0 |
+| `deep-ink` | #FFFFFF | #FFFFFF |
+| `deep-mute` | #A9BCEE | #DCE6FF |
+| `deep-soft` | #0F2358 | #1E2E66 |
+| `deep-rule` | #2B4794 | #5A78DE |
+| `signal` | #96590C | #E3A94A |
+| `signal-ink` | #FFFFFF | #1A1206 |
+| `signal-soft` | #F4E8D2 | #2A2114 |
+| `signal-mute` | #7A4A0A | #E3A94A |
+| `series-1` | #1B2E5E | #C9D8FF |
+| `series-2` | #2B49A8 | #9DB6F5 |
+| `series-3` | #4268CE | #6B8EEA |
+| `series-4` | #6A93E8 | #4468DC |
 | `danger` | #B3272D | #E8746F |
+| `danger-soft` | #F7E4E4 | #2C1A1B |
 | `ramp1` | #EDEBE4 | #232830 |
 | `ramp2` | #D9D6CD | #2E333C |
 | `ramp4` | #C2BEB3 | #454B54 |
 | `ramp6` | #9C988D | #6E747D |
 | `ramp8` | #6E6A61 | #9DA3AB |
 | `ramp10` | #3A3833 | #D2D0CA |
-| `band-low-bg` | #EDEBE4 | #232830 |
-| `band-low-fg` | #16181A | #E9E7E2 |
-| `band-mid-bg` | #C2BEB3 | #454B54 |
-| `band-mid-fg` | #16181A | #E9E7E2 |
-| `band-high-bg` | #16181A | #E9E7E2 |
-| `band-high-fg` | #FFFFFF | #14161A |
+| `band-low-bg` | #DCE5FA | #1E2740 |
+| `band-low-fg` | #1B2C57 | #C9D6F8 |
+| `band-mid-bg` | #9DB6F2 | #3E5AB5 |
+| `band-mid-fg` | #15264D | #EAF0FF |
+| `band-high-bg` | #96590C | #E3A94A |
+| `band-high-fg` | #FFFFFF | #1A1206 |
 
 ### Named Rules
 
-**The One Ink Rule.** Satu tinta biru teknis adalah satu-satunya warna
-kromatik di seluruh aplikasi. Setiap warna lain adalah abu dari ramp yang
-sama. Risiko pelanggan tidak pernah memakai merah-amber-hijau, dan aksen
-tidak pernah dipakai sebagai isian panel atau pita.
+**The Two Ink Rule.** Hanya ada dua tinta kromatik: biru teknis dan oker.
+Biru berarti "ini bagian dari sistem atau ini bisa diklik"; oker berarti
+"ini arah menuju churn". Setiap warna lain adalah abu dari ramp yang sama.
+Risiko pelanggan tidak pernah memakai merah-amber-hijau, dan tidak ada
+warna keempat yang muncul hanya karena satu grafik membutuhkannya.
+
+**The Field Rule.** Warna terkuat memegang satu bidang, bukan ditebar jadi
+titik-tikik kecil. Di sini bidang itu adalah title block: satu blok biru
+pekat yang membawa identitas model, dengan strip mikro sebagai zona kedua
+yang lebih gelap. Warna pekat tidak pernah dipakai lagi di halaman sebagai
+dekorasi.
+
+**The Warm Means Churn Rule.** Setiap kali dua hal dibandingkan, yang
+menuju churn memakai oker dan yang tidak memakai biru atau abu. Berlaku untuk
+pita skala risiko, koefisien model, deret churn pada grafik EDA, dan kata
+CHURN pada blok vonis. Dengan begitu satu warna punya satu arti di seluruh
+aplikasi.
 
 **The Ramp Rule.** Besaran selalu dibaca dari posisi pada ramp, bukan dari
 warna lalu lintas. Kalau sebuah besaran butuh langkah ramp yang belum ada,
-tambahkan langkah abu, jangan langkah baru berwarna.
+tambahkan langkah ramp yang sudah ada, jangan langkah baru berwarna.
 
 **The Ramp Anchor Rule.** `ramp1` selalu menempel pada permukaan lembar dan
-`ramp10` selalu menempel pada tinta, di kedua tema. Karena itu, pita
-risiko RENDAH selalu paling dekat kertas dan pita TINGGI selalu paling dekat
-tinta, apa pun temanya.
+`ramp10` selalu menempel pada tinta, di kedua tema. Ramp abu hanya untuk
+sesuatu yang tidak bermakna kromatik — misalnya model yang tidak dipilih pada
+grafik perbandingan. Pita risiko tidak memakai ramp abu: RENDAH biru pucat,
+SEDANG biru tengah, TINGGI oker, supaya arah besaran terbaca sekilas.
 
 ## Typography
 
@@ -604,17 +690,19 @@ ukuran, dan warna diambil apa adanya.
 ### Title block (pita identitas model)
 
 Pita sel berhairline yang membawa identitas model, selalu di atas lembar.
+Ini satu-satunya bidang berwarna pekat di halaman.
 
-- **Shape:** bingkai `1px solid var(--rule)`, radius 8px, `overflow: hidden`,
-  latar `sheet`.
+- **Shape:** bingkai `1px solid var(--deep)`, radius 8px, `overflow: hidden`,
+  latar `deep`.
 - **Sel:** sembilan sel pada grid `repeat(9, minmax(0, 1fr))`. Tiap sel punya
-  kunci mono (0,625rem, 500, tracking 0,11em, huruf besar, `muted`) dan nilai
-  (1,02rem, 600, angka tabular, `ink`, `white-space: nowrap` dengan ellipsis
-  bila panjang). Nama model memakai varian kecil 0,8rem.
-- **Strip mikro:** baris di bawah grid dengan latar `paper`, pemisah atas
-  `rule-soft`, memuat enam pasangan (data latih, data uji, fitur, kalibrasi,
-  versi sklearn, hash SHA-256) dalam mono 0,625rem tracking 0,1em; nilai
-  dicetak tebal dengan angka tabular.
+  kunci mono (0,625rem, 500, tracking 0,11em, huruf besar, `deep-mute`) dan
+  nilai (1,02rem, 600, angka tabular, `deep-ink`, `white-space: nowrap` dengan
+  ellipsis bila panjang). Nama model memakai varian kecil 0,8rem.
+- **Strip mikro:** baris di bawah grid dengan latar `deep-soft` — zona kedua
+  yang lebih gelap di dalam blok yang sama — pemisah atas `deep-rule`, memuat
+  enam pasangan (data latih, data uji, fitur, kalibrasi, versi sklearn, hash
+  SHA-256) dalam mono 0,625rem tracking 0,1em; nilai dicetak tebal dengan
+  angka tabular.
 - **Perilaku:** nilai tidak pernah dipotong secara visual pada lebar normal;
   sembilan sel dan label yang sama tidak pernah diulang. Title block adalah
   dokumen identitas, bukan kartu hias.
@@ -624,8 +712,8 @@ Pita sel berhairline yang membawa identitas model, selalu di atas lembar.
 - **Bentuk:** `gap: 0,35rem`, garis bawah `1px solid var(--rule)`, tiap tab
   `margin-right: 1,35rem`, padding 0,5rem 0 0,55rem.
 - **Tipografi:** Archivo 0,82rem, 600, tracking -0,01em.
-- **State:** default `muted`; aktif `ink` dengan indikator 2px `ink`; hover
-  `ink2`; fokus `outline: 2px solid var(--accent); outline-offset: 2px`.
+- **State:** default `muted`; aktif `deep` dengan indikator 2px `deep`; hover
+  `deep-hi`; fokus `outline: 2px solid var(--accent); outline-offset: 2px`.
 - **Ikon:** tiap tab punya ikon garis 15x15 yang dipasang sebagai mask CSS
   dari data URI sehingga warnanya ikut `currentColor`. Urutannya: `user`
   (Prediksi Single), `upload` (Prediksi Batch), `chart` (Dashboard & Model),
@@ -636,8 +724,9 @@ Pita sel berhairline yang membawa identitas model, selalu di atas lembar.
 
 - **Shape:** bingkai `1px solid var(--rule)`, radius 8px, latar `sheet`,
   padding 1rem 1,15rem 1,05rem, margin 0,2rem 0 0,9rem.
-- **Kepala:** chip risiko 16px + kalimat keputusan 0,84rem; kata `CHURN` dan
-  `TETAP` tebal dengan warna `ink`, sisanya `ink2`.
+- **Kepala:** chip risiko 16px + kalimat keputusan 0,84rem; kata `CHURN`
+  tebal dengan warna `signal-mute`, kata `TETAP` tebal dengan warna `ink`,
+  sisanya `ink2`.
 - **Angka:** 2,5rem, 700, tracking -0,032em, angka tabular, line-height 1,05;
   satuan persen 1,15rem berbobot 600 warna `muted`.
 - **Sub-teks:** 0,8rem `muted`, "Probabilitas churn terkalibrasi".
@@ -648,16 +737,18 @@ Pita sel berhairline yang membawa identitas model, selalu di atas lembar.
 
 - **Bentuk:** radius 4px, padding 0,28rem 0,5rem, JetBrains Mono 0,66rem,
   600, tracking 0,1em, huruf besar.
-- **Isian:** LOW = `ramp1` dengan teks `ink`; MID = `ramp4` dengan teks `ink`;
-  HIGH = tinta dengan teks `sheet`. Di tema gelap ketiganya berbalik arah
-  kontras, dan HIGH tetap berupa pita terang di atas lembar gelap.
+- **Isian:** LOW = biru pucat dengan teks biru tua; MID = biru tengah dengan
+  teks biru tua; HIGH = oker dengan teks putih. Di tema gelap isiannya
+  digeser ke arah kebalikan: LOW = biru sangat gelap dengan teks biru muda,
+  MID = biru terang dengan teks putih-ish, HIGH = oker terang dengan teks
+  hampir hitam.
 - **State:** chip adalah label hasil, bukan tombol; tidak punya keadaan fokus
   atau hover.
 
 ### Skala probabilitas terkalibrasi
 
-Skala terukur: posisi pada ramp adalah besarnya, warna hanya langkah dari
-ramp yang sama.
+Skala terukur: posisi pada track adalah besarnya, dan suhu warna naik
+sejajar dengan besaran — dingin di bawah ambang, hangat di zona tinggi.
 
 - **Shape:** panel hairline radius 8px, padding 0,85rem 1rem 0,7rem. Track
   setinggi 26px dengan radius 4px dan border `rule`; tiga segmen: RENDAH
@@ -784,6 +875,30 @@ ramp yang sama.
   berwarna sendiri. Warna ikon selalu `currentColor`; hanya ikon judul
   bagian dan ikon daftar saran yang diberi `accent`.
 
+### Gerak
+
+Gerak di sistem ini sedikit dan disengaja. Tidak ada elemen yang bergerak
+tanpa alasan: satu-satunya gerak adalah penanda pada skala risiko yang
+muncul saat hasil prediksi keluar, karena di situlah angka baru masuk ke
+layar.
+
+- **Momen tunggal:** penanda skala (`.scale-marker`) tumbuh dari tinggi
+  35% ke 100% sambil memudar masuk, 0,5s dengan `cubic-bezier(.16,.84,.44,1)`;
+  chip nilainya (`.scale-marker-val`) mengikuti 0,08s kemudian, muncul dari
+  bawah 5px. Keduanya sekali, bukan berulang.
+- **Transisi keadaan:** tombol memakai `background .12s ease` dan
+  `border-color .12s ease`; label rail tab memakai `color .12s ease`.
+  Permukaan besar — title block, blok vonis, skala, matriks, strip
+  ringkasan, panel, dan expander — memakai `background-color .2s ease`,
+  `border-color .2s ease`, `color .2s ease`, supaya pergantian tema terasa
+  Crosfade, bukan melompat.
+- **Tidak ada** gerak dekoratif: tidak ada perguliran, tidak ada parallax,
+  tidak ada hover yang mengangkat elemen, tidak ada loop berulang, dan tidak
+  ada transformasi pada elemen statis.
+- **Aksesibilitas:** `@media (prefers-reduced-motion: reduce)` mematikan
+  seluruh animasi dan transisi, sehingga aplikasi tetap terbaca sebagai
+  dokumen statis.
+
 ## Do's and Don'ts
 
 ### Do:
@@ -792,7 +907,7 @@ ramp yang sama.
   sel di dalamnya dengan `1px solid var(--rule-soft)`.
 - **Do** pakai `paper` untuk latar lembar dan `sheet` untuk panel, agar
   kedalaman datang dari nada, bukan dari bayangan.
-- **Do** baca risiko sebagai posisi pada ramp: pakai pasangan
+- **Do** baca risiko sebagai posisi pada skala: pakai pasangan
   `band-low`/`band-mid`/`band-high` yang sudah ada, jangan karang warna
   kategori baru.
 - **Do** tulis label terukur dalam JetBrains Mono huruf besar dengan
@@ -804,6 +919,11 @@ ramp yang sama.
   kontrol.
 - **Do** gunakan `accent` hanya untuk tautan, fokus, pilihan tema aktif,
   ikon judul bagian, ikon daftar saran, dan batang yang disorot pada grafik.
+- **Do** pakai `deep` hanya untuk bidang: title block dan tombol utama.
+- **Do** pakai `signal` hanya untuk arah menuju churn: pita kategori tinggi,
+  kata CHURN, angka churn, koefisien positif, dan deret churn pada grafik.
+- **Do** pakai `series-1`..`series-4` untuk empat metrik yang satu keluarga
+  skor; jangan memberi empat metrik empat warna berbeda.
 - **Do** pertahankan plate EDA tetap putih di kedua tema, seperti cetakan
   yang dijepit di atas lembar.
 - **Do** nyatakan batas dan ketidakpastian di tempat yang sama dengan
@@ -816,6 +936,10 @@ ramp yang sama.
   dengan `box-shadow: none` adalah keadaan yang benar.
 - **Don't** memberi warna lalu lintas pada risiko (merah-amber-hijau) atau
   memakai `accent` sebagai isian pita.
+- **Don't** menambah tinta kromatik keempat. Kalau sebuah grafik seeming
+  butuh warna baru, pakai `series-1`..`series-4` atau ramp abu.
+- **Don't** menaruh oker di luar tempat yang maknanya: bukan di
+  bingkai panel, bukan di ikon dekoratif, bukan di judul bagian.
 - **Don't** menambahkan emoji, glyph ikon, font ikon, atau huruf ketiga.
   Ikon hanya dari katalog 24x24 stroke 1,5 di `ui.py`.
 - **Don't** memakai `shadow` atau bayangan luar untuk membuat panel

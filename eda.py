@@ -12,17 +12,21 @@ from sklearn.model_selection import train_test_split
 BASE = Path(__file__).resolve().parent
 OUT = BASE / "docs" / "eda(explaratory data analysis)"
 DATASET_URL = "https://www.kaggle.com/datasets/blastchar/telco-customer-churn"
-# Palet yang sama dengan aplikasi: satu tinta biru teknis, dan ramp nada abu
-# untuk besaran. Churn memakai ujung gelap ramp, tidak warna lalu lintas.
+# Palet yang sama dengan aplikasi: biru teknis untuk data, oker untuk arah
+# churn, dan ramp nada abu untuk hal yang tidak penting. Tidak ada hijau,
+# jadi tidak pernah terbaca sebagai lampu lalu lintas.
 INK = "#16181A"
 ACCENT = "#1F4FD8"
 ACCENT_SOFT = "#E4EAFB"
+SIGNAL = "#96590C"
+SIGNAL_SOFT = "#F4E8D2"
 RECESSIVE = "#9C988D"
 RULE = "#C9C4B8"
-# Peta divergen: abu hangat untuk korelasi negatif, tinta biru untuk positif,
-# kertas di titik nol. Tidak ada merah-hijau lalu lintas.
+PAPER = "#F7F6F2"
+# Peta divergen: oker untuk korelasi negatif, tinta biru untuk positif,
+# kertas di titik nol. Kedua ujung punya arti: dingin dan hangat.
 DIVERGING = matplotlib.colors.LinearSegmentedColormap.from_list(
-    "lembar", ["#3A3833", "#9C988D", "#F7F6F2", "#9C988D", ACCENT])
+    "lembar", [SIGNAL, "#C9A05A", PAPER, "#9DB6F2", ACCENT])
 MEANINGS = {
     "customerID": "Identitas unik pelanggan; tidak digunakan model.",
     "gender": "Jenis kelamin pelanggan (Female/Male).",
@@ -134,7 +138,7 @@ def run_eda():
     for ax, data, title in zip(axes, [raw, complete, train],
                                ["Data awal (7.043)", "Setelah dibersihkan (7.032)", "Data training (5.625)"]):
         counts = data["Churn"].value_counts().reindex(["No", "Yes"])
-        ax.bar(["Tidak churn", "Churn"], counts, color=[RECESSIVE, INK])
+        ax.bar(["Tidak churn", "Churn"], counts, color=[RECESSIVE, SIGNAL])
         ax.set_title(title)
         for i, count in enumerate(counts):
             ax.text(i, count, f"{count:,}\n{count / len(data):.1%}", ha="center", va="bottom", fontsize=10)
@@ -156,9 +160,15 @@ def run_eda():
 
     fig, axes = plt.subplots(1, 3, figsize=(12, 3.7))
     for ax, col in zip(axes, ["tenure", "MonthlyCharges", "TotalCharges"]):
-        ax.boxplot([train.loc[train.Churn == label, col] for label in ["No", "Yes"]],
-                   tick_labels=["Tidak churn", "Churn"], patch_artist=True,
-                   boxprops={"facecolor": ACCENT_SOFT}, medianprops={"color": ACCENT})
+        groups = [train.loc[train.Churn == label, col] for label in ["No", "Yes"]]
+        boxes = ax.boxplot(groups, tick_labels=["Tidak churn", "Churn"], patch_artist=True,
+                           boxprops={"facecolor": ACCENT_SOFT}, medianprops={"color": ACCENT})
+        for patch, fill, edge in zip(boxes["boxes"], [ACCENT_SOFT, SIGNAL_SOFT],
+                                     [ACCENT, SIGNAL]):
+            patch.set_facecolor(fill)
+            patch.set_edgecolor(edge)
+        for median, edge in zip(boxes["medians"], [ACCENT, SIGNAL]):
+            median.set_color(edge)
         ax.set_title(col + " — data training")
     medians = train.groupby("Churn")[["tenure", "MonthlyCharges"]].median()
     save(fig, "03_numeric_boxplots_train.png", f"Pada data training, median lama berlangganan pelanggan "
@@ -186,7 +196,7 @@ def run_eda():
     fig, axes = plt.subplots(1, 3, figsize=(13, 4.3))
     for ax, col in zip(axes, ["Contract", "InternetService", "PaymentMethod"]):
         subset = rates_df[rates_df.Fitur == col]
-        ax.bar(subset.Kategori, subset["Churn rate train"] * 100, color=ACCENT)
+        ax.bar(subset.Kategori, subset["Churn rate train"] * 100, color=SIGNAL)
         ax.set_title(col + " — data training")
         ax.set_ylabel("Pelanggan churn (%)")
         ax.tick_params(axis="x", rotation=25, labelsize=8)
@@ -212,7 +222,7 @@ def run_eda():
          "persentase churn, perhatikan jumlah pelanggan dalam kelompoknya: hasil kelompok kecil belum tentu mewakili semua pelanggan.")
 
     fig, ax = plt.subplots(figsize=(8, 4))
-    for label, color in [("No", RECESSIVE), ("Yes", INK)]:
+    for label, color in [("No", RECESSIVE), ("Yes", SIGNAL)]:
         sample = train[train.Churn == label].sample(n=min(500, int((train.Churn == label).sum())), random_state=42)
         ax.scatter(sample.tenure, sample.MonthlyCharges, s=13, alpha=0.35, color=color, label=label)
     ax.set(xlabel="Lama berlangganan (bulan)", ylabel="Tagihan bulanan ($)",

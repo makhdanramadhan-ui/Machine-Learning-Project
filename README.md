@@ -16,17 +16,25 @@ terkalibrasi, memberikan saran retensi berbasis aturan, dan memproses CSV massal
 ## Tampilan
 
 Aplikasi memakai satu bahasa visual: **lembar gambar teknik**. Hairline 1px
-sebagai satu-satunya pemisah, satu tinta biru teknis (`#1F4FD8`) sebagai
-satunya warna, angka tabular di semua metrik, dan huruf Archivo serta
-JetBrains Mono yang di-host sendiri. Tidak ada gradien, tidak ada emoji,
-dan tidak ada efek kaca.
+sebagai satu-satunya pemisah, angka tabular di semua metrik, dan huruf Archivo
+serta JetBrains Mono yang diambil sendiri dari `static/fonts/`. Tidak ada
+gradien, tidak ada emoji, dan tidak ada efek kaca.
+
+Warnanya dua tinta dengan tugas yang jelas. **Biru pekat** (`#16307E`)
+memegang satu bidang besar: title block di atas lembar menjadi blok biru
+solid berisi kartu model, dan tombol utama memakai warna yang sama.
+**Oker** (`#96590C`) hanya menandai arah menuju churn: pita kategori tinggi
+pada skala, kata CHURN, angka churn, koefisien positif, dan deret churn pada
+grafik EDA. Sisanya abu dari satu ramp, dan tidak ada warna keempat yang
+muncul hanya karena satu grafik membutuhkannya.
 
 Title block di atas lembar selalu menampilkan kartu model: model terpilih,
 ambang keputusan, CV-F1, akurasi, precision, recall, F1, ROC-AUC, Brier,
 ukuran data, versi sklearn, dan SHA-256 artefak model. Hasil prediksi
 digambar pada skala probabilitas terkalibrasi yang menandai ambang 32% dan
-batas kategori tinggi 60%, sehingga risiko terbaca sebagai besaran, bukan
-sebagai warna lalu lintas.
+batas kategori tinggi 60%; suhu warna pitanya naik bersama besaran —
+biru pucat di bawah ambang, biru tengah di antaranya, oker di zona tinggi —
+sehingga arahnya terbaca sekilas, bukan sebagai warna lalu lintas.
 
 Tema terang adalah bawaan; tema gelap dipilih lewat pengalih di kanan atas.
 
