@@ -191,6 +191,12 @@ html body .stMarkdown h1, html body .stMarkdown h2, html body .stMarkdown h3,
 html body .stMarkdown h4, html body .stMarkdown h5, html body .stMarkdown h6 {
     color: var(--ink) !important; letter-spacing: -0.018em; }
 html body .stMarkdown p, html body .stMarkdown li { color: var(--ink2); }
+html body .stMarkdown th { color: var(--ink) !important; font-weight: 600 !important; }
+html body .stMarkdown td { color: var(--ink2) !important; }
+html body .stMarkdown th, html body .stMarkdown td {
+    background: transparent !important; border-bottom: 1px solid var(--rule-soft) !important;
+    padding: .42rem .55rem !important; font-size: .82rem !important; }
+html body .stMarkdown tr:last-child td { border-bottom: none !important; }
 html body .stCaptionContainer, html body [data-testid="stCaptionContainer"] {
     color: var(--muted) !important; }
 html body [data-testid="stWidgetLabel"] p, html body label p { color: var(--muted) !important; }
@@ -207,6 +213,8 @@ html body [data-testid="stMarkdownContainer"] p,
 html body [data-testid="stMarkdownContainer"] span,
 html body [data-testid="stMarkdownContainer"] div,
 html body [data-testid="stMarkdownContainer"] li,
+html body [data-testid="stMarkdownContainer"] td,
+html body [data-testid="stMarkdownContainer"] th,
 html body [data-testid="stMarkdownContainer"] h1,
 html body [data-testid="stMarkdownContainer"] h2,
 html body [data-testid="stMarkdownContainer"] h3,
@@ -226,6 +234,11 @@ html body [data-testid="stMarkdownContainer"] .scale-tick,
 html body [data-testid="stMarkdownContainer"] .sheet-foot {
     font-family: 'JetBrains Mono', ui-monospace, monospace !important; }
 code, pre, .stCode, [data-testid="stCode"] { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+html body code { background: var(--accent-soft) !important; color: var(--ink) !important;
+    border-radius: 3px; padding: 0 .22em; }
+html body pre { background: var(--paper) !important; color: var(--ink) !important;
+    border: 1px solid var(--rule-soft) !important; border-radius: 6px; }
+html body pre code { background: transparent !important; color: inherit; padding: 0; }
 .num { font-variant-numeric: tabular-nums; }
 
 /* ---- kepala aplikasi ---- */
@@ -303,7 +316,9 @@ div[data-testid="stExpander"] { border: 1px solid var(--rule) !important;
     border-radius: 8px !important; background: var(--sheet) !important;
     box-shadow: none !important; }
 div[data-testid="stExpander"] summary { font-size: .84rem !important;
-    font-weight: 600 !important; color: var(--ink2) !important; }
+    font-weight: 600 !important; color: var(--ink2) !important;
+    background: transparent !important; }
+div[data-testid="stExpander"] summary:hover { background: var(--paper) !important; }
 
 /* ---- kontrol ---- */
 label p, [data-testid="stWidgetLabel"] p { font-size: .74rem !important;
