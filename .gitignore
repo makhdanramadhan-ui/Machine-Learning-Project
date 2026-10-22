@@ -6,8 +6,3 @@ __pycache__/
 .ipynb_checkpoints/
 *PRIVATE*
 ~$*.pptx
-.impeccable/mocks/
-.impeccable/build/
-.impeccable/review/
-.impeccable/decision-payload.json
-.impeccable/questions/
