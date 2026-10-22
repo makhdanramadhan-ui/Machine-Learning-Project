@@ -676,7 +676,9 @@ Bahasa bentuknya pendek dan tegas. Empat radius saja yang dipakai:
 Tidak ada bentuk pil, tidak ada lingkaran penuh pada tombol, dan tidak ada
 sudut lebih dari 8px. Bingkai luar selalu `1px solid var(--rule)`; pemisah
 antar sel di dalam panel selalu `1px solid var(--rule-soft)`. Pesan
-peringatan menambah satu garis tegak `3px solid var(--ramp8)` di sisi kiri.
+peringatan memakai bingkai `1px solid var(--signal)` dengan isian
+`var(--signal-soft)` — tidak ada garis tegak tebal di sisi kiri, karena satu
+sisi tebal sudah menjadi pola yang evitar mesin gambar.
 Sudut membulat selalu dipotong rapi: title block, matriks konfusi, strip
 ringkasan, dan tabel memakai `overflow: hidden` supaya garis rambut di dalam
 sel bertemu rapi di ujung yang membulat. Penanda ambang pada skala adalah garis
@@ -706,6 +708,23 @@ Ini satu-satunya bidang berwarna pekat di halaman.
 - **Perilaku:** nilai tidak pernah dipotong secara visual pada lebar normal;
   sembilan sel dan label yang sama tidak pernah diulang. Title block adalah
   dokumen identitas, bukan kartu hias.
+
+### Panel (lembar di atas kertas)
+
+- **Shape:** bingkai `1px solid var(--rule)`, radius 8px, latar `sheet`,
+  tanpa bayangan, padding 1,1rem 1,25rem 1,15rem.
+- **Permukaan:** panel adalah lembar putih di atas kertas hangat. Tanpa ini
+  panel ikut transparan dan halaman kehilangan dua nadanya.
+- **Hook Streamlit 1.64:** container berbingkai dirender sebagai
+  `div[data-testid="stVerticalBlock"]` yang menjadi anak langsung
+  `div[data-testid="stLayoutWrapper"]` — bukan lagi
+  `stVerticalBlockBorderWrapper` yang dipakai versi sebelumnya. Block susun
+  yang lain adalah anak dari `stColumn`, `stExpanderDetails`, atau
+  `stMainBlockContainer`, sehingga hook ini tidak ikut menangkap layout.
+  Hook struktural dipakai, bukan nama kelas emotion, karena nama kelas itu
+  berubah antar versi Streamlit.
+- **Expander:** `div[data-testid="stExpander"]` memakai bingkai dan latar
+  yang sama, radius 8px.
 
 ### Rail tab (empat area kerja)
 
