@@ -679,9 +679,9 @@ def risk_chip(level: str) -> str:
 
 
 def calibrated_scale(prob: float, threshold: float, high: float) -> str:
-    """Skala probabilitas terkalibrasi dengan penanda ambang keputusan.
+    """Skala probabilitas terkalibrasi dengan penanda threshold.
 
-    Pita pada track: biru pucat di bawah ambang, biru tengah di antaranya,
+    Pita pada track: biru pucat di bawah threshold, biru tengah di antaranya,
     oker di atas batas kategori tinggi. Suhu warna ikut naik bersama besaran,
     jadi arahnya terbaca tanpa harus membaca angka. Angka posisi ditulis
     dengan titik desimal karena nilainya masuk ke inline CSS, bukan ke teks.
@@ -693,7 +693,7 @@ def calibrated_scale(prob: float, threshold: float, high: float) -> str:
     return (
         '<div class="scale">'
         '<div class="scale-head"><span class="scale-title">Skala risiko terkalibrasi</span>'
-        '<span class="scale-note">Ambang keputusan %s · batas kategori tinggi %s</span></div>'
+        '<span class="scale-note">Threshold %s · batas kategori tinggi %s</span></div>'
         '<div class="scale-track">'
         '<div class="scale-seg seg-low" style="width:%s%%"><span>Rendah</span></div>'
         '<div class="scale-seg seg-mid" style="width:%s%%"><span>Sedang</span></div>'
@@ -703,7 +703,7 @@ def calibrated_scale(prob: float, threshold: float, high: float) -> str:
         '</div>'
         '<div class="scale-ticks">'
         '<span class="scale-tick" style="left:0%%">0%%</span>'
-        '<span class="scale-tick hard" style="left:%s%%">%s ambang</span>'
+        '<span class="scale-tick hard" style="left:%s%%">threshold %s</span>'
         '<span class="scale-tick" style="left:%s%%">%s</span>'
         '<span class="scale-tick" style="left:100%%">100%%</span>'
         '</div></div>'
