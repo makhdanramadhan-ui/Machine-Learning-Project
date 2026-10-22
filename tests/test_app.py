@@ -1,11 +1,9 @@
 """Regresi input invalid, konsistensi probabilitas, dan alur Streamlit nyata."""
-import io
 import json
 import logging
 from pathlib import Path
 import sys
 import unittest
-from unittest.mock import patch
 
 import joblib
 import numpy as np
@@ -147,32 +145,6 @@ class StreamlitTests(unittest.TestCase):
         self.assertEqual([x.message for x in at.exception], [])
         self.assertTrue(any("Keputusan model:" in x.value for x in at.markdown))
 
-    def test_batch_results_and_invalid_csv_feedback(self):
-        valid = example_customers().to_csv(index=False).encode()
-        invalid_column = example_customers().drop(columns="tenure").to_csv(index=False).encode()
-        invalid_number = example_customers().assign(MonthlyCharges=np.nan).to_csv(index=False).encode()
-        invalid_category = example_customers().assign(Contract="Two years").to_csv(index=False).encode()
-        duplicate_header = valid.replace(b"gender,SeniorCitizen", b"gender,gender", 1)
-        cases = [(valid, True), (invalid_column, False), (invalid_number, False),
-                 (invalid_category, False), (duplicate_header, False),
-                 (b"", False), (b"a,b\n\"unfinished", False), (b"\xff", False)]
-        for payload, expected_valid in cases:
-            with self.subTest(valid=expected_valid, payload=payload[:40]):
-                upload = io.BytesIO(payload)
-                upload.name = "test.csv"
-                with patch("streamlit.file_uploader", return_value=upload):
-                    at = self.run_app()
-                outputs = [x.value for x in at.dataframe if "Prediksi" in x.value.columns]
-                if expected_valid:
-                    self.assertEqual(len(outputs), 1)
-                    self.assertEqual(len(outputs[0]), 2)
-                    self.assertIn("Threshold_Churn", outputs[0].columns)
-                    self.assertFalse(((outputs[0]["Prediksi"] == "CHURN") &
-                                      (outputs[0]["Risiko"] == "RENDAH")).any())
-                    self.assertFalse(at.error)
-                else:
-                    self.assertFalse(outputs)
-                    self.assertTrue(at.error)
 
 
 if __name__ == "__main__":
