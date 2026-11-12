@@ -1,4 +1,3 @@
-"""Kontrak input dan keputusan yang sama untuk form, CSV, dan evaluasi."""
 import numpy as np
 import pandas as pd
 
@@ -10,11 +9,10 @@ INTERNET_ADDONS = [
 
 
 class InputValidationError(ValueError):
-    """Masalah input yang bisa ditampilkan tanpa traceback kepada pengguna."""
+    pass
 
 
 def input_schema(pipeline):
-    """Kategori berasal dari encoder terlatih, bukan tebakan kategori baru."""
     pre = pipeline.named_steps["pre"]
     categorical = next(cols for name, _, cols in pre.transformers_ if name == "cat")
     encoder = pre.named_transformers_["cat"]
@@ -25,7 +23,6 @@ def input_schema(pipeline):
 
 
 def validate_input(frame, schema):
-    """Validasi seluruh batch; tidak membuang baris bermasalah secara diam-diam."""
     if frame.empty:
         raise InputValidationError("CSV belum berisi data pelanggan.")
     if frame.columns.duplicated().any():
@@ -97,14 +94,12 @@ def high_risk_boundary(threshold):
 
 
 def risk_levels(probabilities, threshold):
-    """Risiko rendah selalu di bawah threshold keputusan CHURN."""
     return np.where(np.asarray(probabilities) < threshold, "RENDAH",
                     np.where(np.asarray(probabilities) < high_risk_boundary(threshold),
                              "SEDANG", "TINGGI"))
 
 
 def input_notes(frame):
-    """Kondisi di luar rentang latih tetap bisa diprediksi, tetapi dijelaskan."""
     notes = []
     if pd.to_numeric(frame["tenure"], errors="coerce").eq(0).any():
         notes.append("Ada pelanggan dengan lama berlangganan 0 bulan. Model dilatih pada pelanggan "
@@ -116,7 +111,6 @@ def input_notes(frame):
 
 
 def example_customers():
-    """Contoh konsisten untuk unduhan template dan demonstrasi."""
     return pd.DataFrame([
         {"gender": "Male", "SeniorCitizen": 0, "Partner": "No", "Dependents": "No",
          "tenure": 2, "PhoneService": "Yes", "MultipleLines": "No",

@@ -1,9 +1,3 @@
-"""Sistem visual aplikasi: token, ikon garis, dan komponen markup.
-
-Dunia visual: lembar gambar teknik. Kertas, hairline, satu tinta biru teknis,
-angka tabular, dan title block yang membawa identitas model. Tanpa gradien,
-tanpa kaca, tanpa emoji.
-"""
 from __future__ import annotations
 
 import base64
@@ -123,7 +117,6 @@ _PATHS = {
 
 
 def icon(name: str, size: int = 16, cls: str = "") -> str:
-    """Kembalikan SVG ikon garis seukuran dan sefamily."""
     body = _PATHS[name]
     return (f'<svg class="ico {cls}" width="{size}" height="{size}" viewBox="0 0 24 24" '
             f'fill="none" stroke="currentColor" stroke-width="1.5" '
@@ -131,7 +124,6 @@ def icon(name: str, size: int = 16, cls: str = "") -> str:
 
 
 def icon_uri(name: str) -> str:
-    """URL data untuk ikon, dipakai sebagai mask CSS pada tab."""
     body = _PATHS[name]
     raw = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" '
            f'stroke="black" stroke-width="1.5" stroke-linecap="round" '
@@ -586,11 +578,6 @@ _FONT_CSS_CACHE = []
 
 
 def font_face_css() -> str:
-    """Blok @font-face dengan font disisipkan langsung sebagai data URI.
-
-    Hasilnya disimpan di cache supaya string-nya tetap sama di setiap rerun;
-    dengan begitu peramban hanya menerima blok ini sekali per sesi.
-    """
     if _FONT_CSS_CACHE:
         return _FONT_CSS_CACHE[0]
     base = Path(__file__).resolve().parent / "static" / "fonts"
@@ -610,7 +597,6 @@ def font_face_css() -> str:
 
 
 def _tab_icon_css() -> str:
-    """Ikon untuk rail tab, dipasang lewat mask agar tetap satu keluarga garis."""
     return "\n".join(
         'div[role="tablist"] > div:nth-child(%d) { --tabicon: %s; }' % (i, icon_uri(name))
         for i, name in enumerate(TAB_ICONS, start=1)
@@ -618,12 +604,6 @@ def _tab_icon_css() -> str:
 
 
 def build_css(theme: str) -> str:
-    """CSS lengkap untuk tema yang dipilih.
-
-    Baris kosong dibuang: markdown Streamlit mengakhiri blok HTML di baris
-    kosong, dan stylesheet yang terpotong di tengah membuat halaman kehilangan
-    separuh gayanya.
-    """
     tokens = THEMES[theme]
     root = "\n".join("  --%s: %s;" % (k, v) for k, v in tokens.items())
     streamlit_vars = (
@@ -650,11 +630,6 @@ def build_css(theme: str) -> str:
 
 
 def title_block(cells, strip=()) -> str:
-    """Title block: deretan sel berhairline yang membawa identitas model.
-
-    cells  : iterable (kunci, nilai) atau (kunci, nilai, kelas-tambahan)
-    strip  : iterable (kunci, nilai) untuk baris mikro di bawah blok
-    """
     parts = ['<div class="title-block"><div class="tb-grid">']
     for cell in cells:
         key, value = cell[0], cell[1]
@@ -673,7 +648,6 @@ def title_block(cells, strip=()) -> str:
 
 
 def section(title: str, icon_name: str, note: str = "") -> str:
-    """Judul bagian dengan ikon garis dan catatan satu baris."""
     head = '<h3 class="sec-title">%s %s</h3>' % (icon(icon_name), title)
     if note:
         return head + '<p class="sec-note">%s</p>' % note
@@ -681,19 +655,11 @@ def section(title: str, icon_name: str, note: str = "") -> str:
 
 
 def risk_chip(level: str) -> str:
-    """Chip kategori risiko: biru pucat, biru tengah, atau oker untuk tinggi."""
     slug = {"RENDAH": "low", "SEDANG": "mid", "TINGGI": "high"}.get(level, "low")
     return '<span class="risk-chip risk-%s">%s</span>' % (slug, level)
 
 
 def calibrated_scale(prob: float, threshold: float, high: float) -> str:
-    """Skala probabilitas terkalibrasi dengan penanda threshold.
-
-    Pita pada track: biru pucat di bawah threshold, biru tengah di antaranya,
-    oker di atas batas kategori tinggi. Suhu warna ikut naik bersama besaran,
-    jadi arahnya terbaca tanpa harus membaca angka. Angka posisi ditulis
-    dengan titik desimal karena nilainya masuk ke inline CSS, bukan ke teks.
-    """
     lo_pct = threshold * 100
     hi_pct = high * 100
     mid_pct = hi_pct - lo_pct
@@ -722,7 +688,6 @@ def calibrated_scale(prob: float, threshold: float, high: float) -> str:
 
 
 def confusion_matrix(metrics) -> str:
-    """Matriks konfusi sebagai hairline cell, tanpa isian warna lalu lintas."""
     cells = [
         ("TP", metrics["TP"], "Diprediksi churn dan memang churn", "hit"),
         ("TN", metrics["TN"], "Diprediksi tidak churn dan memang tidak churn", "hit"),
@@ -739,10 +704,6 @@ def confusion_matrix(metrics) -> str:
 
 
 def summary_strip(cells) -> str:
-    """Strip ringkasan: label mono di atas, angka tabular di bawah.
-
-    Sel boleh punya kelas tambahan, dipakai untuk menandai angka churn.
-    """
     out = ['<div class="summary-strip">']
     for cell in cells:
         key, value = cell[0], cell[1]
@@ -754,27 +715,22 @@ def summary_strip(cells) -> str:
 
 
 def plate(src: str, caption: str = "") -> str:
-    """Gambar yang direkat ke lembar: bingkai hairline dan keterangan."""
     cap = '<div class="plate-cap">%s</div>' % caption if caption else ""
     return '<div class="plate"><img src="%s" alt="Grafik EDA" />%s</div>' % (src, cap)
 
 
 def recommendation(icon_name: str, label: str, text: str) -> str:
-    """Satu saran retensi dengan ikon garis."""
     return '<div class="rec">%s<span><b>%s</b> — %s</span></div>' % (
         icon(icon_name, 15), label, text)
 
 
 def fmt_num(value: float, places: int = 2) -> str:
-    """Angka dengan koma desimal."""
     return ("%.*f" % (places, float(value))).replace(".", ",")
 
 
 def fmt_pct(value: float) -> str:
-    """Persen tanpa desimal, gaya Indonesia."""
     return ("%.0f%%" % (float(value) * 100)).replace(".", ",")
 
 
 def css_num(value: float) -> str:
-    """Angka untuk inline CSS: titik desimal, tanpa nol di belakang koma."""
     return ("%g" % float(value))

@@ -1,6 +1,3 @@
-"""Aplikasi Prediksi Customer Churn - Telco
-Pipeline: preprocessing + model dalam 1 file model_churn.pkl
-"""
 from pathlib import Path
 import csv
 import hashlib
@@ -49,7 +46,6 @@ st.markdown(ui.build_css(TEMA), unsafe_allow_html=True)
 
 @st.cache_resource
 def load_models(model_stamp, calibration_stamp, metadata_stamp):
-    """Muat sekali per versi artefak; metadata diverifikasi sebelum prediksi."""
     with open(BASE / "deployment_info.json", encoding="utf-8") as f:
         deployment = json.load(f)
     for filename, key in [("model_churn.pkl", "model_sha256"),
@@ -84,7 +80,6 @@ HIGH_BOUNDARY = high_risk_boundary(THRESHOLD)
 
 @st.cache_data
 def load_charge_reference(dataset_stamp):
-    """Acuan tagihan dari training set, bukan tarif pasar atau aturan model."""
     train_data, _, _, _ = load_training_split()
     reference = {}
     for service, group in train_data.groupby("InternetService"):
@@ -120,7 +115,6 @@ def dollar_text(value):
 
 
 def option_label(value):
-    """Terjemahkan tampilan pilihan; nilai yang diterima model tetap sama."""
     labels = {
         "Female": "Perempuan", "Male": "Laki-laki", "Yes": "Ya", "No": "Tidak",
         "No phone service": "Tidak memakai telepon", "No internet service": "Tidak memakai internet",
@@ -133,7 +127,6 @@ def option_label(value):
 
 
 def style_fig(fig, ax_or_axes, tok=None):
-    """Sumbu mengikuti palet lembar: hairline, tanpa bingkai atas-kanan."""
     tok = tok or TOK
     axes = ax_or_axes if isinstance(ax_or_axes, (list, tuple)) else [ax_or_axes]
     for ax in axes:

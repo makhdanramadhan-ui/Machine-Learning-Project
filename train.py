@@ -1,4 +1,3 @@
-"""Tiga model, seleksi CV-F1 train-only, evaluasi holdout, lalu model aplikasi."""
 import json
 
 import joblib

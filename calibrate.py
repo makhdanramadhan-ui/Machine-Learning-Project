@@ -1,8 +1,3 @@
-"""Kalibrasi train-only + threshold F1 dari out-of-fold training, lalu evaluasi test.
-
-Jalankan setelah train.py. Test tidak dipakai untuk memilih threshold.
-Model inti tetap tersedia untuk perbandingan; aplikasi memakai model terkalibrasi.
-"""
 import hashlib
 import json
 from pathlib import Path
