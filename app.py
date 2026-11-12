@@ -338,13 +338,6 @@ with tab2:
                     unsafe_allow_html=True)
         st.download_button("Unduh template CSV", example_customers().to_csv(index=False).encode("utf-8"),
                            "template_pelanggan.csv", "text/csv", width="stretch")
-        with st.expander("Panduan mengisi CSV"):
-            st.write("Kolom wajib: " + ", ".join(SCHEMA["columns"]))
-            st.caption("Simpan CSV sebagai UTF-8 dengan pemisah koma. SeniorCitizen diisi 0 atau 1, "
-                       "tenure dengan bulan bulat 0–72, dan MonthlyCharges dengan angka 0–120. "
-                       "Pilihan layanan tambahan harus sesuai dengan layanan telepon dan internet. "
-                       "Jika ada data yang salah, perbaiki dulu agar seluruh pelanggan bisa diproses.")
-            st.json(SCHEMA["categories"])
         f = st.file_uploader("Pilih file CSV", type="csv")
     out = None
     if f is not None:

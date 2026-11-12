@@ -403,6 +403,17 @@ div[data-testid="stPopoverBody"], div[role="tooltip"] {
 .stButton > button:focus-visible, .stDownloadButton > button:focus-visible {
     outline: 2px solid var(--accent) !important; outline-offset: 2px !important; }
 .stButton > button:disabled { opacity: .45 !important; }
+/* tombol Upload berada di dropzone putih pada kedua tema: tinta tetap gelap */
+[data-testid="stFileUploaderDropzone"] button,
+[data-testid="stFileUploaderDropzone"] button:hover,
+[data-testid="stFileUploaderDropzone"] button:focus-visible {
+    color: #16181A !important; background: #FBFBF9 !important;
+    border: 1px solid #C9C7C0 !important; }
+[data-testid="stFileUploaderDropzone"] button *,
+[data-testid="stFileUploaderDropzone"] button svg { color: #16181A !important; fill: #16181A !important; }
+[data-testid="stFileUploaderDropzone"] button:hover { border-color: #16181A !important; }
+[data-testid="stFileUploaderDropzone"] button:focus-visible {
+    outline: 2px solid var(--accent) !important; outline-offset: 2px !important; }
 .btn { display: inline-flex; align-items: center; gap: .45rem; }
 
 /* ---- pengalih tema ---- */
