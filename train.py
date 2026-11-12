@@ -62,7 +62,6 @@ def train():
         for fold in range(5):
             cv_details.append({"Model": name, "Fold": fold + 1,
                                "F1": round(float(gs.cv_results_[f"split{fold}_test_score"][bi]), 4)})
-        # Seleksi model hanya memakai validation score pada training set.
         if best is None or gs.best_score_ > best["score"]:
             best = {"score": float(gs.best_score_), "name": name,
                     "pipe": gs.best_estimator_, "row": row}

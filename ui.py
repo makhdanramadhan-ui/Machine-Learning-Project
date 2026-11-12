@@ -9,18 +9,6 @@ from __future__ import annotations
 import base64
 from pathlib import Path
 
-# --------------------------------------------------------------------------
-# Token
-# --------------------------------------------------------------------------
-# Ramp risiko: satu skala dari biru pucat ke biru tengah, lalu oker pada
-# kategori tinggi. Warna di sini bukan hiasan — besaran dibaca dari posisi
-# dan dari suhu warna: dingin = tenang, hangat = mendekati churn. Tidak ada
-# hijau, jadi tidak pernah terbaca sebagai lampu lalu lintas.
-#
-# Biru pekat (deep) adalah bidang brand: title block dan tombol utama.
-# Biru aksen (accent) adalah tandanya: tautan, ikon, sorotan.
-# Oker (signal) hanya untuk arah churn: koefisien positif, kategori tinggi,
-# dan deret churn pada grafik.
 LIGHT = {
     "paper": "#F7F6F2",
     "sheet": "#FFFFFF",
@@ -105,9 +93,6 @@ DARK = {
 
 THEMES = {"Terang": LIGHT, "Gelap": DARK}
 
-# --------------------------------------------------------------------------
-# Ikon garis: satu keluarga, stroke 1.5, 24x24, tanpa isian
-# --------------------------------------------------------------------------
 _PATHS = {
     "target": '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/>'
               '<path d="M12 1v4M12 19v4M1 12h4M19 12h4"/>',
@@ -156,9 +141,6 @@ def icon_uri(name: str) -> str:
     return "url(\"data:image/svg+xml,%s\")" % quote(raw, safe="")
 
 
-# --------------------------------------------------------------------------
-# CSS
-# --------------------------------------------------------------------------
 _BASE_CSS = r"""
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -596,10 +578,6 @@ a:hover { text-decoration-thickness: 2px; }
 
 TAB_ICONS = ("user", "upload", "chart", "search")
 
-# Huruf disisipkan sebagai data URI, bukan dilayani lewat static folder.
-# Streamlit Community Cloud hanya meneruskan sebagian path ke server aplikasi,
-# sehingga /app/static/... tidak terjangkau di sana. Byte font tetap berada di
-# repository sebagai sumber tunggal: file woff2 di static/fonts/.
 _FONT_FILES = (
     ("Archivo", "archivo-latin.woff2", "400 700"),
     ("JetBrains Mono", "jetbrains-mono-latin.woff2", "400 700"),
@@ -648,9 +626,6 @@ def build_css(theme: str) -> str:
     """
     tokens = THEMES[theme]
     root = "\n".join("  --%s: %s;" % (k, v) for k, v in tokens.items())
-    # Variabel tema Streamlit ikut ditulis. Declarasi harus ada di `body`, bukan
-    # hanya di `:root`: Streamlit menulis variabel itu pada `body`, dan
-    # deklarasi milik elemen yang lebih dekat menang atas nilai warisan.
     streamlit_vars = (
         "--background-color: %(paper)s;"
         "--text-color: %(ink)s;"
@@ -674,9 +649,6 @@ def build_css(theme: str) -> str:
     ) % (root, streamlit_vars, body, tabs)
 
 
-# --------------------------------------------------------------------------
-# Komponen markup
-# --------------------------------------------------------------------------
 def title_block(cells, strip=()) -> str:
     """Title block: deretan sel berhairline yang membawa identitas model.
 

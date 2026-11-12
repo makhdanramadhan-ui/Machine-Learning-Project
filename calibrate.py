@@ -49,14 +49,10 @@ def calibrate():
     outer_cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
     cal = CalibratedClassifierCV(estimator=base, method="sigmoid", cv=inner_cv)
 
-    # Setiap outer fold kalibrasi/fit hanya pada training fold-nya.
-    # Hyperparameter model inti sudah dipilih di train-CV; ini bukan nested-CV
-    # untuk estimasi generalisasi. Holdout test tetap menjadi evaluasi akhir.
     oof = cross_val_predict(cal, X_train, y_train, cv=outer_cv,
                            method="predict_proba", n_jobs=-1)[:, 1]
     thresholds = np.round(np.arange(0.10, 0.601, 0.01), 2)
     scores = [f1_score(y_train, oof >= t, zero_division=0) for t in thresholds]
-    # Jika sama, pilih threshold lebih rendah (lebih sensitif untuk churn).
     threshold = float(thresholds[int(np.argmax(scores))])
     pd.DataFrame({"Threshold": thresholds, "OOF_F1": scores}).to_csv(
         BASE / "threshold_selection.csv", index=False)

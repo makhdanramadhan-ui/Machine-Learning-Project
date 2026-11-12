@@ -10,8 +10,6 @@ def load_training_split():
     df = pd.read_csv(BASE / "Telco-Customer-Churn.csv")
     df = df.drop(columns=["customerID"], errors="ignore")
     df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
-    # Pertahankan cohort evaluasi awal (7032 pelanggan dengan catatan lengkap).
-    # TotalCharges tidak dibutuhkan aplikasi; bukan berarti nilainya persis Monthly x tenure.
     df = df.dropna().reset_index(drop=True).drop(columns=["TotalCharges"])
     X = df.drop(columns=["Churn"])
     y = (df["Churn"] == "Yes").astype(int)

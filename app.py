@@ -29,7 +29,6 @@ st.set_page_config(
 
 st.session_state.setdefault("tema", "Terang")
 
-# ---------- Kepala lembar ----------
 head_left, head_right = st.columns([8, 2], gap="medium", vertical_alignment="bottom")
 with head_left:
     st.markdown(
@@ -133,7 +132,6 @@ def option_label(value):
     return labels.get(value, value)
 
 
-# ---------- Grafik matplotlib ----------
 def style_fig(fig, ax_or_axes, tok=None):
     """Sumbu mengikuti palet lembar: hairline, tanpa bingkai atas-kanan."""
     tok = tok or TOK
@@ -151,7 +149,6 @@ def style_fig(fig, ax_or_axes, tok=None):
     fig.patch.set_facecolor("none")
 
 
-# ---------- Title block: identitas model ----------
 st.markdown(
     ui.title_block(
         [
@@ -200,7 +197,6 @@ tab1, tab2, tab3, tab4 = st.tabs([
     "Prediksi Single", "Prediksi Batch (CSV)", "Dashboard & Model", "EDA & Dokumentasi",
 ])
 
-# ---------- TAB 1: Prediksi single ----------
 with tab1:
     with st.container(border=True):
         st.markdown(ui.section("Data Pelanggan", "user",
@@ -328,7 +324,6 @@ with tab1:
         st.markdown("".join(ui.recommendation(n, label, t) for n, label, t in recs),
                     unsafe_allow_html=True)
 
-# ---------- TAB 2: Prediksi batch ----------
 with tab2:
     with st.container(border=True):
         st.markdown(ui.section("Unggah CSV untuk Prediksi Massal", "upload",
@@ -397,7 +392,6 @@ with tab2:
                            out.to_csv(index=False).encode(), "hasil_prediksi.csv", "text/csv",
                            width="stretch")
 
-# ---------- TAB 3: Dashboard & model ----------
 with tab3:
     with st.container(border=True):
         st.markdown(ui.section("Hasil Pengujian Model Aplikasi", "chart",
@@ -479,9 +473,6 @@ with tab3:
             fig, ax = plt.subplots(figsize=(6.5, 2.6))
             plot_df = CMP.set_index("Model")[["Accuracy", "Precision", "Recall", "F1"]]
             plot_df = plot_df.rename(index=MODEL_NAMES)
-            # Empat metrik ini satu keluarga: semuanya skor 0-1, jadi warnanya
-            # satu ramp biru, bukan empat warna berbeda. F1 paling pekat karena
-            # di situlah model dipilih.
             colors = [TOK["series-4"], TOK["series-3"], TOK["series-2"], TOK["series-1"]]
             plot_df.plot(kind="barh", ax=ax, color=colors)
             ax.set_xlabel("Skor", fontsize=9)
@@ -617,7 +608,6 @@ with tab3:
                  "TETAP berarti diprediksi tidak churn, bukan jaminan pelanggan akan terus "
                  "berlangganan. Saran penawaran juga belum diuji efektivitasnya.")
 
-# ---------- TAB 4: EDA & dokumentasi ----------
 with tab4:
     st.markdown(ui.section("Mengenal Data Pelanggan", "search",
                            "EDA adalah pemeriksaan awal untuk memahami isi dan pola data sebelum "

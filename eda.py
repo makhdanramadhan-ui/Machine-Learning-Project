@@ -12,9 +12,6 @@ from sklearn.model_selection import train_test_split
 BASE = Path(__file__).resolve().parent
 OUT = BASE / "docs" / "eda(explaratory data analysis)"
 DATASET_URL = "https://www.kaggle.com/datasets/blastchar/telco-customer-churn"
-# Palet yang sama dengan aplikasi: biru teknis untuk data, oker untuk arah
-# churn, dan ramp nada abu untuk hal yang tidak penting. Tidak ada hijau,
-# jadi tidak pernah terbaca sebagai lampu lalu lintas.
 INK = "#16181A"
 ACCENT = "#1F4FD8"
 ACCENT_SOFT = "#E4EAFB"
@@ -23,8 +20,6 @@ SIGNAL_SOFT = "#F4E8D2"
 RECESSIVE = "#9C988D"
 RULE = "#C9C4B8"
 PAPER = "#F7F6F2"
-# Peta divergen: oker untuk korelasi negatif, tinta biru untuk positif,
-# kertas di titik nol. Kedua ujung punya arti: dingin dan hangat.
 DIVERGING = matplotlib.colors.LinearSegmentedColormap.from_list(
     "lembar", [SIGNAL, "#C9A05A", PAPER, "#9DB6F2", ACCENT])
 MEANINGS = {

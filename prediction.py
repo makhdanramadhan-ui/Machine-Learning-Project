@@ -40,7 +40,6 @@ def validate_input(frame, schema):
     def report(mask, message):
         positions = np.flatnonzero(pd.Series(mask).fillna(False).to_numpy(dtype=bool))
         if positions.size:
-            # Nomor baris data (baris pertama setelah header = 1).
             rows = ", ".join(str(int(i) + 1) for i in positions[:5])
             extra = f", dan {positions.size - 5} baris lainnya" if positions.size > 5 else ""
             errors.append(f"{message} (baris data {rows}{extra}).")
