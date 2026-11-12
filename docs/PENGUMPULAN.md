@@ -7,7 +7,7 @@ Gunakan nama folder **ML2026_B2_Kelompok12_PrediksiCustomerChurn**.
 | Source code | https://github.com/makhdanramadhan-ui/Machine-Learning-Project |
 | Dataset | `../Telco-Customer-Churn.csv`; https://www.kaggle.com/datasets/blastchar/telco-customer-churn |
 | Model | `../model_churn.pkl`, `../calibrator.pkl`, metadata deployment |
-| EDA dan notebook | `eda(explaratory data analysis)/EDA.md`; `../projekk.ipynb` |
+| EDA | `eda(explaratory data analysis)/EDA.md`; `../eda.py` |
 | Lima jurnal | `STUDI_LITERATUR.md`, `referensi.bib`, `jurnal/` |
 | Tabel studi literatur | `tabel_studi_literatur.csv`; tabel lengkap pada `STUDI_LITERATUR.md` |
 | Aplikasi | https://machine-learning-project-u8yovshrqrc5tm5s2y2qto.streamlit.app/ |
@@ -18,7 +18,7 @@ Gunakan nama folder **ML2026_B2_Kelompok12_PrediksiCustomerChurn**.
 2. Rekam video asli dengan aplikasi benar-benar dijalankan; cek
    durasi final **≤7 menit**. Cantumkan link video/berkas MP4 saat pengumpulan.
 3. Cek ulang bahwa materi menjelaskan hasil dan keterbatasan yang dipahami
-   seluruh anggota; gunakan notebook untuk membaca contoh kesalahan prediksi.
+   seluruh anggota; gunakan aplikasi untuk membaca contoh kesalahan prediksi.
 
 ## Anggota
 
