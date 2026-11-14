@@ -106,8 +106,46 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
     font-variant-numeric: tabular-nums;
 }
 [data-testid="stAppViewContainer"] { background: var(--canvas); }
-[data-testid="stHeader"] { background: transparent; }
-[data-testid="stToolbar"] { opacity: .6; }
+[data-testid="stHeader"] { background: transparent !important; color: var(--ink2) !important; }
+[data-testid="stToolbar"] { opacity: 1 !important; color: var(--ink2) !important; }
+[data-testid="stHeader"] button, [data-testid="stHeader"] a,
+[data-testid="stHeader"] [data-testid="stToolbarActionButton"],
+[data-testid="stHeader"] [data-testid="stMainMenu"] button,
+[data-testid="stHeader"] [data-testid="stAppDeployButton"] button,
+[data-testid="stHeader"] [data-testid="stStatusWidget"],
+[data-testid="stHeader"] [data-testid="stStatusWidget"] * {
+    color: var(--ink2) !important; background-color: transparent !important;
+    border-color: transparent !important; text-decoration: none !important; }
+[data-testid="stHeader"] button *, [data-testid="stHeader"] a *,
+[data-testid="stHeader"] [data-testid="stToolbar"] span,
+[data-testid="stHeader"] [data-testid="stToolbar"] p,
+[data-testid="stHeader"] [data-testid="stToolbar"] svg {
+    color: inherit !important; }
+[data-testid="stHeader"] button:hover, [data-testid="stHeader"] a:hover,
+[data-testid="stHeader"] button[aria-expanded="true"] {
+    background-color: var(--recess) !important; color: var(--ink) !important; }
+[data-testid="stHeader"] button:hover *, [data-testid="stHeader"] a:hover *,
+[data-testid="stHeader"] button[aria-expanded="true"] * { color: var(--ink) !important; }
+[data-testid="stHeader"] button:focus-visible, [data-testid="stHeader"] a:focus-visible {
+    outline: 2px solid var(--accent) !important; outline-offset: 1px !important; }
+[data-testid="stDecoration"] { display: none; }
+[data-testid="stMainMenuPopover"] {
+    background: var(--surface) !important; color: var(--ink) !important;
+    border: 1px solid var(--rule) !important; border-radius: 10px !important; }
+[data-testid="stMainMenuPopover"] button, [data-testid="stMainMenuPopover"] button *,
+[data-testid="stMainMenuPopover"] kbd, [data-testid="stMainMenuPopover"] a {
+    color: var(--ink2) !important; background-color: transparent; }
+[data-testid="stMainMenuPopover"] button:hover { background-color: var(--recess) !important; }
+[data-testid="stMainMenuPopover"] button:hover * { color: var(--ink) !important; }
+[data-testid="stMainMenuPopover"] [role="menuitemcheckbox"] > div {
+    background-color: var(--neutral) !important; }
+[data-testid="stMainMenuPopover"] [role="menuitemcheckbox"][aria-checked="true"] > div {
+    background-color: var(--accent) !important; }
+[data-testid="stMainMenuPopover"] [role="menuitemcheckbox"] > div > div {
+    background-color: var(--surface) !important; }
+[data-testid="stMainMenuPopover"] [data-testid="stMainMenuDivider"] { border-color: var(--rule) !important; }
+[data-testid="stMainMenuPopover"] span { color: var(--muted); }
+[data-testid="stMainMenuPopover"] button span { color: var(--ink2) !important; }
 section[data-testid="stSidebar"] { display: none; }
 [data-testid="stMainBlockContainer"] { padding: 2.9rem 2.4rem 3rem; max-width: 1440px; }
 [data-testid="stMain"] { background: transparent; }
@@ -345,7 +383,10 @@ div[role="tooltip"] * { color: var(--ink) !important; }
     border: 1px solid var(--rule) !important; border-radius: 8px !important; }
 [data-testid="stFileUploaderDropzone"] button * { color: var(--ink) !important; }
 [data-testid="stFileUploaderDropzone"] button:hover { border-color: var(--accent) !important; }
+[data-testid="stFileUploaderFile"] { background: var(--surface) !important; border-radius: 8px; }
 [data-testid="stFileUploaderFile"] * { color: var(--ink2) !important; }
+[data-testid="stFileUploaderFile"] svg { fill: currentColor; }
+[data-testid="stFileChip"] { background: var(--surface) !important; border: 1px solid var(--rule); }
 
 /* ---- pengalih tema ---- */
 div[data-testid="stButtonGroup"] { background: var(--recess) !important;
@@ -693,7 +734,7 @@ def build_css(theme: str) -> str:
     body = "\n".join(line for line in _BASE_CSS.splitlines() if line.strip())
     tabs = _tab_icon_css()
     if theme == "Gelap":
-        tabs += '\n[data-testid="stDataFrameResizable"] { filter: invert(.92) hue-rotate(180deg); }'
+        tabs += '\n[data-testid="stDataFrameResizable"] { filter: invert(.92) hue-rotate(180deg) }'
     return (
         "<style>\n:root {\n%s\n}\n"
         "html body, html body [data-testid=\"stAppViewContainer\"] {\n%s\n}\n"
