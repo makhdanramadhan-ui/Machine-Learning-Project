@@ -1,88 +1,54 @@
 from __future__ import annotations
 
 import base64
+import math
 from pathlib import Path
+from urllib.parse import quote
 
 LIGHT = {
-    "paper": "#F7F6F2",
-    "sheet": "#FFFFFF",
-    "ink": "#16181A",
-    "ink2": "#3C3F45",
-    "muted": "#6B6A64",
-    "rule": "#C9C4B8",
-    "rule-soft": "#E3E0D8",
-    "accent": "#1F4FD8",
+    "canvas": "#F6F7F9",
+    "surface": "#FFFFFF",
+    "recess": "#EFF2F6",
+    "ink": "#0F172A",
+    "ink2": "#334155",
+    "muted": "#5B6779",
+    "rule": "#D3D9E3",
+    "rule-soft": "#E5E9F0",
+    "accent": "#1D4ED8",
     "accent-ink": "#FFFFFF",
-    "accent-soft": "#E4EAFB",
-    "deep": "#16307E",
-    "deep-hi": "#24439B",
-    "deep-ink": "#FFFFFF",
-    "deep-mute": "#A9BCEE",
-    "deep-soft": "#0F2358",
-    "deep-rule": "#2B4794",
-    "signal": "#96590C",
-    "signal-ink": "#FFFFFF",
-    "signal-soft": "#F4E8D2",
-    "signal-mute": "#7A4A0A",
-    "series-1": "#1B2E5E",
-    "series-2": "#2B49A8",
-    "series-3": "#4268CE",
-    "series-4": "#6A93E8",
-    "danger": "#B3272D",
-    "danger-soft": "#F7E4E4",
-    "ramp1": "#EDEBE4",
-    "ramp2": "#D9D6CD",
-    "ramp4": "#C2BEB3",
-    "ramp6": "#9C988D",
-    "ramp8": "#6E6A61",
-    "ramp10": "#3A3833",
-    "band-low-bg": "#DCE5FA",
-    "band-low-fg": "#1B2C57",
-    "band-mid-bg": "#9DB6F2",
-    "band-mid-fg": "#15264D",
-    "band-high-bg": "#96590C",
-    "band-high-fg": "#FFFFFF",
+    "accent-hi": "#1E40AF",
+    "accent-soft": "#E3EBFD",
+    "safe": "#0F766E",
+    "safe-soft": "#DCF1EE",
+    "mid": "#B45309",
+    "mid-soft": "#FCEBD3",
+    "high": "#BE123C",
+    "high-soft": "#FBE1E7",
+    "neutral": "#8A97AB",
+    "shadow": "rgba(15, 23, 42, .10)",
 }
 
 DARK = {
-    "paper": "#14161A",
-    "sheet": "#1B1E23",
-    "ink": "#E9E7E2",
-    "ink2": "#C6C4BE",
-    "muted": "#8E8C86",
-    "rule": "#33373E",
-    "rule-soft": "#262A30",
-    "accent": "#7E9BFF",
-    "accent-ink": "#14161A",
-    "accent-soft": "#1E2740",
-    "deep": "#3E5AD2",
-    "deep-hi": "#4C6BE0",
-    "deep-ink": "#FFFFFF",
-    "deep-mute": "#DCE6FF",
-    "deep-soft": "#1E2E66",
-    "deep-rule": "#5A78DE",
-    "signal": "#E3A94A",
-    "signal-ink": "#1A1206",
-    "signal-soft": "#2A2114",
-    "signal-mute": "#E3A94A",
-    "series-1": "#C9D8FF",
-    "series-2": "#9DB6F5",
-    "series-3": "#6B8EEA",
-    "series-4": "#4468DC",
-    "danger": "#E8746F",
-    "danger-soft": "#2C1A1B",
-    "ramp1": "#232830",
-    "ramp2": "#2E333C",
-    "ramp4": "#454B54",
-    "ramp6": "#6E747D",
-    "ramp8": "#9DA3AB",
-    "ramp10": "#D2D0CA",
-    "band-low-bg": "#1E2740",
-    "band-low-fg": "#C9D6F8",
-    "band-mid-bg": "#3E5AB5",
-    "band-mid-fg": "#EAF0FF",
-    "band-high-bg": "#E3A94A",
-    "band-high-fg": "#1A1206",
+    "canvas": "#0B1120",
+    "surface": "#111827",
+    "recess": "#1E293B",
+    "ink": "#F8FAFC",
+    "ink2": "#CBD5E1",
+    "muted": "#94A3B8",
+    "rule": "#2C3A50",
+    "rule-soft": "#1F2B3E",
+    "accent": "#60A5FA",
+    "accent-ink": "#0B1120",
+    "accent-hi": "#93C5FD",
+    "accent-soft": "#1A2B4D",
+    "safe": "#2DD4BF",
+    "safe-soft": "#0F2E2E",
+    "mid": "#FBBF24",
+    "mid-soft": "#33270E",
+    "high": "#FB7185",
+    "high-soft": "#3A1522",
+    "neutral": "#64748B",
+    "shadow": "rgba(0, 0, 0, .45)",
 }
 
 THEMES = {"Terang": LIGHT, "Gelap": DARK}
@@ -98,38 +64,36 @@ _PATHS = {
     "chart": '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
     "linechart": '<path d="M3 20h18"/><path d="M4 16l5-5 4 3 7-8"/>',
     "search": '<circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/>',
-    "sun": '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2'
-           'M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/>',
-    "moon": '<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5z"/>',
     "check": '<path d="M4 12.5l5 5L20 6.5"/>',
     "alert": '<path d="M12 3l9.5 17H2.5L12 3z"/><path d="M12 10v4M12 17.5v.01"/>',
     "info": '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/>',
-    "chevron": '<path d="M6 9l6 6 6-6"/>',
-    "play": '<path d="M7 4.5l12 7.5-12 7.5z"/>',
-    "reset": '<path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/>',
     "doc": '<path d="M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7z"/>'
           '<path d="M14 3v4h4"/>',
     "grid": '<rect x="3" y="3" width="7.5" height="7.5"/><rect x="13.5" y="3" width="7.5" height="7.5"/>'
             '<rect x="3" y="13.5" width="7.5" height="7.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5"/>',
     "layers": '<path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/>',
     "flag": '<path d="M5 21V4M5 5h11l-2 4 2 4H5"/>',
+    "phone": '<rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18.5h2"/>',
+    "wifi": '<path d="M2.5 9a14 14 0 0 1 19 0M5.5 12.5a9.5 9.5 0 0 1 13 0M8.7 16a5 5 0 0 1 6.6 0"/>'
+            '<path d="M12 19.5v.01"/>',
+    "receipt": '<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/>',
+    "cube": '<path d="M12 2.5l8.5 4.5v10L12 21.5 3.5 17V7z"/><path d="M3.5 7L12 11.5 20.5 7M12 11.5v10"/>',
+    "scale": '<path d="M12 3v18M5 21h14"/><path d="M5 7h14"/><path d="M5 7l-3 7a3.2 3.2 0 0 0 6 0zM19 7l-3 7a3.2 3.2 0 0 0 6 0z"/>',
 }
 
 
 def icon(name: str, size: int = 16, cls: str = "") -> str:
     body = _PATHS[name]
     return (f'<svg class="ico {cls}" width="{size}" height="{size}" viewBox="0 0 24 24" '
-            f'fill="none" stroke="currentColor" stroke-width="1.5" '
+            f'fill="none" stroke="currentColor" stroke-width="1.6" '
             f'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{body}</svg>')
 
 
 def icon_uri(name: str) -> str:
     body = _PATHS[name]
     raw = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" '
-           f'stroke="black" stroke-width="1.5" stroke-linecap="round" '
+           f'stroke="black" stroke-width="1.7" stroke-linecap="round" '
            f'stroke-linejoin="round">{body}</svg>')
-    from urllib.parse import quote
-
     return "url(\"data:image/svg+xml,%s\")" % quote(raw, safe="")
 
 
@@ -139,50 +103,21 @@ _BASE_CSS = r"""
 html, body, [data-testid="stAppViewContainer"], .stApp {
     font-family: 'Archivo', 'Segoe UI', system-ui, -apple-system, sans-serif;
     font-feature-settings: 'tnum' 1, 'cv05' 1;
+    font-variant-numeric: tabular-nums;
 }
-html body, html body [data-testid="stAppViewContainer"], html body [data-testid="stApp"],
-html body .stApp {
-    font-family: 'Archivo', 'Segoe UI', system-ui, -apple-system, sans-serif !important;
-}
-html body code, html body pre, html body [data-testid="stCode"], html body .stCode,
-html body .stMarkdown pre {
-    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
-}
-[data-testid="stAppViewContainer"] {
-    background: var(--paper);
-}
-[data-testid="stHeader"] { background: var(--paper); }
-[data-testid="stToolbar"] { opacity: .55; }
+[data-testid="stAppViewContainer"] { background: var(--canvas); }
+[data-testid="stHeader"] { background: transparent; }
+[data-testid="stToolbar"] { opacity: .6; }
 section[data-testid="stSidebar"] { display: none; }
-[data-testid="stMainBlockContainer"] { padding: 3.5rem 2.6rem 3rem; max-width: 1440px; }
+[data-testid="stMainBlockContainer"] { padding: 2.9rem 2.4rem 3rem; max-width: 1440px; }
 [data-testid="stMain"] { background: transparent; }
-[data-testid="stVerticalBlock"] { gap: .55rem; }
+[data-testid="stVerticalBlock"] { gap: .7rem; }
 
-/* ---- tipografi dasar ---- */
-p, span, div, label, li, td, th { letter-spacing: -0.005em; }
 .stMarkdown p { line-height: 1.6; }
-html body .stMarkdown h1, html body .stMarkdown h2, html body .stMarkdown h3,
-html body .stMarkdown h4, html body .stMarkdown h5, html body .stMarkdown h6 {
-    color: var(--ink) !important; letter-spacing: -0.018em; }
-html body .stMarkdown p, html body .stMarkdown li { color: var(--ink2); }
-html body .stMarkdown th { color: var(--ink) !important; font-weight: 600 !important; }
-html body .stMarkdown td { color: var(--ink2) !important; }
-html body .stMarkdown th, html body .stMarkdown td {
-    background: transparent !important; border-bottom: 1px solid var(--rule-soft) !important;
-    padding: .42rem .55rem !important; font-size: .82rem !important; }
-html body .stMarkdown tr:last-child td { border-bottom: none !important; }
-html body .stCaptionContainer, html body [data-testid="stCaptionContainer"] {
-    color: var(--muted) !important; }
-html body [data-testid="stWidgetLabel"] p, html body label p { color: var(--muted) !important; }
-
-/* Streamlit memasang huruf tema sendiri pada isi markdown dan label widget.
-   Tanpa aturan ini Archivo hanya dimuat tapi tidak dipakai, dan teks aplikasi
-   jatuh ke huruf bawaan Streamlit. */
 html body [data-testid="stMarkdownContainer"],
 html body [data-testid="stCaptionContainer"],
 html body [data-testid="stWidgetLabel"] p,
-html body label p {
-    font-family: 'Archivo', 'Segoe UI', system-ui, -apple-system, sans-serif !important; }
+html body label p,
 html body [data-testid="stMarkdownContainer"] p,
 html body [data-testid="stMarkdownContainer"] span,
 html body [data-testid="stMarkdownContainer"] div,
@@ -193,371 +128,504 @@ html body [data-testid="stMarkdownContainer"] h1,
 html body [data-testid="stMarkdownContainer"] h2,
 html body [data-testid="stMarkdownContainer"] h3,
 html body [data-testid="stMarkdownContainer"] h4,
-html body [data-testid="stMarkdownContainer"] h5,
-html body [data-testid="stMarkdownContainer"] h6,
 html body [data-testid="stCaptionContainer"] p {
     font-family: 'Archivo', 'Segoe UI', system-ui, -apple-system, sans-serif !important; }
-/* Mono hanya untuk hal yang diukur, jadi specifisitasnya di atas aturan umum. */
-html body [data-testid="stMarkdownContainer"] .tb-key,
-html body [data-testid="stMarkdownContainer"] .tb-strip span,
-html body [data-testid="stMarkdownContainer"] .cm-key,
+html body [data-testid="stMarkdownContainer"] .mono,
+html body [data-testid="stMarkdownContainer"] .mono * ,
+html body [data-testid="stMarkdownContainer"] .rb-meta,
+html body [data-testid="stMarkdownContainer"] .rb-meta *,
 html body [data-testid="stMarkdownContainer"] .risk-chip,
-html body [data-testid="stMarkdownContainer"] .scale-seg span,
-html body [data-testid="stMarkdownContainer"] .scale-marker-val,
+html body [data-testid="stMarkdownContainer"] .sheet-foot,
 html body [data-testid="stMarkdownContainer"] .scale-tick,
-html body [data-testid="stMarkdownContainer"] .sheet-foot {
+html body [data-testid="stMarkdownContainer"] .scale-marker-val,
+html body [data-testid="stMarkdownContainer"] .cb-val,
+html body [data-testid="stMarkdownContainer"] .bench-scale span {
     font-family: 'JetBrains Mono', ui-monospace, monospace !important; }
-code, pre, .stCode, [data-testid="stCode"] { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+html body code, html body pre, html body [data-testid="stCode"], html body .stCode {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important; }
+html body .stMarkdown h1, html body .stMarkdown h2, html body .stMarkdown h3,
+html body .stMarkdown h4 { color: var(--ink) !important; letter-spacing: -0.015em; }
+html body .stMarkdown p, html body .stMarkdown li { color: var(--ink2); }
+html body .stMarkdown th { color: var(--ink) !important; font-weight: 600 !important; }
+html body .stMarkdown td { color: var(--ink2) !important; }
+html body .stMarkdown th, html body .stMarkdown td {
+    background: transparent !important; border-bottom: 1px solid var(--rule-soft) !important;
+    padding: .45rem .6rem !important; font-size: .82rem !important; }
+html body .stMarkdown tr:last-child td { border-bottom: none !important; }
+html body [data-testid="stCaptionContainer"] { color: var(--muted) !important; }
+html body [data-testid="stWidgetLabel"] p, html body label p { color: var(--muted) !important; }
 html body code { background: var(--accent-soft) !important; color: var(--ink) !important;
-    border-radius: 3px; padding: 0 .22em; }
-html body pre { background: var(--paper) !important; color: var(--ink) !important;
-    border: 1px solid var(--rule-soft) !important; border-radius: 6px; }
+    border-radius: 4px; padding: 0 .25em; }
+html body pre { background: var(--recess) !important; color: var(--ink) !important;
+    border: 1px solid var(--rule-soft) !important; border-radius: 8px; }
 html body pre code { background: transparent !important; color: inherit; padding: 0; }
-.num { font-variant-numeric: tabular-nums; }
+
+html body [data-testid="stMarkdownContainer"]:has(> div, > section, > h3.sec-title, > svg) {
+    margin-bottom: 0 !important; }
 
 /* ---- kepala aplikasi ---- */
-.app-head { display: flex; align-items: flex-start; justify-content: space-between;
-            gap: 2rem; margin-bottom: 1.1rem; }
-.app-title { font-size: 1.32rem; font-weight: 700; letter-spacing: -0.022em; color: var(--ink); }
-.app-sub { margin-top: .32rem; font-size: .875rem; color: var(--muted) !important; max-width: 72ch;
-           line-height: 1.55; }
-.head-tools { display: flex; align-items: center; gap: .6rem; }
+.brand { display: flex; align-items: center; gap: .95rem; min-width: 0; }
+.brand-frame { flex: none; width: 52px; height: 52px; border-radius: 12px; padding: 5px;
+    background: var(--surface); border: 1px solid var(--rule); display: grid; place-items: center; }
+.brand-frame img { width: 100%; height: 100%; object-fit: contain; display: block;
+    border-radius: 7px; }
+.app-title { font-size: 1.45rem; font-weight: 700; letter-spacing: -0.02em; color: var(--ink);
+    line-height: 1.2; }
+.app-sub { margin: .25rem 0 0; font-size: .86rem; color: var(--muted) !important;
+    max-width: 78ch; line-height: 1.5; }
+.st-key-topbar { padding-bottom: .15rem; }
 
-/* ---- title block: bidang biru pekat, seperti blok judul gambar teknik ---- */
-.title-block { border: 1px solid var(--deep); border-radius: 8px; overflow: hidden;
-               background: var(--deep); margin-bottom: 1.1rem; }
-.tb-grid { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); }
-.tb-cell { padding: .6rem .75rem .62rem; border-right: 1px solid var(--deep-rule);
-           border-bottom: 1px solid var(--deep-rule); min-width: 0; }
-.tb-cell:last-child { border-right: none; }
-.tb-key { display: block; font-family: 'JetBrains Mono', monospace; font-size: .625rem;
-          font-weight: 500; letter-spacing: .11em; text-transform: uppercase;
-          color: var(--muted); margin-bottom: .2rem; }
-.title-block .tb-key { color: var(--deep-mute); }
-.tb-val { display: block; font-size: 1.02rem; font-weight: 600; color: var(--ink);
-          font-variant-numeric: tabular-nums; letter-spacing: -0.015em;
-          white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.title-block .tb-val { color: var(--deep-ink); }
-.tb-val.sm { font-size: .8rem; font-weight: 600; }
-.tb-strip { display: flex; flex-wrap: wrap; gap: 0 1.5rem; padding: .5rem .75rem;
-            border-top: 1px solid var(--deep-rule); background: var(--deep-soft); }
-.tb-strip span { font-family: 'JetBrains Mono', monospace; font-size: .625rem;
-                 letter-spacing: .1em; text-transform: uppercase; color: var(--deep-mute); }
-.tb-strip b { color: var(--deep-ink); font-weight: 600; margin-left: .34rem;
-              font-variant-numeric: tabular-nums; }
+/* ---- pita ringkasan model ---- */
+.ribbon { border: 1px solid var(--rule); border-radius: 14px; background: var(--surface);
+    overflow: hidden; }
+.rb-main { display: grid; grid-template-columns: minmax(0, 1.25fr) repeat(4, minmax(0, 1fr)); }
+.rb-model, .kpi { padding: .85rem 1.15rem .9rem; min-width: 0;
+    border-right: 1px solid var(--rule-soft); }
+.kpi:last-child { border-right: none; }
+.rb-model { display: flex; flex-direction: column; justify-content: center; gap: .55rem;
+    background: var(--accent-soft); }
+.rb-badge { align-self: flex-start; display: inline-flex; align-items: center; gap: .5rem;
+    padding: .38rem .7rem; border-radius: 999px; background: var(--accent); color: var(--accent-ink);
+    font-size: .8rem; font-weight: 650; letter-spacing: -0.005em; white-space: nowrap; }
+.rb-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.rb-model-sub { font-size: .78rem; color: var(--ink2) !important; line-height: 1.45; }
+.kpi-key { display: block; font-size: .74rem; font-weight: 600; color: var(--muted);
+    letter-spacing: .01em; margin-bottom: .3rem; }
+.kpi-val { display: block; font-size: 1.7rem; font-weight: 700; color: var(--ink);
+    letter-spacing: -0.03em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.kpi-cap { display: block; font-size: .76rem; color: var(--muted); margin-top: .32rem;
+    line-height: 1.4; }
+.rb-meta { display: flex; flex-wrap: wrap; gap: .3rem 1.5rem; padding: .62rem 1.15rem;
+    background: var(--recess); border-top: 1px solid var(--rule-soft); }
+.rb-meta span { font-size: .68rem; color: var(--muted); white-space: nowrap; }
+.rb-meta b { color: var(--ink); font-weight: 600; margin-left: .35rem; }
 
-/* ---- rail tab ---- */
-div[role="tablist"] { gap: .35rem; border-bottom: 1px solid var(--rule);
-                      margin-bottom: 1.1rem; }
+/* ---- tab: lintasan pil ---- */
+div[role="tablist"] { display: flex !important; width: fit-content !important; gap: 4px; padding: 4px; border-bottom: none !important;
+    background: var(--recess); border: 1px solid var(--rule-soft); border-radius: 14px;
+    margin-bottom: 1rem; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+div[role="tablist"]::-webkit-scrollbar { display: none; }
+div[data-testid="stTabs"] > div[data-orientation] { border-bottom: none !important;
+    box-shadow: none !important; }
 div[data-testid="stTab"] { font-family: 'Archivo', sans-serif !important;
-    font-size: .82rem !important; font-weight: 600 !important; letter-spacing: -0.01em;
+    font-size: .84rem !important; font-weight: 600 !important; letter-spacing: -0.005em;
     color: var(--muted) !important; background: transparent !important;
-    padding: .5rem 0 .55rem !important; margin-right: 1.35rem !important;
-    transition: color .12s ease; }
+    padding: .5rem 1rem !important; margin: 0 !important; border-radius: 10px !important;
+    white-space: nowrap; transition: color .15s ease, background-color .15s ease; }
 div[data-testid="stTab"] p { font-size: inherit !important; font-weight: inherit !important;
     color: inherit !important; letter-spacing: inherit !important; }
 div[data-testid="stTab"] p::before { content: ""; display: inline-block;
-    width: 15px; height: 15px; margin-right: .45rem; vertical-align: -2px;
+    width: 15px; height: 15px; margin-right: .5rem; vertical-align: -2.5px;
     background: currentColor; -webkit-mask: var(--tabicon) center/contain no-repeat;
     mask: var(--tabicon) center/contain no-repeat; }
-div[data-testid="stTab"][aria-selected="true"] { color: var(--deep) !important; }
-div[data-testid="stTab"] .react-aria-SelectionIndicator { background: var(--deep) !important;
-    height: 2px !important; }
-div[data-testid="stTab"]:hover { color: var(--deep-hi) !important; }
-div[data-testid="stTab"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+div[data-testid="stTab"][aria-selected="true"] { color: var(--ink) !important;
+    background: var(--surface) !important;
+    box-shadow: 0 1px 2px var(--shadow), 0 3px 8px var(--shadow); }
+div[data-testid="stTab"] .react-aria-SelectionIndicator { display: none !important; }
+div[data-testid="stTab"]:hover { color: var(--ink) !important; }
+div[data-testid="stTab"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+div[data-testid="stTabs"] > div:first-child::after { display: none; }
 
 /* ---- judul bagian ---- */
-.sec-title { display: flex; align-items: center; gap: .5rem; font-size: 1rem;
-             font-weight: 650; letter-spacing: -0.018em; color: var(--ink);
-             margin: 0 0 .1rem; }
+html body .stMarkdown h3.sec-title, .sec-title { display: flex; align-items: center; gap: .55rem; font-size: 1.04rem;
+    font-weight: 650; letter-spacing: -0.015em; color: var(--ink); margin: 0 0 .1rem; }
+html body .stMarkdown h3.sec-title { font-size: 1.04rem !important; font-weight: 650 !important;
+    padding: 0 !important; margin: 0 0 .1rem !important; line-height: 1.35 !important; }
 .sec-title .ico { color: var(--accent); flex: none; }
-.sec-note { font-size: .82rem; color: var(--muted) !important; margin: .15rem 0 .5rem;
-            max-width: 78ch; line-height: 1.55; }
+.sec-note { font-size: .84rem; color: var(--muted) !important; margin: .2rem 0 .4rem;
+    max-width: 82ch; line-height: 1.55; }
+.sub-head { display: flex; align-items: center; gap: .55rem; font-size: .9rem; font-weight: 650;
+    color: var(--ink); letter-spacing: -0.01em; padding-top: 1rem; margin-top: .45rem;
+    border-top: 1px solid var(--rule-soft); }
+.sub-head.first { border-top: none; padding-top: 0; margin-top: 0; }
+.sub-head .ico { color: var(--accent); flex: none; }
+.sub-head { margin-bottom: .45rem; }
+.sub-head small { margin-left: auto; font-size: .72rem; font-weight: 500; color: var(--muted); }
 
-/* ---- panel ---- */
-/* Streamlit 1.64 tidak lagi memakai stVerticalBlockBorderWrapper, sehingga
-   container berbingkai tidak pernah tertangkap selector lama: panel tetap
-   transparan dan ikut warna kertas, dan dua nada permukaan hilang. Pada
-   versi ini container berbingkai selalu anak langsung dari stLayoutWrapper,
-   sedangkan block susun lain adalah anak dari stColumn, stExpanderDetails,
-   atau stMainBlockContainer. Karena itu hook-nya struktural, bukan nama kelas
-   emotion yang berubah antar versi. */
-div[data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"] {
-    border: 1px solid var(--rule) !important;
-    border-radius: 8px !important; background: var(--sheet) !important;
-    box-shadow: none !important; padding: 1.1rem 1.25rem 1.15rem !important; }
+/* ---- panel: satu bingkai, hook lewat key ---- */
+[class*="st-key-panel"] { border: 1px solid var(--rule); border-radius: 14px;
+    background: var(--surface); padding: 1.2rem 1.35rem 1.3rem; }
 div[data-testid="stExpander"] { border: 1px solid var(--rule) !important;
-    border-radius: 8px !important; background: var(--sheet) !important;
-    box-shadow: none !important; }
-div[data-testid="stExpander"] summary { font-size: .84rem !important;
-    font-weight: 600 !important; color: var(--ink2) !important;
-    background: transparent !important; }
-div[data-testid="stExpander"] summary:hover { background: var(--paper) !important; }
+    border-radius: 12px !important; background: var(--surface) !important;
+    box-shadow: none !important; overflow: hidden; }
+div[data-testid="stExpander"] details { border: none !important; background: transparent !important; }
+div[data-testid="stExpander"] summary { font-size: .86rem !important; font-weight: 600 !important;
+    color: var(--ink) !important; background: transparent !important; padding: .7rem 1rem !important; }
+div[data-testid="stExpander"] summary:hover { background: var(--recess) !important; }
+div[data-testid="stExpander"] summary svg { color: var(--muted); }
+[class*="st-key-panel"] div[data-testid="stExpander"] { background: var(--canvas) !important; }
 
 /* ---- kontrol ---- */
-label p, [data-testid="stWidgetLabel"] p { font-size: .74rem !important;
-    font-weight: 500 !important; color: var(--muted) !important;
-    letter-spacing: .005em; margin-bottom: .18rem !important; }
+label p, [data-testid="stWidgetLabel"] p { font-size: .76rem !important;
+    font-weight: 550 !important; color: var(--muted) !important;
+    letter-spacing: 0; margin-bottom: .15rem !important; }
 div[data-testid="stSelectbox"] > div > div,
-div[data-testid="stTextInput"] input,
-div[data-testid="stFileUploader"] {
-    background: var(--sheet) !important; color: var(--ink) !important;
-    border: 1px solid var(--rule) !important; border-radius: 6px !important;
-    font-size: .85rem !important; box-shadow: none !important; }
+div[data-testid="stTextInput"] input {
+    background: var(--surface) !important; color: var(--ink) !important;
+    border: 1px solid var(--rule) !important; border-radius: 8px !important;
+    font-size: .86rem !important; box-shadow: none !important; min-height: 2.5rem; }
 html body [data-testid="stSelectbox"] [data-baseweb="select"] div,
 html body [data-testid="stSelectbox"] input,
 html body [data-testid="stNumberInput"] input,
 html body [data-testid="stTextInput"] input {
-    font-family: 'Archivo', 'Segoe UI', system-ui, -apple-system, sans-serif !important; }
+    font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif !important; }
+div[data-testid="stSelectbox"]:hover > div > div,
+div[data-testid="stNumberInputContainer"]:hover { border-color: var(--neutral) !important; }
 div[data-testid="stNumberInputContainer"] {
-    background: var(--sheet) !important; border: 1px solid var(--rule) !important;
-    border-radius: 6px !important; box-shadow: none !important; }
+    background: var(--surface) !important; border: 1px solid var(--rule) !important;
+    border-radius: 8px !important; box-shadow: none !important; overflow: hidden;
+    min-height: 2.5rem; }
 div[data-testid="stNumberInput"] input {
     background: transparent !important; color: var(--ink) !important;
-    border: none !important; border-radius: 6px 0 0 6px !important;
-    box-shadow: none !important; font-size: .85rem !important; }
+    border: none !important; box-shadow: none !important; font-size: .86rem !important;
+    font-variant-numeric: tabular-nums; }
 [data-testid="stNumberInputStepUp"], [data-testid="stNumberInputStepDown"] {
-    background: transparent !important; color: var(--ink2) !important; }
+    background: var(--surface) !important; color: var(--ink2) !important;
+    border-color: var(--rule) !important; }
 [data-testid="stNumberInputStepUp"] svg, [data-testid="stNumberInputStepDown"] svg {
     fill: var(--ink2) !important; }
 [data-testid="stNumberInputStepUp"]:hover, [data-testid="stNumberInputStepDown"]:hover {
-    color: var(--ink) !important; }
+    background: var(--accent-soft) !important; color: var(--ink) !important; }
 div[data-testid="stSelectbox"] div[data-baseweb="select"] div,
 div[data-testid="stSelectbox"] div[data-baseweb="select"] span,
-div[data-testid="stSelectbox"] [data-testid="stMarkdownContainer"] p,
-div[data-testid="stSelectbox"] [role="combobox"] {
-    color: var(--ink) !important; }
-div[data-testid="stSelectbox"] > div > div > div:last-child,
-div[data-testid="stSelectbox"] [data-baseweb="select"] > div:last-child { color: var(--ink) !important; }
+div[data-testid="stSelectbox"] [role="combobox"] { color: var(--ink) !important; }
+div[data-testid="stSelectbox"] [aria-disabled="true"],
+div[data-testid="stSelectbox"] [disabled] { opacity: .62; }
 div[data-testid="stSelectbox"] > div > div:focus-within,
 div[data-testid="stNumberInputContainer"]:focus-within,
 div[data-testid="stTextInput"] input:focus {
     border-color: var(--accent) !important; outline: none !important;
-    box-shadow: 0 0 0 2px var(--accent-soft) !important; }
+    box-shadow: 0 0 0 3px var(--accent-soft) !important; }
 div[data-testid="stSelectbox"] svg { fill: var(--muted); }
-/* Dropdown Streamlit 1.64 dirender lewat portal dengan
-   data-testid="stSelectboxVirtualDropdown", bukan data-baseweb="popover".
-   Tanpa aturan ini latarnya tetap terang sedangkan teks opsi sudah pakai
-   tinta tema gelap, jadi opsinya tidak terbaca. */
 div[data-testid="stSelectboxVirtualDropdown"] {
-    background: var(--sheet) !important; color: var(--ink) !important;
-    border: 1px solid var(--rule) !important; }
+    background: var(--surface) !important; color: var(--ink) !important;
+    border: 1px solid var(--rule) !important; border-radius: 10px !important; }
 div[data-testid="stSelectboxVirtualDropdown"] [role="listbox"],
 div[data-testid="stSelectboxVirtualDropdown"] [role="presentation"] {
     background: transparent !important; color: var(--ink) !important; }
 div[data-testid="stSelectboxVirtualDropdown"] [role="option"] {
-    font-size: .85rem !important; color: var(--ink) !important; }
+    font-size: .86rem !important; color: var(--ink) !important; }
 div[data-testid="stSelectboxVirtualDropdown"] [role="option"][aria-selected="true"],
 div[data-testid="stSelectboxVirtualDropdown"] [role="option"]:hover {
     background: var(--accent-soft) !important; color: var(--ink) !important; }
-div[data-testid="stPopoverBody"], div[role="tooltip"] {
-    background: var(--sheet) !important; color: var(--ink) !important;
+div[data-baseweb="popover"] > div, div[data-testid="stPopoverBody"], div[role="tooltip"] {
+    background: var(--surface) !important; color: var(--ink) !important;
     border: 1px solid var(--rule) !important; }
-[data-testid="stNumberInputStepUp"], [data-testid="stNumberInputStepDown"] {
-    background: var(--sheet) !important; color: var(--ink2) !important;
-    border-color: var(--rule) !important; }
-[data-testid="stNumberInputStepUp"] { border-left: 1px solid var(--rule) !important; }
-[data-testid="stNumberInputStepUp"]:hover, [data-testid="stNumberInputStepDown"]:hover {
-    background: var(--accent-soft) !important; color: var(--ink) !important; }
+div[role="tooltip"] * { color: var(--ink) !important; }
 
 /* ---- tombol ---- */
 .stButton > button, .stDownloadButton > button {
-    border-radius: 6px !important; font-family: 'Archivo', sans-serif !important;
-    font-size: .84rem !important; font-weight: 600 !important;
+    border-radius: 10px !important; font-family: 'Archivo', sans-serif !important;
+    font-size: .88rem !important; font-weight: 650 !important; min-height: 2.75rem;
     letter-spacing: -0.005em; box-shadow: none !important;
-    border: 1px solid var(--rule) !important; background: var(--sheet) !important;
-    color: var(--ink) !important; transition: background .12s ease, border-color .12s ease; }
+    border: 1px solid var(--rule) !important; background: var(--surface) !important;
+    color: var(--ink) !important; transition: background .15s ease, border-color .15s ease; }
 .stButton > button:hover, .stDownloadButton > button:hover {
-    border-color: var(--ink2) !important; background: var(--paper) !important; }
+    border-color: var(--accent) !important; background: var(--accent-soft) !important; }
 .stButton > button[kind="primary"], .stDownloadButton > button[kind="primary"] {
-    background: var(--deep) !important; color: var(--deep-ink) !important;
-    border-color: var(--deep) !important; }
-.stButton > button[kind="primary"]:hover { background: var(--deep-hi) !important;
-    border-color: var(--deep-hi) !important; color: var(--deep-ink) !important; }
+    background: var(--accent) !important; color: var(--accent-ink) !important;
+    border-color: var(--accent) !important; }
+.stButton > button[kind="primary"] *, .stDownloadButton > button[kind="primary"] * {
+    color: var(--accent-ink) !important; }
+.stButton > button[kind="primary"]:hover, .stDownloadButton > button[kind="primary"]:hover {
+    background: var(--accent-hi) !important; border-color: var(--accent-hi) !important; }
+.stButton > button[kind="primary"]:hover *, .stDownloadButton > button[kind="primary"]:hover * {
+    color: var(--accent-ink) !important; }
+.stButton > button:active, .stDownloadButton > button:active { transform: translateY(1px); }
 .stButton > button:focus-visible, .stDownloadButton > button:focus-visible {
     outline: 2px solid var(--accent) !important; outline-offset: 2px !important; }
 .stButton > button:disabled { opacity: .45 !important; }
-/* tombol Upload berada di dropzone putih pada kedua tema: tinta tetap gelap */
-[data-testid="stFileUploaderDropzone"] button,
-[data-testid="stFileUploaderDropzone"] button:hover,
-[data-testid="stFileUploaderDropzone"] button:focus-visible {
-    color: #16181A !important; background: #FBFBF9 !important;
-    border: 1px solid #C9C7C0 !important; }
-[data-testid="stFileUploaderDropzone"] button *,
-[data-testid="stFileUploaderDropzone"] button svg { color: #16181A !important; fill: #16181A !important; }
-[data-testid="stFileUploaderDropzone"] button:hover { border-color: #16181A !important; }
-[data-testid="stFileUploaderDropzone"] button:focus-visible {
-    outline: 2px solid var(--accent) !important; outline-offset: 2px !important; }
-.btn { display: inline-flex; align-items: center; gap: .45rem; }
+
+[data-testid="stFileUploaderDropzone"] { background: var(--recess) !important;
+    border: 1.5px dashed var(--neutral) !important; border-radius: 12px !important;
+    color: var(--ink2) !important; }
+[data-testid="stFileUploaderDropzone"]:hover { border-color: var(--accent) !important; }
+[data-testid="stFileUploaderDropzone"] * { color: var(--ink2); }
+[data-testid="stFileUploaderDropzone"] small { color: var(--muted) !important; }
+[data-testid="stFileUploaderDropzone"] button {
+    background: var(--surface) !important; color: var(--ink) !important;
+    border: 1px solid var(--rule) !important; border-radius: 8px !important; }
+[data-testid="stFileUploaderDropzone"] button * { color: var(--ink) !important; }
+[data-testid="stFileUploaderDropzone"] button:hover { border-color: var(--accent) !important; }
+[data-testid="stFileUploaderFile"] * { color: var(--ink2) !important; }
 
 /* ---- pengalih tema ---- */
-div[data-testid="stButtonGroup"] { background: var(--sheet) !important;
-    border: 1px solid var(--rule) !important; border-radius: 6px !important;
-    padding: 2px !important; gap: 0 !important; width: 100% !important; }
+div[data-testid="stButtonGroup"] { background: var(--recess) !important;
+    border: 1px solid var(--rule-soft) !important; border-radius: 12px !important;
+    padding: 3px !important; gap: 3px !important; width: 100% !important; }
 div[data-testid="stButtonGroup"] button { font-family: 'Archivo', sans-serif !important;
-    font-size: .72rem !important; font-weight: 600 !important; border-radius: 4px !important;
-    color: var(--muted) !important; letter-spacing: -0.005em;
-    background: transparent !important; border: 1px solid transparent !important;
-    box-shadow: none !important; }
-div[data-testid="stButtonGroup"] button:hover { color: var(--ink) !important;
-    background: var(--paper) !important; }
+    font-size: .8rem !important; font-weight: 600 !important; border-radius: 9px !important;
+    color: var(--muted) !important; background: transparent !important;
+    border: 1px solid transparent !important; box-shadow: none !important; min-height: 2.2rem; }
+div[data-testid="stButtonGroup"] button:hover { color: var(--ink) !important; }
 div[data-testid="stButtonGroup"] button[aria-checked="true"],
 div[data-testid="stButtonGroup"] button[data-checked="true"],
 div[data-testid="stButtonGroup"] button[aria-pressed="true"] {
-    background: var(--accent-soft) !important; color: var(--deep) !important;
-    border-color: var(--accent) !important; }
+    background: var(--surface) !important; color: var(--ink) !important;
+    box-shadow: 0 1px 2px var(--shadow), 0 2px 6px var(--shadow) !important; }
 
-/* ---- blok vonis ---- */
-.verdict { border: 1px solid var(--rule); border-radius: 8px; background: var(--sheet);
-           padding: 1rem 1.15rem 1.05rem; margin: .2rem 0 .9rem; }
-.verdict-head { display: flex; align-items: center; gap: .7rem; flex-wrap: wrap;
-                margin-bottom: .45rem; }
-.risk-chip { font-family: 'JetBrains Mono', monospace; font-size: .66rem; font-weight: 600;
-             letter-spacing: .1em; text-transform: uppercase; padding: .28rem .5rem;
-             border-radius: 4px; }
-.risk-low { background: var(--band-low-bg); color: var(--band-low-fg); }
-.risk-mid { background: var(--band-mid-bg); color: var(--band-mid-fg); }
-.risk-high { background: var(--band-high-bg); color: var(--band-high-fg); }
-.verdict-decision { font-size: .84rem; color: var(--ink2) !important; }
-.verdict-decision b { color: var(--ink); }
-.verdict-decision b.hot { color: var(--signal-mute); }
-.verdict-figure { font-size: 2.5rem; font-weight: 700; letter-spacing: -0.032em;
-                  color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1.05; }
-.verdict-figure .unit { font-size: 1.15rem; font-weight: 600; color: var(--muted);
-                         margin-left: .08em; letter-spacing: -0.01em; }
-.verdict-sub { font-size: .8rem; color: var(--muted) !important; margin-top: .18rem; }
+/* ---- snapshot pelanggan ---- */
+.snap { border: 1px solid var(--rule); border-radius: 14px; background: var(--surface);
+    padding: .85rem 1.15rem .95rem; }
+.snap-head { display: flex; align-items: center; justify-content: space-between; gap: .6rem;
+    margin-bottom: .75rem; }
+html body .stMarkdown h4 { font-size: .95rem !important; padding: 0 !important;
+    margin: 0 0 .3rem !important; line-height: 1.3 !important; color: var(--ink) !important; }
+.snap-head h4 { margin: 0; display: flex; align-items: center; gap: .5rem; font-size: .95rem;
+    font-weight: 650; color: var(--ink); }
+.snap-head h4 .ico { color: var(--accent); }
+.snap-live { display: inline-flex; align-items: center; gap: .4rem; font-size: .72rem;
+    color: var(--muted); }
+.snap-live i { width: 7px; height: 7px; border-radius: 50%; background: var(--safe); }
+.snap-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .6rem;
+    margin: 0 0 .8rem; }
+.snap-grid div { background: var(--recess); border-radius: 10px; padding: .45rem .7rem;
+    min-width: 0; }
+.snap-grid dt { font-size: .7rem; color: var(--muted); font-weight: 550; margin: 0 0 .15rem; }
+.snap-grid dd { margin: 0; font-size: .9rem; font-weight: 650; color: var(--ink);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bench-head { display: flex; align-items: baseline; justify-content: space-between; gap: .6rem;
+    margin-bottom: .55rem; }
+.bench-head span { font-size: .76rem; color: var(--muted); font-weight: 550; }
+.bench-head b { font-size: 1.2rem; color: var(--ink); font-weight: 700; letter-spacing: -0.02em; }
+.bench-track { position: relative; height: 10px; border-radius: 999px; background: var(--recess);
+    border: 1px solid var(--rule-soft); }
+.bench-iqr { position: absolute; top: -1px; bottom: -1px; border-radius: 999px;
+    background: var(--accent-soft); border: 1px solid var(--accent); opacity: .9; }
+.bench-med { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ink2);
+    transform: translateX(-1px); }
+.bench-pin { position: absolute; top: 50%; width: 16px; height: 16px; border-radius: 50%;
+    background: var(--ink); border: 3px solid var(--surface); transform: translate(-50%, -50%);
+    box-shadow: 0 0 0 1px var(--ink); }
+.bench-pin.out { background: var(--high); box-shadow: 0 0 0 1px var(--high); }
+.bench-scale { display: flex; justify-content: space-between; margin-top: .45rem; }
+.bench-scale span { font-size: .66rem; color: var(--muted); }
+.bench-note { margin: .55rem 0 0; font-size: .78rem; color: var(--ink2) !important; line-height: 1.45; }
+
+/* ---- keadaan siap ---- */
+.ready { border: 1px dashed var(--neutral); border-radius: 14px; background: var(--surface);
+    padding: 1.05rem 1.15rem 1.1rem; }
+.ready h4 { margin: 0 0 .3rem; display: flex; align-items: center; gap: .5rem; font-size: .95rem;
+    font-weight: 650; color: var(--ink); }
+.ready h4 .ico { color: var(--accent); }
+.ready-text { margin: 0 0 .75rem; font-size: .82rem; color: var(--muted) !important; line-height: 1.5; }
+.band-list { display: grid; gap: .45rem; }
+.band-row { display: flex; align-items: center; gap: .6rem; font-size: .82rem; color: var(--ink2); }
+.band-row .risk-chip { min-width: 4.9rem; text-align: center; }
+
+/* ---- vonis + gauge ---- */
+.verdict { border: 1px solid var(--rule); border-radius: 14px; background: var(--surface);
+    padding: .9rem 1.15rem 1rem; }
+.verdict-gauge { width: 100%; max-width: 330px; margin: 0 auto; }
+.verdict-gauge svg { width: 100%; height: auto; display: block; overflow: visible; }
+.g-band { fill: none; stroke-width: 14; stroke-linecap: butt; opacity: .26; }
+.g-val { fill: none; stroke-width: 14; stroke-linecap: round; }
+.g-low { stroke: var(--safe); } .g-mid { stroke: var(--mid); } .g-high { stroke: var(--high); }
+.g-tick { stroke: var(--ink); stroke-width: 2; }
+.g-label { fill: var(--muted); font-size: 10.5px; font-weight: 600; }
+.g-num { fill: var(--ink); font-size: 36px; font-weight: 700; letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums; }
+.g-cap { fill: var(--muted); font-size: 10.5px; font-weight: 550; }
+.verdict-meta { display: flex; align-items: center; justify-content: center; gap: .7rem;
+    flex-wrap: wrap; margin-top: .35rem; }
+.risk-chip { display: inline-flex; align-items: center; gap: .4rem; font-size: .68rem;
+    font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: .3rem .6rem;
+    border-radius: 999px; }
+.risk-chip::before { content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor; }
+.risk-low { background: var(--safe-soft); color: var(--safe); }
+.risk-mid { background: var(--mid-soft); color: var(--mid); }
+.risk-high { background: var(--high-soft); color: var(--high); }
+.verdict-decision { font-size: .86rem; color: var(--ink2) !important; }
+.verdict-decision b { color: var(--ink); font-weight: 700; }
+.verdict-decision b.hot { color: var(--high); }
+.verdict-sub { text-align: center; font-size: .76rem; color: var(--muted) !important;
+    margin-top: .25rem; }
 
 /* ---- skala probabilitas terkalibrasi ---- */
-.scale { border: 1px solid var(--rule); border-radius: 8px; background: var(--sheet);
-         padding: .85rem 1rem .7rem; margin-bottom: .85rem; }
+.scale { border: 1px solid var(--rule); border-radius: 14px; background: var(--surface);
+    padding: .9rem 1.15rem .8rem; }
 .scale-head { display: flex; justify-content: space-between; align-items: baseline;
-              margin-bottom: 1.7rem; gap: 1rem; }
-.scale-title { font-size: .78rem; font-weight: 600; color: var(--ink) !important; }
+    margin-bottom: 1.9rem; gap: 1rem; flex-wrap: wrap; }
+.scale-title { font-size: .84rem; font-weight: 650; color: var(--ink) !important; }
 .scale-note { font-size: .72rem; color: var(--muted) !important; }
-.scale-track { position: relative; height: 26px; border: 1px solid var(--rule);
-               border-radius: 4px; overflow: visible; display: flex; }
-.scale-seg { height: 100%; display: flex; align-items: center; justify-content: flex-start;
-            padding-left: .55rem; }
-.scale-seg span { font-family: 'JetBrains Mono', monospace; font-size: .58rem;
-                  letter-spacing: .11em; text-transform: uppercase; }
-.seg-low { background: var(--band-low-bg); color: var(--band-low-fg); flex: none; }
-.seg-mid { background: var(--band-mid-bg); color: var(--band-mid-fg); flex: none; }
-.seg-high { background: var(--band-high-bg); color: var(--band-high-fg); flex: 1; }
-.scale-marker { position: absolute; top: -6px; bottom: -6px; width: 2px;
-                background: var(--ink); transform: translateX(-1px); }
-.scale-marker::after { content: ""; position: absolute; top: -4px; left: -3px;
-    width: 8px; height: 8px; background: var(--ink); border-radius: 50%; }
-.scale-marker-val { position: absolute; top: -1.5rem; left: 50%; transform: translateX(-50%);
-    font-family: 'JetBrains Mono', monospace; font-size: .68rem; font-weight: 600;
-    color: var(--ink); white-space: nowrap; background: var(--sheet);
-    border: 1px solid var(--rule); border-radius: 3px; padding: .1rem .32rem; }
-.scale-ticks { position: relative; height: 1rem; margin-top: .3rem; }
-.scale-tick { position: absolute; transform: translateX(-50%); font-family: 'JetBrains Mono',
-              monospace; font-size: .58rem; letter-spacing: .08em; color: var(--muted);
-              white-space: nowrap; }
+.scale-track { position: relative; height: 12px; border-radius: 999px; display: flex;
+    overflow: visible; }
+.scale-seg { height: 100%; }
+.seg-low { background: var(--safe); flex: none; border-radius: 999px 0 0 999px; opacity: .85; }
+.seg-mid { background: var(--mid); flex: none; opacity: .85; }
+.seg-high { background: var(--high); flex: 1; border-radius: 0 999px 999px 0; opacity: .85; }
+.scale-marker { position: absolute; top: -6px; bottom: -6px; width: 3px; background: var(--ink);
+    transform: translateX(-1.5px); border-radius: 2px; }
+.scale-marker-val { position: absolute; top: -1.7rem; left: 50%; transform: translateX(-50%);
+    font-size: .7rem; font-weight: 600; color: var(--ink); white-space: nowrap;
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 6px;
+    padding: .1rem .38rem; }
+.scale-ticks { position: relative; height: 1.1rem; margin-top: .55rem; }
+.scale-tick { position: absolute; transform: translateX(-50%); font-size: .62rem;
+    color: var(--muted); white-space: nowrap; }
 .scale-tick.hard { color: var(--ink2); font-weight: 600; }
-.scale-tick:first-child { transform: translateX(-8%); }
-.scale-tick:last-child { transform: translateX(-92%); }
+.scale-tick:first-child { transform: translateX(0); }
+.scale-tick:last-child { transform: translateX(-100%); }
+
+/* ---- kontribusi fitur ---- */
+.contrib { border: 1px solid var(--rule); border-radius: 14px; background: var(--surface);
+    padding: .95rem 1.15rem 1rem; }
+.contrib h4 { margin: 0 0 .15rem; display: flex; align-items: center; gap: .5rem; font-size: .95rem;
+    font-weight: 650; color: var(--ink); }
+.contrib h4 .ico { color: var(--accent); }
+.contrib-note { margin: 0 0 .7rem; font-size: .76rem; color: var(--muted) !important;
+    line-height: 1.5; }
+.cb-group { font-size: .72rem; font-weight: 650; color: var(--muted); margin: .65rem 0 .3rem;
+    display: flex; align-items: center; gap: .4rem; }
+.cb-group i { width: 8px; height: 8px; border-radius: 2px; }
+.cb-group.up i { background: var(--high); } .cb-group.down i { background: var(--safe); }
+.cb-row { margin-bottom: .5rem; }
+.cb-label { display: flex; justify-content: space-between; gap: .6rem; font-size: .8rem;
+    color: var(--ink2); margin-bottom: .2rem; }
+.cb-val { font-size: .72rem; color: var(--muted); white-space: nowrap; }
+.cb-track { display: grid; grid-template-columns: 1fr 1fr; height: 8px; position: relative; }
+.cb-track::after { content: ""; position: absolute; left: 50%; top: -2px; bottom: -2px; width: 1px;
+    background: var(--neutral); }
+.cb-neg, .cb-pos { position: relative; background: var(--recess); }
+.cb-neg { border-radius: 999px 0 0 999px; display: flex; justify-content: flex-end; }
+.cb-pos { border-radius: 0 999px 999px 0; }
+.cb-neg i, .cb-pos i { display: block; height: 100%; }
+.cb-neg i { background: var(--safe); border-radius: 999px 0 0 999px; }
+.cb-pos i { background: var(--high); border-radius: 0 999px 999px 0; }
+
+/* ---- saran ---- */
+.rec-list { border: 1px solid var(--rule); border-radius: 14px; background: var(--surface);
+    padding: .3rem 1.15rem; }
+.rec { display: flex; gap: .75rem; padding: .75rem 0; border-bottom: 1px solid var(--rule-soft);
+    font-size: .84rem; color: var(--ink2) !important; line-height: 1.5; }
+.rec:last-child { border-bottom: none; }
+.rec-rank { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid;
+    place-items: center; background: var(--accent-soft); color: var(--accent);
+    font-size: .74rem; font-weight: 700; margin-top: .05rem; }
+.rec b { color: var(--ink); font-weight: 650; }
 
 /* ---- matriks konfusi ---- */
-.cm { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--rule);
-      border-radius: 8px; overflow: hidden; background: var(--sheet); margin: .3rem 0 .6rem; }
-.cm-cell { padding: .6rem .85rem .7rem; border-right: 1px solid var(--rule-soft);
-           border-bottom: 1px solid var(--rule-soft); }
-.cm-cell:nth-child(2n) { border-right: none; }
-.cm-cell:nth-child(n+3) { border-bottom: none; }
-.cm-key { display: block; font-family: 'JetBrains Mono', monospace; font-size: .6rem;
-          letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
-          margin-bottom: .22rem; }
-.cm-val { display: block; font-size: 1.55rem; font-weight: 650; letter-spacing: -0.025em;
-          color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1.15; }
-.cm-desc { display: block; font-size: .76rem; color: var(--muted) !important; margin-top: .12rem; }
-.cm-cell.hit { background: var(--accent-soft); }
-
-/* ---- daftar saran ---- */
-.rec { display: flex; gap: .6rem; padding: .62rem .1rem; border-bottom: 1px solid var(--rule-soft);
-       font-size: .85rem; color: var(--ink2) !important; line-height: 1.5; }
-.rec:last-child { border-bottom: none; }
-.rec .ico { color: var(--accent); flex: none; margin-top: .12rem; }
-.rec b { color: var(--ink); font-weight: 600; }
+.cm { display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr); gap: 4px;
+    margin: .2rem 0 .5rem; }
+.cm-axis { font-size: .7rem; font-weight: 600; color: var(--muted); display: flex;
+    align-items: center; justify-content: center; text-align: center; padding: .15rem .3rem; }
+.cm-axis.row { writing-mode: vertical-rl; transform: rotate(180deg); }
+.cm-cell { padding: .8rem .95rem .85rem; border-radius: 10px; background: var(--recess);
+    border: 1px solid var(--rule-soft); min-width: 0; }
+.cm-cell.ok { background: var(--safe-soft); border-color: transparent; }
+.cm-cell.bad { background: var(--high-soft); border-color: transparent; }
+.cm-key { display: block; font-size: .72rem; font-weight: 650; color: var(--ink2); margin-bottom: .2rem; }
+.cm-val { display: block; font-size: 1.7rem; font-weight: 700; letter-spacing: -0.03em;
+    color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.cm-pct { display: block; font-size: .76rem; font-weight: 600; color: var(--ink2);
+    font-variant-numeric: tabular-nums; margin-top: .1rem; }
+.cm-desc { display: block; font-size: .72rem; color: var(--muted) !important; margin-top: .25rem;
+    line-height: 1.35; }
 
 /* ---- strip ringkasan ---- */
-.summary-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
-                  border: 1px solid var(--rule); border-radius: 8px; overflow: hidden;
-                  background: var(--sheet); margin: .3rem 0 .8rem; }
-.summary-strip > div { padding: .62rem .8rem; border-right: 1px solid var(--rule-soft); }
+.summary-strip { display: grid; grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr));
+    border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; background: var(--surface); }
+.summary-strip > div { padding: .85rem 1.1rem; border-right: 1px solid var(--rule-soft);
+    min-width: 0; }
 .summary-strip > div:last-child { border-right: none; }
-.summary-strip .tb-val.hot { color: var(--signal-mute); }
+.summary-strip .kpi-val { font-size: 1.6rem; }
+.summary-strip .kpi-val.hot { color: var(--high); }
+.summary-strip .kpi-val.ok { color: var(--safe); }
 
-/* ---- plate gambar EDA ---- */
-[data-testid="stImage"] img { border: 1px solid var(--rule); border-radius: 8px;
+/* ---- kartu model ---- */
+.model-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; }
+.model-card { border: 1px solid var(--rule); border-radius: 14px; background: var(--surface);
+    padding: .9rem 1.05rem 1rem; min-width: 0; }
+.model-card.sel { border-color: var(--accent); background: var(--accent-soft); }
+.mc-head { display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+    margin-bottom: .65rem; }
+.mc-name { font-size: .95rem; font-weight: 650; color: var(--ink); }
+.mc-tag { font-size: .66rem; font-weight: 650; padding: .2rem .5rem; border-radius: 999px;
+    background: var(--accent); color: var(--accent-ink); white-space: nowrap; }
+.mc-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem .8rem; }
+.mc-grid span { display: block; font-size: .7rem; color: var(--muted); font-weight: 550; }
+.mc-grid b { display: block; font-size: 1.1rem; font-weight: 700; color: var(--ink);
+    letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+
+/* ---- galeri EDA ---- */
+.fig-note { font-size: .82rem; color: var(--ink2) !important; line-height: 1.55;
+    background: var(--recess); border-radius: 10px; padding: .7rem .85rem; margin-top: .4rem; }
+[data-testid="stImage"] img { border: 1px solid var(--rule-soft); border-radius: 10px;
     background: #FFFFFF; display: block; }
-[data-testid="stImage"] { margin: .5rem 0 .2rem; }
-.plate-cap { font-size: .78rem; color: var(--muted) !important; padding: .5rem .05rem .55rem;
-             line-height: 1.5; }
+[data-testid="stImage"] { margin: 0; }
+.doc-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; }
+.doc-link { display: flex; align-items: center; gap: .75rem; padding: .85rem 1rem;
+    border: 1px solid var(--rule); border-radius: 12px; background: var(--surface);
+    text-decoration: none !important; color: var(--ink) !important; font-size: .86rem;
+    font-weight: 600; transition: border-color .15s ease, background-color .15s ease; }
+.doc-link:hover { border-color: var(--accent); background: var(--accent-soft); }
+.doc-link .ico { color: var(--accent); flex: none; }
 
-/* ---- tabel ---- */
-[data-testid="stDataFrame"] { border: 1px solid var(--rule); border-radius: 8px;
-                              overflow: hidden; }
+/* ---- tabel dan grafik ---- */
+[data-testid="stDataFrame"] { border: 1px solid var(--rule); border-radius: 10px;
+    overflow: hidden; }
 [data-testid="stDataFrameResizable"] { border: none !important; }
+[data-testid="stVegaLiteChart"] { background: transparent; }
+.chart-title { font-size: .86rem; font-weight: 650; color: var(--ink); margin: 0 0 .1rem; }
+.chart-sub { font-size: .76rem; color: var(--muted) !important; margin: 0 0 .3rem; line-height: 1.45; }
 
 /* ---- pesan ---- */
-[data-testid="stAlert"] { border-radius: 6px !important; border: 1px solid var(--rule) !important;
-                          background: var(--sheet) !important; font-size: .85rem !important; }
-[data-testid="stAlertContainer"] { background: var(--sheet) !important; color: var(--ink2) !important; }
-div[data-testid="stAlert"][data-baseweb="callout"][kind="error"] {
-    border-color: var(--danger) !important; background: var(--danger-soft) !important; }
-div[data-testid="stAlert"][data-baseweb="callout"][kind="error"] [data-testid="stAlertContainer"] {
-    background: var(--danger-soft) !important; }
-div[data-testid="stAlert"][data-baseweb="callout"][kind="success"] {
+[data-testid="stAlert"] { border-radius: 10px !important; border: 1px solid var(--rule) !important;
+    background: var(--surface) !important; font-size: .85rem !important; }
+[data-testid="stAlertContainer"] { background: transparent !important; color: var(--ink2) !important; }
+[data-testid="stAlertContainer"] * { color: var(--ink2) !important; }
+div[data-testid="stAlert"][data-baseweb="callout"][kind="error"],
+div[data-testid="stAlert"][kind="error"] { border-color: var(--high) !important;
+    background: var(--high-soft) !important; }
+div[data-testid="stAlert"][data-baseweb="callout"][kind="warning"],
+div[data-testid="stAlert"][kind="warning"] { border-color: var(--mid) !important;
+    background: var(--mid-soft) !important; }
+div[data-testid="stAlert"][kind="info"], div[data-testid="stAlert"][kind="success"] {
     border-color: var(--accent) !important; background: var(--accent-soft) !important; }
-div[data-testid="stAlert"][data-baseweb="callout"][kind="success"] [data-testid="stAlertContainer"] {
-    background: var(--accent-soft) !important; }
-div[data-testid="stAlert"][data-baseweb="callout"][kind="warning"] {
-    border-color: var(--signal) !important; background: var(--signal-soft) !important; }
-div[data-testid="stAlert"][data-baseweb="callout"][kind="warning"] [data-testid="stAlertContainer"] {
-    background: var(--signal-soft) !important; }
 
 /* ---- gerak ---- */
-/* Satu momen: penanda skala muncul saat hasil keluar. Sisanya hanya
-   transisi keadaan antarmuka, tanpa gerak dekoratif. */
-.scale-marker { animation: marker-in .5s cubic-bezier(.16,.84,.44,1) both; }
-.scale-marker-val { animation: chip-in .5s .08s cubic-bezier(.16,.84,.44,1) both; }
-@keyframes marker-in {
-    from { opacity: 0; transform: translateX(-1px) scaleY(.35); }
-    to { opacity: 1; transform: translateX(-1px) scaleY(1); } }
-@keyframes chip-in {
-    from { opacity: 0; transform: translateX(-50%) translateY(5px); }
-    to { opacity: 1; transform: translateX(-50%) translateY(0); } }
-.title-block, .verdict, .scale, .cm, .summary-strip,
-div[data-testid="stVerticalBlockBorderWrapper"], div[data-testid="stExpander"] {
+.scale-marker { animation: marker-in .5s cubic-bezier(.16, .84, .44, 1) both; }
+@keyframes marker-in { from { opacity: 0; transform: translateX(-1.5px) scaleY(.35); }
+    to { opacity: 1; transform: translateX(-1.5px) scaleY(1); } }
+.g-val { stroke-dasharray: 400; stroke-dashoffset: 0;
+    animation: g-in .7s cubic-bezier(.16, .84, .44, 1) both; }
+@keyframes g-in { from { stroke-dashoffset: 400; } to { stroke-dashoffset: 0; } }
+.ribbon, .snap, .verdict, .scale, .contrib, .model-card, .rec-list,
+div[data-testid="stExpander"], [class*="st-key-panel"] {
     transition: background-color .2s ease, border-color .2s ease, color .2s ease; }
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .001ms !important;
         animation-iteration-count: 1 !important; transition-duration: .001ms !important; } }
 
 /* ---- footer ---- */
-.sheet-foot { margin-top: 2.2rem; padding-top: .85rem; border-top: 1px solid var(--rule);
-              font-family: 'JetBrains Mono', monospace; font-size: .625rem;
-              letter-spacing: .06em; color: var(--muted) !important; }
+.sheet-foot { margin-top: 2rem; padding-top: .85rem; border-top: 1px solid var(--rule);
+    font-size: .7rem; letter-spacing: .02em; color: var(--muted) !important; }
 
 /* ---- layar kecil ---- */
+@media (max-width: 1100px) {
+    .rb-main { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .rb-model { grid-column: 1 / -1; border-right: none; border-bottom: 1px solid var(--rule-soft); }
+    .kpi:nth-child(3), .kpi:nth-child(5) { border-right: none; }
+    .kpi:nth-child(n+4) { border-top: 1px solid var(--rule-soft); }
+    .model-strip { grid-template-columns: 1fr; }
+}
 @media (max-width: 900px) {
-    [data-testid="stMainBlockContainer"] { padding: 1rem .9rem 2rem; }
-    .app-head { flex-direction: column; gap: .8rem; }
-    .tb-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .tb-cell { border-bottom: 1px solid var(--deep-rule) !important; }
-    .summary-strip { grid-template-columns: 1fr; }
-    .summary-strip > div { border-right: none; border-bottom: 1px solid var(--rule-soft); }
-    .verdict-figure { font-size: 2.1rem; }
-    button[data-baseweb="tab"] { margin-right: .9rem !important; font-size: .78rem !important; }
+    [data-testid="stMainBlockContainer"] { padding: 3rem .9rem 2rem; }
+    .app-title { font-size: 1.2rem; }
+    .summary-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .summary-strip > div:nth-child(2n) { border-right: none; }
+    .summary-strip > div:nth-child(n+3) { border-top: 1px solid var(--rule-soft); }
+    .doc-links { grid-template-columns: 1fr; }
+    [class*="st-key-panel"] { padding: 1rem 1rem 1.1rem; }
+    div[data-testid="stTab"] { padding: .5rem .7rem !important; font-size: .78rem !important; }
 }
 @media (max-width: 640px) {
-    .tb-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .scale-seg span { display: none; }
-    .cm { grid-template-columns: 1fr; }
-    .cm-cell { border-right: none; }
-    .cm-cell:nth-child(3) { border-bottom: 1px solid var(--rule-soft); }
+    .kpi-val { font-size: 1.5rem; }
+    .snap-grid { grid-template-columns: 1fr; }
+    .brand-frame { width: 44px; height: 44px; }
+    .rb-meta { gap: .3rem 1rem; }
+    div[data-testid="stTab"] p::before { margin-right: .3rem; }
 }
 
 /* ---- fokus & aksesibilitas ---- */
@@ -575,6 +643,7 @@ _FONT_FILES = (
     ("JetBrains Mono", "jetbrains-mono-latin.woff2", "400 700"),
 )
 _FONT_CSS_CACHE = []
+_BRAND_CACHE = []
 
 
 def font_face_css() -> str:
@@ -596,6 +665,17 @@ def font_face_css() -> str:
     return css
 
 
+def brand_mark_uri() -> str:
+    if _BRAND_CACHE:
+        return _BRAND_CACHE[0]
+    path = Path(__file__).resolve().parent / "assets" / "brand-mark.png"
+    uri = ""
+    if path.exists():
+        uri = "data:image/png;base64," + base64.b64encode(path.read_bytes()).decode("ascii")
+    _BRAND_CACHE.append(uri)
+    return uri
+
+
 def _tab_icon_css() -> str:
     return "\n".join(
         'div[role="tablist"] > div:nth-child(%d) { --tabicon: %s; }' % (i, icon_uri(name))
@@ -607,21 +687,20 @@ def build_css(theme: str) -> str:
     tokens = THEMES[theme]
     root = "\n".join("  --%s: %s;" % (k, v) for k, v in tokens.items())
     streamlit_vars = (
-        "--background-color: %(paper)s;"
+        "--background-color: %(canvas)s;"
         "--text-color: %(ink)s;"
         "--text-color-light: %(ink2)s;"
         "--primary-color: %(accent)s;"
-        "--secondary-background-color: %(sheet)s;"
+        "--secondary-background-color: %(surface)s;"
         "--border-color: %(rule)s;"
         "--font-family-body: 'Archivo', 'Segoe UI', system-ui, sans-serif;"
         "--font-family: 'Archivo', 'Segoe UI', system-ui, sans-serif;"
         "--font-family-code: 'JetBrains Mono', ui-monospace, monospace;"
-    ) % {
-        "paper": tokens["paper"], "ink": tokens["ink"], "ink2": tokens["ink2"],
-        "accent": tokens["accent"], "sheet": tokens["sheet"], "rule": tokens["rule"],
-    }
+    ) % tokens
     body = "\n".join(line for line in _BASE_CSS.splitlines() if line.strip())
-    tabs = "\n".join(line for line in _tab_icon_css().splitlines() if line.strip())
+    tabs = _tab_icon_css()
+    if theme == "Gelap":
+        tabs += '\n[data-testid="stDataFrameResizable"] { filter: invert(.92) hue-rotate(180deg); }'
     return (
         "<style>\n:root {\n%s\n}\n"
         "html body, html body [data-testid=\"stAppViewContainer\"] {\n%s\n}\n"
@@ -629,34 +708,118 @@ def build_css(theme: str) -> str:
     ) % (root, streamlit_vars, body, tabs)
 
 
-def title_block(cells, strip=()) -> str:
-    parts = ['<div class="title-block"><div class="tb-grid">']
-    for cell in cells:
-        key, value = cell[0], cell[1]
-        extra = cell[2] if len(cell) > 2 else ""
-        parts.append(
-            '<div class="tb-cell"><span class="tb-key">%s</span>'
-            '<span class="tb-val %s">%s</span></div>' % (key, extra, value))
-    parts.append("</div>")
-    if strip:
-        parts.append('<div class="tb-strip">')
-        for key, value in strip:
-            parts.append("<span>%s<b>%s</b></span>" % (key, value))
-        parts.append("</div>")
-    parts.append("</div>")
+def header_bar(title: str, subtitle: str) -> str:
+    uri = brand_mark_uri()
+    img = '<img src="%s" alt="Logo Kelompok 12" />' % uri if uri else ""
+    return (
+        '<div class="brand"><span class="brand-frame">%s</span>'
+        '<div><div class="app-title">%s</div><div class="app-sub">%s</div></div></div>'
+    ) % (img, title, subtitle)
+
+
+def model_ribbon(model_label: str, kpis, meta) -> str:
+    parts = [
+        '<section class="ribbon" aria-label="Ringkasan model">',
+        '<div class="rb-main"><div class="rb-model">'
+        '<span class="rb-badge"><span class="dot"></span>%s · Aktif</span>'
+        '<span class="rb-model-sub">Model aplikasi dengan probabilitas terkalibrasi, '
+        'diuji pada data uji.</span></div>' % model_label,
+    ]
+    for key, value, caption in kpis:
+        parts.append('<div class="kpi"><span class="kpi-key">%s</span>'
+                     '<span class="kpi-val">%s</span><span class="kpi-cap">%s</span></div>'
+                     % (key, value, caption))
+    parts.append('</div><div class="rb-meta">')
+    for key, value in meta:
+        parts.append("<span>%s<b>%s</b></span>" % (key, value))
+    parts.append("</div></section>")
     return "".join(parts)
 
 
+def _inline_code(text: str) -> str:
+    parts = text.split("`")
+    return "".join(("<code>%s</code>" % part) if i % 2 else part for i, part in enumerate(parts))
+
+
 def section(title: str, icon_name: str, note: str = "") -> str:
+    note = _inline_code(note)
     head = '<h3 class="sec-title">%s %s</h3>' % (icon(icon_name), title)
     if note:
-        return head + '<p class="sec-note">%s</p>' % note
+        return head + '<div class="sec-note">%s</div>' % note
     return head
+
+
+def sub_head(title: str, icon_name: str, hint: str = "", first: bool = False) -> str:
+    small = "<small>%s</small>" % hint if hint else ""
+    return '<div class="sub-head%s">%s<span>%s</span>%s</div>' % (
+        " first" if first else "", icon(icon_name, 17), title, small)
 
 
 def risk_chip(level: str) -> str:
     slug = {"RENDAH": "low", "SEDANG": "mid", "TINGGI": "high"}.get(level, "low")
     return '<span class="risk-chip risk-%s">%s</span>' % (slug, level)
+
+
+def _arc(cx: float, cy: float, r: float, p0: float, p1: float) -> str:
+    def point(p):
+        angle = math.pi * p
+        return cx - r * math.cos(angle), cy - r * math.sin(angle)
+
+    x0, y0 = point(p0)
+    x1, y1 = point(p1)
+    return "M%.2f %.2f A%g %g 0 0 1 %.2f %.2f" % (x0, y0, r, r, x1, y1)
+
+
+def risk_gauge(prob: float, threshold: float, high: float, level: str) -> str:
+    cx, cy, r = 130.0, 120.0, 92.0
+    p = max(0.0, min(1.0, prob))
+    cls = {"RENDAH": "g-low", "SEDANG": "g-mid", "TINGGI": "g-high"}.get(level, "g-low")
+
+    def tick(pos, label, dy=0):
+        angle = math.pi * pos
+        ca, sa = math.cos(angle), math.sin(angle)
+        x_in, y_in = cx - (r - 11) * ca, cy - (r - 11) * sa
+        x_out, y_out = cx - (r + 10) * ca, cy - (r + 10) * sa
+        x_lab, y_lab = cx - (r + 22) * ca, cy - (r + 22) * sa + 3 + dy
+        anchor = "end" if ca > 0.25 else ("start" if ca < -0.25 else "middle")
+        return (
+            '<line class="g-tick" x1="%.2f" y1="%.2f" x2="%.2f" y2="%.2f"/>'
+            '<text class="g-label" x="%.2f" y="%.2f" text-anchor="%s">%s</text>'
+            % (x_in, y_in, x_out, y_out, x_lab, y_lab, anchor, label))
+
+    value_arc = ""
+    if p > 0:
+        value_arc = '<path class="g-val %s" d="%s"/>' % (cls, _arc(cx, cy, r, 0, p))
+    svg = (
+        '<svg viewBox="0 0 260 150" role="img" aria-label="Probabilitas churn %s, threshold %s">'
+        '<path class="g-band g-low" d="%s"/>'
+        '<path class="g-band g-mid" d="%s"/>'
+        '<path class="g-band g-high" d="%s"/>'
+        '%s%s%s'
+        '<text class="g-num" x="130" y="108" text-anchor="middle">%s</text>'
+        '<text class="g-cap" x="130" y="126" text-anchor="middle">probabilitas churn</text>'
+        '<text class="g-label" x="%.2f" y="%.2f" text-anchor="middle">0%%</text>'
+        '<text class="g-label" x="%.2f" y="%.2f" text-anchor="middle">100%%</text>'
+        '</svg>'
+    ) % (
+        fmt_pct(prob), fmt_pct(threshold),
+        _arc(cx, cy, r, 0, threshold), _arc(cx, cy, r, threshold, high), _arc(cx, cy, r, high, 1),
+        value_arc, tick(threshold, fmt_pct(threshold)), tick(high, fmt_pct(high)),
+        fmt_num(p * 100) + "%",
+        cx - r, cy + 20, cx + r, cy + 20,
+    )
+    return svg
+
+
+def verdict(prob: float, threshold: float, high: float, level: str, pred: int) -> str:
+    decision = "CHURN" if pred == 1 else "TETAP"
+    return (
+        '<div class="verdict"><div class="verdict-gauge">%s</div>'
+        '<div class="verdict-meta">%s<span class="verdict-decision">Keputusan model: '
+        '<b class="%s">%s</b></span></div>'
+        '<div class="verdict-sub">Probabilitas churn terkalibrasi</div></div>'
+    ) % (risk_gauge(prob, threshold, high, level), risk_chip(level),
+         "hot" if pred == 1 else "", decision)
 
 
 def calibrated_scale(prob: float, threshold: float, high: float) -> str:
@@ -669,9 +832,9 @@ def calibrated_scale(prob: float, threshold: float, high: float) -> str:
         '<div class="scale-head"><span class="scale-title">Skala risiko terkalibrasi</span>'
         '<span class="scale-note">Threshold %s · batas kategori tinggi %s</span></div>'
         '<div class="scale-track">'
-        '<div class="scale-seg seg-low" style="width:%s%%"><span>Rendah</span></div>'
-        '<div class="scale-seg seg-mid" style="width:%s%%"><span>Sedang</span></div>'
-        '<div class="scale-seg seg-high"><span>Tinggi</span></div>'
+        '<div class="scale-seg seg-low" style="width:%s%%"></div>'
+        '<div class="scale-seg seg-mid" style="width:%s%%"></div>'
+        '<div class="scale-seg seg-high"></div>'
         '<div class="scale-marker" style="left:%s%%">'
         '<span class="scale-marker-val">%s</span></div>'
         '</div>'
@@ -687,41 +850,166 @@ def calibrated_scale(prob: float, threshold: float, high: float) -> str:
          css_num(lo_pct), fmt_pct(threshold), css_num(hi_pct), fmt_pct(high))
 
 
-def confusion_matrix(metrics) -> str:
-    cells = [
-        ("TP", metrics["TP"], "Diprediksi churn dan memang churn", "hit"),
-        ("TN", metrics["TN"], "Diprediksi tidak churn dan memang tidak churn", "hit"),
-        ("FP", metrics["FP"], "Diprediksi churn, ternyata tidak churn", ""),
-        ("FN", metrics["FN"], "Churn terlewat", ""),
-    ]
-    out = ['<div class="cm">']
-    for key, value, desc, cls in cells:
-        out.append('<div class="cm-cell %s"><span class="cm-key">%s</span>'
-                   '<span class="cm-val">%s</span>'
-                   '<span class="cm-desc">%s</span></div>' % (cls, key, f"{int(value):,}".replace(",", "."), desc))
+def snapshot(contract: str, internet: str, tenure: str, charge: float, ref: dict,
+             charge_text: str, status: str, outside: bool, low_text: str, high_text: str,
+             med_text: str) -> str:
+    span = max(ref["max"] - ref["min"], 1e-9)
+
+    def pos(value):
+        return max(0.0, min(100.0, (value - ref["min"]) / span * 100))
+
+    q1, q3 = pos(ref["q1"]), pos(ref["q3"])
+    return (
+        '<div class="snap"><div class="snap-head"><h4>%s Ringkasan Pelanggan</h4>'
+        '<span class="snap-live"><i></i>Mengikuti isian form</span></div>'
+        '<dl class="snap-grid"><div><dt>Kontrak</dt><dd>%s</dd></div>'
+        '<div><dt>Layanan internet</dt><dd>%s</dd></div>'
+        '<div><dt>Lama berlangganan</dt><dd>%s</dd></div></dl>'
+        '<div class="bench-head"><span>Tagihan bulanan dibanding data latih</span><b>%s</b></div>'
+        '<div class="bench-track" role="img" aria-label="Posisi tagihan terhadap rentang data latih">'
+        '<div class="bench-iqr" style="left:%s%%;width:%s%%"></div>'
+        '<div class="bench-med" style="left:%s%%"></div>'
+        '<div class="bench-pin%s" style="left:%s%%"></div></div>'
+        '<div class="bench-scale"><span>%s</span><span>median %s</span><span>%s</span></div>'
+        '<div class="bench-note">%s</div></div>'
+    ) % (icon("user", 17), contract, internet, tenure, charge_text,
+         css_num(q1), css_num(max(q3 - q1, 1.0)), css_num(pos(ref["median"])),
+         " out" if outside else "", css_num(pos(charge)),
+         low_text, med_text, high_text, status)
+
+
+def ready_state(threshold: float, high: float) -> str:
+    return (
+        '<div class="ready"><h4>%s Siap memprediksi</h4>'
+        '<div class="ready-text">Periksa isian di sebelah kiri, lalu klik Prediksi. Hasil muncul di sini lengkap '
+        'dengan faktor yang paling memengaruhi pelanggan ini.</div>'
+        '<div class="band-list">'
+        '<div class="band-row">%s<span>di bawah %s: model memprediksi TETAP</span></div>'
+        '<div class="band-row">%s<span>%s sampai di bawah %s: diprediksi CHURN</span></div>'
+        '<div class="band-row">%s<span>%s ke atas: diprediksi CHURN dengan risiko tinggi</span></div>'
+        '</div></div>'
+    ) % (icon("target", 17),
+         risk_chip("RENDAH"), fmt_pct(threshold),
+         risk_chip("SEDANG"), fmt_pct(threshold), fmt_pct(high),
+         risk_chip("TINGGI"), fmt_pct(high))
+
+
+def contributions(ups, downs, scale_max: float, note: str) -> str:
+    def row(label, value):
+        width = abs(value) / scale_max * 100 if scale_max else 0
+        width = max(2.0, min(100.0, width))
+        pos_i = '<i style="width:%s%%"></i>' % css_num(width) if value > 0 else ""
+        neg_i = '<i style="width:%s%%"></i>' % css_num(width) if value < 0 else ""
+        sign = "+" if value > 0 else "−"
+        return (
+            '<div class="cb-row"><div class="cb-label"><span>%s</span>'
+            '<span class="cb-val">%s%s</span></div>'
+            '<div class="cb-track"><div class="cb-neg">%s</div><div class="cb-pos">%s</div></div></div>'
+            % (label, sign, fmt_num(abs(value)), neg_i, pos_i))
+
+    out = ['<div class="contrib"><h4>%s Faktor Utama Pelanggan Ini</h4>'
+           '<div class="contrib-note">%s</div>' % (icon("scale", 17), note)]
+    if ups:
+        out.append('<div class="cb-group up"><i></i>Mendorong risiko churn naik</div>')
+        out.extend(row(label, value) for label, value in ups)
+    if downs:
+        out.append('<div class="cb-group down"><i></i>Menopang pelanggan bertahan</div>')
+        out.extend(row(label, value) for label, value in downs)
     out.append("</div>")
     return "".join(out)
+
+
+def recommendation(rank: int, label: str, text: str) -> str:
+    return '<div class="rec"><span class="rec-rank">%d</span><span><b>%s</b> — %s</span></div>' % (
+        rank, label, text)
+
+
+def rec_list(items) -> str:
+    return '<div class="rec-list">%s</div>' % "".join(items)
+
+
+def confusion_matrix(metrics, total: int | None = None) -> str:
+    tn, fp, fn, tp = (int(metrics[k]) for k in ("TN", "FP", "FN", "TP"))
+    total = total or (tn + fp + fn + tp)
+
+    def cell(key, value, desc, cls):
+        pct = value / total * 100 if total else 0
+        return ('<div class="cm-cell %s"><span class="cm-key">%s</span>'
+                '<span class="cm-val">%s</span>'
+                '<span class="cm-pct">%s%% data uji</span>'
+                '<span class="cm-desc">%s</span></div>'
+                % (cls, key, count(value), fmt_num(pct, 1), desc))
+
+    return (
+        '<div class="cm"><span></span>'
+        '<span class="cm-axis">Prediksi TETAP</span><span class="cm-axis">Prediksi CHURN</span>'
+        '<span class="cm-axis row">Aktual TETAP</span>%s%s'
+        '<span class="cm-axis row">Aktual CHURN</span>%s%s</div>'
+    ) % (
+        cell("TN", tn, "Tetap, diprediksi tetap", "ok"),
+        cell("FP", fp, "Tetap, ditandai churn", "bad"),
+        cell("FN", fn, "Churn yang terlewat", "bad"),
+        cell("TP", tp, "Churn, terdeteksi", "ok"),
+    )
 
 
 def summary_strip(cells) -> str:
-    out = ['<div class="summary-strip">']
+    out = ['<div class="summary-strip" style="--n:%d">' % len(cells)]
     for cell in cells:
         key, value = cell[0], cell[1]
         extra = cell[2] if len(cell) > 2 else ""
-        out.append('<div><span class="tb-key">%s</span>'
-                   '<span class="tb-val %s">%s</span></div>' % (key, extra, value))
+        caption = cell[3] if len(cell) > 3 else ""
+        cap = '<span class="kpi-cap">%s</span>' % caption if caption else ""
+        out.append('<div><span class="kpi-key">%s</span>'
+                   '<span class="kpi-val %s">%s</span>%s</div>' % (key, extra, value, cap))
     out.append("</div>")
     return "".join(out)
 
 
-def plate(src: str, caption: str = "") -> str:
-    cap = '<div class="plate-cap">%s</div>' % caption if caption else ""
-    return '<div class="plate"><img src="%s" alt="Grafik EDA" />%s</div>' % (src, cap)
+def model_strip(cards) -> str:
+    out = ['<div class="model-strip">']
+    for name, selected, rows in cards:
+        tag = '<span class="mc-tag">Terpilih</span>' if selected else ""
+        grid = "".join("<div><span>%s</span><b>%s</b></div>" % (k, v) for k, v in rows)
+        out.append('<div class="model-card%s"><div class="mc-head"><span class="mc-name">%s</span>%s</div>'
+                   '<div class="mc-grid">%s</div></div>' % (" sel" if selected else "", name, tag, grid))
+    out.append("</div>")
+    return "".join(out)
 
 
-def recommendation(icon_name: str, label: str, text: str) -> str:
-    return '<div class="rec">%s<span><b>%s</b> — %s</span></div>' % (
-        icon(icon_name, 15), label, text)
+def chart_head(title: str, sub: str = "") -> str:
+    sub_html = '<div class="chart-sub">%s</div>' % sub if sub else ""
+    return '<div class="chart-title">%s</div>%s' % (title, sub_html)
+
+
+def note_card(text: str) -> str:
+    return '<div class="fig-note">%s</div>' % text
+
+
+def doc_links(items) -> str:
+    return '<div class="doc-links">%s</div>' % "".join(
+        '<a class="doc-link" href="%s" target="_blank" rel="noopener">%s<span>%s</span></a>'
+        % (url, icon("doc", 18), label) for label, url in items)
+
+
+def style_chart(chart, tok):
+    return chart.configure(
+        background="rgba(0,0,0,0)",
+        font="Archivo",
+        view={"stroke": None},
+        axis={"labelColor": tok["muted"], "titleColor": tok["ink2"], "gridColor": tok["rule-soft"],
+              "domainColor": tok["rule"], "tickColor": tok["rule"], "labelFont": "Archivo",
+              "titleFont": "Archivo", "labelFontSize": 11, "titleFontSize": 11,
+              "titleFontWeight": 600, "titlePadding": 8},
+        legend={"labelColor": tok["ink2"], "titleColor": tok["ink2"], "labelFont": "Archivo",
+                "titleFont": "Archivo", "labelFontSize": 11, "titleFontSize": 11,
+                "orient": "bottom", "symbolType": "square", "title": None, "padding": 4},
+        title={"color": tok["ink"], "font": "Archivo"},
+    )
+
+
+def count(value) -> str:
+    return f"{int(value):,}".replace(",", ".")
 
 
 def fmt_num(value: float, places: int = 2) -> str:
