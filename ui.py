@@ -184,10 +184,8 @@ html body [data-testid="stMarkdownContainer"]:has(> div, > section, > h3.sec-tit
 .kpi:last-child { border-right: none; }
 .rb-model { display: flex; flex-direction: column; justify-content: center; gap: .55rem;
     background: var(--accent-soft); }
-.rb-badge { align-self: flex-start; display: inline-flex; align-items: center; gap: .5rem;
-    padding: .38rem .7rem; border-radius: 999px; background: var(--accent); color: var(--accent-ink);
-    font-size: .8rem; font-weight: 650; letter-spacing: -0.005em; white-space: nowrap; }
-.rb-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.rb-badge { align-self: flex-start; font-size: 1.05rem; font-weight: 650; color: var(--ink);
+    letter-spacing: -0.01em; white-space: nowrap; }
 .rb-model-sub { font-size: .78rem; color: var(--ink2) !important; line-height: 1.45; }
 .kpi-key { display: block; font-size: .74rem; font-weight: 600; color: var(--muted);
     letter-spacing: .01em; margin-bottom: .3rem; }
@@ -374,9 +372,6 @@ html body .stMarkdown h4 { font-size: .95rem !important; padding: 0 !important;
 .snap-head h4 { margin: 0; display: flex; align-items: center; gap: .5rem; font-size: .95rem;
     font-weight: 650; color: var(--ink); }
 .snap-head h4 .ico { color: var(--accent); }
-.snap-live { display: inline-flex; align-items: center; gap: .4rem; font-size: .72rem;
-    color: var(--muted); }
-.snap-live i { width: 7px; height: 7px; border-radius: 50%; background: var(--safe); }
 .snap-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .6rem;
     margin: 0 0 .8rem; }
 .snap-grid div { background: var(--recess); border-radius: 10px; padding: .45rem .7rem;
@@ -405,7 +400,7 @@ html body .stMarkdown h4 { font-size: .95rem !important; padding: 0 !important;
 /* ---- keadaan siap ---- */
 .ready { border: 1px dashed var(--neutral); border-radius: 14px; background: var(--surface);
     padding: 1.05rem 1.15rem 1.1rem; }
-.ready h4 { margin: 0 0 .3rem; display: flex; align-items: center; gap: .5rem; font-size: .95rem;
+.ready h4 { margin: 0 0 .7rem; display: flex; align-items: center; gap: .5rem; font-size: .95rem;
     font-weight: 650; color: var(--ink); }
 .ready h4 .ico { color: var(--accent); }
 .ready-text { margin: 0 0 .75rem; font-size: .82rem; color: var(--muted) !important; line-height: 1.5; }
@@ -428,11 +423,9 @@ html body .stMarkdown h4 { font-size: .95rem !important; padding: 0 !important;
 .g-cap { fill: var(--muted); font-size: 10.5px; font-weight: 550; }
 .verdict-meta { display: flex; align-items: center; justify-content: center; gap: .7rem;
     flex-wrap: wrap; margin-top: .35rem; }
-.risk-chip { display: inline-flex; align-items: center; gap: .4rem; font-size: .68rem;
+.risk-chip { display: inline-flex; align-items: center; font-size: .68rem;
     font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: .3rem .6rem;
     border-radius: 999px; }
-.risk-chip::before { content: ""; width: 6px; height: 6px; border-radius: 50%;
-    background: currentColor; }
 .risk-low { background: var(--safe-soft); color: var(--safe); }
 .risk-mid { background: var(--mid-soft); color: var(--mid); }
 .risk-high { background: var(--high-soft); color: var(--high); }
@@ -721,7 +714,7 @@ def model_ribbon(model_label: str, kpis, meta) -> str:
     parts = [
         '<section class="ribbon" aria-label="Ringkasan model">',
         '<div class="rb-main"><div class="rb-model">'
-        '<span class="rb-badge"><span class="dot"></span>%s · Aktif</span>'
+        '<span class="rb-badge">%s</span>'
         '<span class="rb-model-sub">Model aplikasi dengan probabilitas terkalibrasi, '
         'diuji pada data uji.</span></div>' % model_label,
     ]
@@ -861,7 +854,7 @@ def snapshot(contract: str, internet: str, tenure: str, charge: float, ref: dict
     q1, q3 = pos(ref["q1"]), pos(ref["q3"])
     return (
         '<div class="snap"><div class="snap-head"><h4>%s Ringkasan Pelanggan</h4>'
-        '<span class="snap-live"><i></i>Mengikuti isian form</span></div>'
+        '</div>'
         '<dl class="snap-grid"><div><dt>Kontrak</dt><dd>%s</dd></div>'
         '<div><dt>Layanan internet</dt><dd>%s</dd></div>'
         '<div><dt>Lama berlangganan</dt><dd>%s</dd></div></dl>'
@@ -880,9 +873,7 @@ def snapshot(contract: str, internet: str, tenure: str, charge: float, ref: dict
 
 def ready_state(threshold: float, high: float) -> str:
     return (
-        '<div class="ready"><h4>%s Siap memprediksi</h4>'
-        '<div class="ready-text">Periksa isian di sebelah kiri, lalu klik Prediksi. Hasil muncul di sini lengkap '
-        'dengan faktor yang paling memengaruhi pelanggan ini.</div>'
+        '<div class="ready"><h4>%s Aturan Klasifikasi Risiko</h4>'
         '<div class="band-list">'
         '<div class="band-row">%s<span>di bawah %s: model memprediksi TETAP</span></div>'
         '<div class="band-row">%s<span>%s sampai di bawah %s: diprediksi CHURN</span></div>'
@@ -913,14 +904,14 @@ def contributions(ups, downs, scale_max: float, note: str) -> str:
         out.append('<div class="cb-group up"><i></i>Mendorong risiko churn naik</div>')
         out.extend(row(label, value) for label, value in ups)
     if downs:
-        out.append('<div class="cb-group down"><i></i>Menopang pelanggan bertahan</div>')
+        out.append('<div class="cb-group down"><i></i>Menurunkan risiko churn</div>')
         out.extend(row(label, value) for label, value in downs)
     out.append("</div>")
     return "".join(out)
 
 
 def recommendation(rank: int, label: str, text: str) -> str:
-    return '<div class="rec"><span class="rec-rank">%d</span><span><b>%s</b> — %s</span></div>' % (
+    return '<div class="rec"><span class="rec-rank">%d</span><span><b>%s:</b> %s</span></div>' % (
         rank, label, text)
 
 

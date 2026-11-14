@@ -30,13 +30,7 @@ st.session_state.setdefault("tema", "Terang")
 with st.container(key="topbar"):
     head_left, head_right = st.columns([7, 2], gap="medium", vertical_alignment="center")
     with head_left:
-        st.markdown(
-            ui.header_bar(
-                "Prediksi Customer Churn — Telco",
-                "Estimasi risiko churn dari 18 fitur layanan dan tagihan, dengan threshold "
-                "0,32 dari F1 out-of-fold data latih."),
-            unsafe_allow_html=True,
-        )
+        header_slot = st.empty()
     with head_right:
         st.segmented_control("Tema", ["Terang", "Gelap"], key="tema",
                              label_visibility="collapsed", width="stretch")
@@ -101,6 +95,13 @@ BEST = INFO.get("best_model", "LogisticRegression") if INFO else "LogisticRegres
 MODEL_NAMES = {"LogisticRegression": "Logistic Regression", "DecisionTree": "Decision Tree",
                "RandomForest": "Random Forest"}
 BEST_LABEL = MODEL_NAMES.get(BEST, BEST)
+header_slot.markdown(
+    ui.header_bar(
+        "Prediksi Customer Churn Telco",
+        "Estimasi risiko churn pelanggan dari 18 fitur layanan dan tagihan menggunakan model "
+        f"{BEST_LABEL} terkalibrasi (threshold {ui.fmt_num(THRESHOLD)})."),
+    unsafe_allow_html=True,
+)
 BASE_MET = INFO.get("metrics", {})
 MET = DEPLOY["metrics"]
 CVF1 = BASE_MET.get("CV_F1", "-")
@@ -332,20 +333,18 @@ with st.expander("Tentang model dan cara membaca hasil", expanded=False):
     c_a, c_b = st.columns([1, 2])
     with c_a:
         st.markdown(f"**Model yang dipakai: {BEST_LABEL}**")
-        st.caption("Model ini mendapat rata-rata F1 tertinggi pada validasi silang lima fold. "
-                   "Akurasi, recall, dan AUC di atas dihitung setelah kalibrasi, sesuai model "
-                   "yang dipakai aplikasi.")
+        st.caption("Dipilih berdasarkan rata-rata F1 tertinggi pada validasi silang lima fold "
+                   "data latih (CV-F1). ROC-AUC, Recall, F1, dan metrik threshold dihitung "
+                   f"setelah kalibrasi sigmoid pada {count_text(N_TEST)} data uji.")
         if MET:
             st.json(MET)
     with c_b:
         st.caption(f"Model memakai {DEPLOY['n_features']} informasi pelanggan. Angka dan kategori "
-                   "diproses otomatis sebelum diprediksi. Kalibrasi sigmoid menyesuaikan "
-                   "probabilitas dan dilatih hanya dengan data training.")
+                   "diproses otomatis sebelum diprediksi.")
         st.write(f"**Aturan keputusan:** CHURN jika probabilitas ≥ {THRESHOLD:.0%}; "
                  "TETAP jika di bawah threshold tersebut.")
-        st.caption("Threshold dipilih dari hasil validasi data training. Data testing dipakai untuk "
-                   "mengukur hasil akhirnya. Label CHURN menunjukkan risiko yang melewati threshold, "
-                   "bukan kepastian.")
+        st.caption("Threshold dipilih dari validasi data latih, bukan dari data uji. Label CHURN "
+                   "menunjukkan risiko yang melewati threshold, bukan kepastian.")
 
 tab1, tab2, tab3, tab4 = st.tabs([
     "Prediksi Single", "Prediksi Batch (CSV)", "Dashboard & Model", "EDA & Dokumentasi",
@@ -359,7 +358,7 @@ with tab1:
                                    "Isi data pelanggan di bawah, lalu klik Prediksi. Pilihan layanan "
                                    "tambahan menyesuaikan layanan telepon dan internet yang digunakan."),
                         unsafe_allow_html=True)
-            st.markdown(ui.sub_head("Profil & Lama Berlangganan", "user", "5 isian", first=True),
+            st.markdown(ui.sub_head("Profil & Lama Berlangganan", "user", first=True),
                         unsafe_allow_html=True)
             f1, f2, f3 = st.columns(3)
             with f1:
@@ -378,7 +377,7 @@ with tab1:
                 tenure = st.number_input("Lama Berlangganan (bulan)", 0, 72, 12,
                                          help="Tenure: jumlah bulan pelanggan sudah berlangganan.")
 
-            st.markdown(ui.sub_head("Layanan Telepon & Internet", "wifi", "9 isian"),
+            st.markdown(ui.sub_head("Layanan Telepon & Internet", "wifi"),
                         unsafe_allow_html=True)
             s1, s2, s3 = st.columns(3)
             with s1:
@@ -416,7 +415,7 @@ with tab1:
                 StreamingMovies = st.selectbox("Streaming Film", _opts, disabled=_lock,
                                                format_func=option_label)
 
-            st.markdown(ui.sub_head("Kontrak & Tagihan", "receipt", "4 isian"),
+            st.markdown(ui.sub_head("Kontrak & Tagihan", "receipt"),
                         unsafe_allow_html=True)
             k1, k2, k3 = st.columns(3)
             with k1:
@@ -511,10 +510,8 @@ with tab1:
             st.markdown(ui.verdict(prob, THRESHOLD, HIGH_BOUNDARY, level, pred),
                         unsafe_allow_html=True)
             st.markdown(ui.calibrated_scale(prob, THRESHOLD, HIGH_BOUNDARY), unsafe_allow_html=True)
-            st.caption(f"Threshold {THRESHOLD:.0%}. Risiko rendah: < {THRESHOLD:.0%}; "
-                       f"sedang: {THRESHOLD:.0%}–< {HIGH_BOUNDARY:.0%}; tinggi: ≥ {HIGH_BOUNDARY:.0%}. "
-                       "TETAP berarti pelanggan diprediksi tidak churn. Probabilitas sudah "
-                       "dikalibrasi; detail pengujiannya ada di Dashboard & Model.")
+            st.caption("TETAP berarti pelanggan diprediksi tidak churn. Detail pengujian "
+                       "kalibrasi ada di Dashboard & Model.")
 
             drivers = customer_drivers(row)
             field_effect = {}
@@ -621,8 +618,7 @@ with tab2:
         with st.container(key="panel_batch_charts"):
             ch1, ch2 = st.columns(2, gap="large")
             with ch1:
-                st.markdown(ui.chart_head("Segmen risiko", "Jumlah pelanggan di setiap kategori risiko."),
-                            unsafe_allow_html=True)
+                st.markdown(ui.chart_head("Segmen risiko"), unsafe_allow_html=True)
                 show_chart(risk_chart(out))
             with ch2:
                 st.markdown(ui.chart_head("Sebaran probabilitas churn",
@@ -657,8 +653,8 @@ with tab3:
         d_left, d_right = st.columns([1.15, 1], gap="large")
         with d_left:
             st.dataframe(pd.DataFrame([
-                {"Konfigurasi": f"Aplikasi — threshold {THRESHOLD:.2f}", **MET},
-                {"Konfigurasi": "Pembanding — threshold 0,50", **DEPLOY["metrics_at_0_5"]},
+                {"Konfigurasi": f"Aplikasi (threshold {ui.fmt_num(THRESHOLD)})", **MET},
+                {"Konfigurasi": "Pembanding (threshold 0,50)", **DEPLOY["metrics_at_0_5"]},
             ]), width="stretch", hide_index=True)
             st.caption(f"Dari {MET['TP'] + MET['FN']} pelanggan yang benar-benar churn, "
                        f"{MET['TP']} berhasil terdeteksi dan {MET['FN']} terlewat. "
@@ -666,7 +662,7 @@ with tab3:
                        "Menurunkan threshold membantu mendeteksi lebih banyak churn, tetapi bisa menambah "
                        "prediksi yang keliru.")
         with d_right:
-            st.markdown(ui.chart_head(f"Confusion matrix · threshold {THRESHOLD:.2f}",
+            st.markdown(ui.chart_head(f"Confusion matrix (threshold {ui.fmt_num(THRESHOLD)})",
                                       f"{count_text(N_TEST)} pelanggan data uji."),
                         unsafe_allow_html=True)
             st.markdown(ui.confusion_matrix(MET, N_TEST), unsafe_allow_html=True)
@@ -694,8 +690,6 @@ with tab3:
                     "empirical": "Proporsi churn aktual",
                 }).replace({"Kategori risiko": {"LOW": "Rendah", "MID": "Sedang", "HIGH": "Tinggi"}}),
                              width="stretch", hide_index=True)
-                st.caption("Tabel membandingkan rata-rata probabilitas dengan proporsi pelanggan yang "
-                           "benar-benar churn pada setiap kategori risiko. Kedua kolom memakai skala 0–1.")
 
     with st.container(key="panel_compare"):
         st.markdown(ui.section("Perbandingan Tiga Model", "layers",
@@ -709,8 +703,8 @@ with tab3:
                 "|---|---|---|\n"
                 "| TP | TP | Diprediksi churn dan memang churn |\n"
                 "| TN | TN | Prediksi tidak churn (0), aktual tidak churn (0) |\n"
-                "| FP | FP | Prediksi churn (1), aktual tidak churn (0) — alarm keliru |\n"
-                "| FN | FN | Prediksi tidak churn (0), aktual churn (1) — churn terlewat |\n"
+                "| FP | FP | Prediksi churn (1), aktual tidak churn (0): alarm keliru |\n"
+                "| FN | FN | Prediksi tidak churn (0), aktual churn (1): churn terlewat |\n"
                 "| Accuracy | (TP+TN)/total | Proporsi seluruh prediksi yang benar |\n"
                 "| Precision | TP/(TP+FP) | Dari yang diprediksi churn, berapa yang benar-benar churn |\n"
                 "| Recall | TP/(TP+FN) | Dari seluruh pelanggan churn, berapa yang terdeteksi |\n"
@@ -758,7 +752,7 @@ with tab3:
                                         format_func=lambda name: MODEL_NAMES.get(name, name))
             b = CMP[CMP["Model"] == cm_model].iloc[0]
             with cm_right:
-                st.markdown(f"**Confusion matrix — {MODEL_NAMES.get(cm_model, cm_model)} "
+                st.markdown(f"**Confusion matrix: {MODEL_NAMES.get(cm_model, cm_model)} "
                             f"({count_text(N_TEST)} pelanggan testing)**")
                 st.markdown(ui.confusion_matrix(b, N_TEST), unsafe_allow_html=True)
 
@@ -864,9 +858,9 @@ with tab3:
 
 with tab4:
     st.markdown(ui.section("Mengenal Data Pelanggan", "search",
-                           "EDA adalah pemeriksaan awal untuk memahami isi dan pola data sebelum "
-                           "membuat model. Grafik hubungan dengan churn memakai data training "
-                           "saja; data testing disimpan untuk pengujian akhir."),
+                           "Pemeriksaan awal untuk memahami isi dan pola data sebelum pemodelan. "
+                           "Grafik hubungan dengan churn hanya memakai data latih; data uji "
+                           "disimpan untuk evaluasi akhir."),
                 unsafe_allow_html=True)
     eda_dir = BASE / "docs" / "eda(explaratory data analysis)"
     if (eda_dir / "summary.json").exists():
@@ -880,20 +874,12 @@ with tab4:
             st.markdown("**Arti setiap variabel**")
             st.dataframe(pd.read_csv(eda_dir / "data_dictionary.csv"), width="stretch", hide_index=True)
             st.markdown("**Mengapa TotalCharges dihapus?**")
-            st.write("TotalCharges adalah total tagihan selama berlangganan. Kolom ini tidak "
-                     "digunakan sebagai fitur agar pengguna cukup mengisi lama berlangganan "
-                     "(tenure) dan tagihan bulanan (MonthlyCharges), tanpa perlu mencari total "
-                     "tagihan dari seluruh riwayat pembayaran.")
-            st.write("TotalCharges juga berkaitan erat dengan tenure, sehingga sebagian "
-                     "informasinya beririsan dengan fitur yang tetap digunakan. Namun, nilainya "
-                     "tidak selalu sama dengan MonthlyCharges × tenure. Penghapusan ini merupakan "
-                     "pilihan untuk menyederhanakan input; kami belum membandingkan performa model "
-                     "dengan dan tanpa TotalCharges.")
-            st.caption("Menghapus kolom berbeda dengan menghapus baris: pada tahap cleaning, 11 baris "
-                       "dengan TotalCharges kosong lebih dulu dihapus untuk mempertahankan data "
-                       "pemodelan yang sama dengan eksperimen awal. Setelah itu, kolom TotalCharges "
-                       "dibuang. Jika kolom tersebut sejak awal tidak dipakai, nilai kosongnya saja "
-                       "tidak mengharuskan baris data ikut dihapus.")
+            st.write("TotalCharges (total tagihan selama berlangganan) tidak dipakai sebagai fitur. "
+                     "Nilainya berkorelasi erat dengan tenure dan tidak selalu sama dengan "
+                     "MonthlyCharges × tenure, sehingga form cukup meminta tenure dan tagihan "
+                     "bulanan. Performa model dengan dan tanpa fitur ini belum dibandingkan.")
+            st.caption("Pada tahap cleaning, 11 baris dengan TotalCharges kosong dihapus lebih dulu "
+                       "agar data pemodelan sama dengan eksperimen awal, lalu kolomnya dibuang.")
             st.markdown("**Ringkasan statistik**")
             st.dataframe(pd.read_csv(eda_dir / "descriptive_statistics.csv"), width="stretch", hide_index=True)
             st.markdown("**Data yang kosong (missing value)**")
