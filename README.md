@@ -32,7 +32,7 @@ Tabel berikut merangkum hasil perbandingan dari `hasil_perbandingan.csv` (evalua
 | RandomForest | 0,6260 (0,0126) | 0,8342 | 0,8217 | 0,7697 | 0,5548 | 0,6765 | 0,6096 | 0,8235 | 0,1567 |
 | DecisionTree | 0,6147 (0,0083) | 0,6366 | 0,6433 | 0,7363 | 0,5025 | 0,7968 | 0,6163 | 0,8305 | 0,1721 |
 
-`LogisticRegression` dipilih sebagai model inti karena mencatat `CV_F1` tertinggi (`0,6304`) dengan selisih performa latih dan validasi yang sangat kecil (`CV_TRAIN_F1` `0,6354` vs `CV_F1` `0,6304`). Sebaliknya, `RandomForest` menunjukkan kesenjangan latih-validasi yang lebar (`Train_F1` `0,8217` vs `CV_F1` `0,6260`), yang menandakan overfitting pada data latih.
+`LogisticRegression` dipilih sebagai model inti karena mencatat `CV_F1` tertinggi (`0,6304`) dengan selisih performa latih dan validasi yang sangat kecil (`CV_TRAIN_F1` `0,6354` vs `CV_F1` `0,6304`). Sebaliknya, `RandomForest` menunjukkan kesenjangan latih-validasi yang lebar (`Train_F1` `0,8217` vs `CV_F1` `0,6260`), yang menandakan overfitting pada data latih, sedangkan `DecisionTree` mencatat `CV_F1` terendah (`0,6147`) karena pohon tunggal lebih sensitif terhadap variasi pembagian fold.
 
 ## Kalibrasi Probabilitas dan Penyesuaian Threshold
 

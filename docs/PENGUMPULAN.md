@@ -14,17 +14,19 @@ Gunakan nama folder **ML2026_B2_Kelompok12_PrediksiCustomerChurn**.
 
 ## Yang diisi/direkam anggota
 
-1. Isi tugas aktual tiap anggota di **slide 27**; peran sengaja tidak diasumsikan.
+1. Pembagian tugas aktual tiap anggota sudah diisi di **slide 27** PPT dan tabel di bawah.
 2. Rekam video asli dengan aplikasi benar-benar dijalankan; cek
    durasi final **≤7 menit**. Cantumkan link video/berkas MP4 saat pengumpulan.
 3. Cek ulang bahwa materi menjelaskan hasil dan keterbatasan yang dipahami
    seluruh anggota; gunakan aplikasi untuk membaca contoh kesalahan prediksi.
 
-## Anggota
+## Anggota dan Pembagian Tugas
 
-- Muhamad Akhdan Ramadhan — J0404241102
-- Thevan Erlangga — J0404241073
-- Fachri Abyasa Tarid — J0404241136
+| Anggota | NIM | Pembagian Tugas |
+|---|---|---|
+| Muhamad Akhdan Ramadhan | J0404241102 | Preprocessing data, training dan evaluasi tiap model, pembuatan serta deployment aplikasi Streamlit |
+| Thevan Erlangga | J0404241073 | Pencarian dataset dan penyusunan PPT laporan project |
+| Fachri Abyasa Tarid | J0404241136 | Pencarian 5 jurnal studi literatur dan penyusunan EDA |
 
 ## Reproduksi
 

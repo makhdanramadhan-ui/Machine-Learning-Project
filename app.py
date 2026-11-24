@@ -757,11 +757,15 @@ with tab3:
                 st.markdown(ui.confusion_matrix(b, N_TEST), unsafe_allow_html=True)
 
             selected = CMP[CMP["Model"] == BEST].iloc[0]
+            lowest_cv = CMP.loc[CMP["CV_F1"].idxmin()]
             top_recall = CMP.loc[CMP["Recall"].idxmax()]
             top_accuracy = CMP.loc[CMP["Accuracy"].idxmax()]
             st.info(
                 f"**Mengapa {BEST_LABEL}?** Model ini mendapat CV-F1 tertinggi "
-                f"({selected['CV_F1']:.4f}) pada data training. Saat diuji sebelum kalibrasi, "
+                f"({selected['CV_F1']:.4f}) pada data training, sedangkan "
+                f"{MODEL_NAMES.get(lowest_cv['Model'], lowest_cv['Model'])} mencatat CV-F1 terendah "
+                f"({lowest_cv['CV_F1']:.4f}) karena pohon tunggal lebih sensitif terhadap pembagian fold. "
+                f"Saat diuji sebelum kalibrasi, "
                 f"{MODEL_NAMES.get(top_recall['Model'], top_recall['Model'])} memiliki recall tertinggi "
                 f"({top_recall['Recall']:.2%}), sedangkan "
                 f"{MODEL_NAMES.get(top_accuracy['Model'], top_accuracy['Model'])} memiliki akurasi "
