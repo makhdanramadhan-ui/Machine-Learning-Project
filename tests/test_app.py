@@ -13,12 +13,11 @@ from streamlit.testing.v1 import AppTest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from calibrate import classification_metrics
 from prediction import (
     InputValidationError, example_customers, input_schema,
     predict_customers, risk_levels, validate_input,
 )
-from training_data import load_training_split
+from training_data import classification_metrics, load_training_split
 
 
 class PredictionTests(unittest.TestCase):

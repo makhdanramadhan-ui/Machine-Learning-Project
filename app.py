@@ -51,7 +51,8 @@ def load_models(model_stamp, calibration_stamp, metadata_stamp):
                           ("calibrator.pkl", "calibrator_sha256")]:
         digest = hashlib.sha256((BASE / filename).read_bytes()).hexdigest()
         if digest != deployment[key]:
-            raise ValueError(f"{filename} tidak cocok dengan metadata evaluasi. Jalankan train.py.")
+            raise ValueError(f"{filename} tidak cocok dengan metadata evaluasi. "
+                             "Jalankan notebook 02_Training_Model dan 03_Kalibrasi_dan_Threshold.")
     base = joblib.load(BASE / "model_churn.pkl")
     calibrated = joblib.load(BASE / "calibrator.pkl")
     return base, calibrated, deployment
@@ -69,7 +70,8 @@ try:
     CVDET = pd.read_csv(BASE / "cv_detail.csv")
 except (OSError, ValueError, KeyError) as exc:
     st.error(f"Model belum bisa dimuat: {exc}")
-    st.info("Jalankan `python train.py`, lalu unggah model dan file hasil evaluasinya bersama-sama.")
+    st.info("Jalankan notebook `02_Training_Model.ipynb` dan `03_Kalibrasi_dan_Threshold.ipynb`, "
+            "lalu unggah model dan file hasil evaluasinya bersama-sama.")
     st.stop()
 
 SCHEMA = input_schema(pipe)
@@ -919,7 +921,7 @@ with tab4:
                         st.image(str(eda_dir / figure["file"]), width="stretch")
                         st.markdown(ui.note_card(figure["interpretation"]), unsafe_allow_html=True)
     else:
-        st.info("Grafik EDA belum tersedia. Jalankan `python eda.py` untuk membuatnya.")
+        st.info("Grafik EDA belum tersedia. Jalankan notebook `01_EDA.ipynb` untuk membuatnya.")
 
     st.markdown(ui.section("Dokumentasi Kelompok 12", "doc"), unsafe_allow_html=True)
     repo_docs = "https://github.com/makhdanramadhan-ui/Machine-Learning-Project/blob/main/docs/"

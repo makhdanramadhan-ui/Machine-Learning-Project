@@ -7,7 +7,7 @@ Gunakan nama folder **ML2026_B2_Kelompok12_PrediksiCustomerChurn**.
 | Source code | https://github.com/makhdanramadhan-ui/Machine-Learning-Project |
 | Dataset | `../Telco-Customer-Churn.csv`; https://www.kaggle.com/datasets/blastchar/telco-customer-churn |
 | Model | `../model_churn.pkl`, `../calibrator.pkl`, metadata deployment |
-| EDA | `eda(explaratory data analysis)/EDA.md`; `../eda.py` |
+| EDA | `eda(explaratory data analysis)/EDA.md`; `../01_EDA.ipynb` |
 | Lima jurnal | `STUDI_LITERATUR.md`, `referensi.bib`, `jurnal/` |
 | Tabel studi literatur | `tabel_studi_literatur.csv`; tabel lengkap pada `STUDI_LITERATUR.md` |
 | Aplikasi | https://machine-learning-project-u8yovshrqrc5tm5s2y2qto.streamlit.app/ |
@@ -30,6 +30,8 @@ Gunakan nama folder **ML2026_B2_Kelompok12_PrediksiCustomerChurn**.
 
 ## Reproduksi
 
-`python train.py` membangun ulang model dan metadata; `python eda.py` membangun
-EDA; `python -m unittest discover -s tests -v` memeriksa aplikasi. Model memakai
+`01_EDA.ipynb` membangun EDA; `02_Training_Model.ipynb` lalu
+`03_Kalibrasi_dan_Threshold.ipynb` membangun ulang model dan metadata;
+`04_Penjelasan_Aplikasi.ipynb` memperagakan alur prediksi aplikasi;
+`python -m unittest discover -s tests -v` memeriksa aplikasi. Model memakai
 dependency terkunci dan Python ≥3.12. Laporan dibuat dari hasil aktual tersimpan.

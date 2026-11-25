@@ -22,7 +22,7 @@ Data berasal dari dataset publik IBM Telco Customer Churn (`Telco-Customer-Churn
 
 ## Seleksi Model dan Analisis Overfitting
 
-Pipeline pra-pemrosesan (`train.py`) menggunakan `ColumnTransformer` dengan `StandardScaler` untuk 3 fitur numerik (`SeniorCitizen`, `tenure`, `MonthlyCharges`) dan `OneHotEncoder(handle_unknown="ignore")` untuk 15 fitur kategorikal. Tiga kandidat algoritma dievaluasi menggunakan 5-fold `StratifiedKFold` dan `GridSearchCV` dengan metrik seleksi `CV_F1`.
+Pipeline pra-pemrosesan (`02_Training_Model.ipynb`) menggunakan `ColumnTransformer` dengan `StandardScaler` untuk 3 fitur numerik (`SeniorCitizen`, `tenure`, `MonthlyCharges`) dan `OneHotEncoder(handle_unknown="ignore")` untuk 15 fitur kategorikal. Tiga kandidat algoritma dievaluasi menggunakan 5-fold `StratifiedKFold` dan `GridSearchCV` dengan metrik seleksi `CV_F1`.
 
 Tabel berikut merangkum hasil perbandingan dari `hasil_perbandingan.csv` (evaluasi holdout diukur pada threshold default `0,50` sebelum kalibrasi):
 
@@ -36,7 +36,7 @@ Tabel berikut merangkum hasil perbandingan dari `hasil_perbandingan.csv` (evalua
 
 ## Kalibrasi Probabilitas dan Penyesuaian Threshold
 
-Penggunaan `class_weight="balanced"` pada model inti menggeser skor probabilitas mentah ke atas sehingga tidak lagi mencerminkan peluang empiris sebenarnya. Untuk memperbaikinya, `calibrate.py` menerapkan `CalibratedClassifierCV` dengan metode `sigmoid` (5-fold) secara eksklusif pada data latih.
+Penggunaan `class_weight="balanced"` pada model inti menggeser skor probabilitas mentah ke atas sehingga tidak lagi mencerminkan peluang empiris sebenarnya. Untuk memperbaikinya, `03_Kalibrasi_dan_Threshold.ipynb` menerapkan `CalibratedClassifierCV` dengan metode `sigmoid` (5-fold) secara eksklusif pada data latih.
 
 - **Penurunan Brier Score:** Pada data uji holdout, Brier Score turun dari `0,1741` (model dasar) menjadi `0,1414` (setelah kalibrasi).
 - **Reliabilitas per Tingkat Risiko (data uji):**
@@ -57,11 +57,13 @@ Penurunan threshold dari `0,50` ke `0,32` menaikkan Recall dari `56,42%` menjadi
 
 ## Arsitektur dan Praktik Rekayasa Perangkat Lunak
 
-Kode dipisahkan berdasarkan tanggung jawab agar alur pelatihan, kalibrasi, validasi, dan antarmuka mudah dipelihara serta diuji secara terpisah:
+Alur pemodelan ditulis sebagai notebook bernomor dengan penjelasan di setiap sel, sedangkan aplikasi tetap berupa modul Python karena Streamlit Community Cloud menjalankan `app.py`:
 
-- `training_data.py`: Memuat `Telco-Customer-Churn.csv`, membersihkan baris kosong, dan menghasilkan stratified 80/20 split yang deterministik.
-- `train.py`: Menjalankan `GridSearchCV` 5-fold, menyimpan tabel perbandingan (`hasil_perbandingan.csv`, `cv_detail.csv`), artefak `model_churn.pkl`, lalu memanggil `calibrate()`.
-- `calibrate.py`: Melatih kalibrator sigmoid pada data latih, mencari threshold OOF optimal, dan menulis metadata `calib_info.json` serta `deployment_info.json`.
+- `01_EDA.ipynb`: Pemeriksaan kualitas data, statistik deskriptif, dan 7 grafik EDA yang disimpan ke `docs/eda(explaratory data analysis)/`.
+- `02_Training_Model.ipynb`: Menjalankan `GridSearchCV` 5-fold untuk tiga model, menyimpan tabel perbandingan (`hasil_perbandingan.csv`, `cv_detail.csv`) dan artefak `model_churn.pkl`.
+- `03_Kalibrasi_dan_Threshold.ipynb`: Melatih kalibrator sigmoid pada data latih, mencari threshold OOF optimal, dan menulis metadata `calib_info.json` serta `deployment_info.json`.
+- `04_Penjelasan_Aplikasi.ipynb`: Menjalankan fungsi inti aplikasi langkah demi langkah: pemeriksaan hash model, skema input, validasi, prediksi tunggal dan batch.
+- `training_data.py`: Memuat `Telco-Customer-Churn.csv`, membersihkan baris kosong, menghasilkan stratified 80/20 split yang deterministik, dan menghitung metrik evaluasi; dipakai bersama oleh notebook, aplikasi, dan pengujian.
 - `prediction.py`: Mengekstrak skema fitur langsung dari pipeline terlatih, melakukan validasi ketat pada input tunggal maupun CSV, menghitung probabilitas, dan memetakan tingkat risiko (`RENDAH`, `SEDANG`, `TINGGI`).
 - `app.py` & `ui.py`: Antarmuka Streamlit dengan mode tema Terang/Gelap, simulasi pelanggan tunggal beserta saran retensi berbasis aturan, pemrosesan batch CSV dengan unduhan hasil, serta panel metrik evaluasi model.
 
@@ -79,10 +81,10 @@ Pastikan Python 3 telah terpasang, lalu instal dependensi dari `requirements.txt
 pip install -r requirements.txt
 ```
 
-Untuk melatih ulang model, melakukan kalibrasi, dan memperbarui artefak evaluasi:
+Untuk menjalankan notebook, instal juga kernel Jupyter dari `requirements-report.txt`, lalu buka notebook di Jupyter atau VS Code dan jalankan semua sel secara berurutan: `01_EDA.ipynb`, `02_Training_Model.ipynb`, `03_Kalibrasi_dan_Threshold.ipynb`, `04_Penjelasan_Aplikasi.ipynb`. Notebook 02 dan 03 melatih ulang model, melakukan kalibrasi, dan memperbarui artefak evaluasi.
 
 ```bash
-python train.py
+pip install -r requirements-report.txt
 ```
 
 Untuk menjalankan aplikasi Streamlit secara lokal:
