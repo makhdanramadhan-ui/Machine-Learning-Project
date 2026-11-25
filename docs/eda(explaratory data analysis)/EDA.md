@@ -135,7 +135,7 @@ Pada data training, median lama berlangganan pelanggan churn adalah 10 bulan, se
 
 ![04_correlation_train.png](04_correlation_train.png)
 
-Korelasi total tagihan (TotalCharges) dan lama berlangganan (tenure) adalah 0.827 pada data training. Keduanya berkaitan, tetapi tidak selalu bisa saling menggantikan. TotalCharges tidak diminta di aplikasi agar pengisian lebih mudah. Hasil model dengan dan tanpa fitur ini belum dibandingkan.
+Korelasi total tagihan (TotalCharges) dan lama berlangganan (tenure) adalah 0.827 pada data training. Nilai TotalCharges hampir sama dengan tenure × MonthlyCharges, sehingga informasinya sudah terwakili dua fitur tersebut dan TotalCharges tidak dipakai sebagai fitur. Uji model dengan dan tanpa TotalCharges ada di notebook 02_Training_Model.ipynb.
 
 
 ### 05_categorical_churn_train.png
@@ -167,6 +167,6 @@ Pelanggan churn dan tidak churn tersebar pada lama berlangganan dan tagihan yang
 
 - Class weight diuji dalam GridSearch; tidak memakai SMOTE pada eksperimen ini.
 
-- TotalCharges dihapus untuk input sederhana; tidak mengklaim koefisien negatif adalah kesalahan.
+- TotalCharges dihapus karena isinya hampir sama dengan tenure × MonthlyCharges; hasil uji dengan dan tanpa fitur ini ada di uji_totalcharges.json.
 
 - Tabel lengkap churn rate semua kategori tersedia di categorical_churn_rates_train.csv.

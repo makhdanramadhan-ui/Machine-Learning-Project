@@ -61,7 +61,7 @@
     },
     {
       "file": "04_correlation_train.png",
-      "interpretation": "Korelasi total tagihan (TotalCharges) dan lama berlangganan (tenure) adalah 0.827 pada data training. Keduanya berkaitan, tetapi tidak selalu bisa saling menggantikan. TotalCharges tidak diminta di aplikasi agar pengisian lebih mudah. Hasil model dengan dan tanpa fitur ini belum dibandingkan."
+      "interpretation": "Korelasi total tagihan (TotalCharges) dan lama berlangganan (tenure) adalah 0.827 pada data training. Nilai TotalCharges hampir sama dengan tenure × MonthlyCharges, sehingga informasinya sudah terwakili dua fitur tersebut dan TotalCharges tidak dipakai sebagai fitur. Uji model dengan dan tanpa TotalCharges ada di notebook 02_Training_Model.ipynb."
     },
     {
       "file": "05_categorical_churn_train.png",

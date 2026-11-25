@@ -1,0 +1,30 @@
+{
+  "model": "LogisticRegression",
+  "korelasi_TotalCharges_vs_tenure_x_MonthlyCharges": 0.9996,
+  "median_selisih_relatif": 0.0198,
+  "cv_f1": {
+    "tanpa_TotalCharges": {
+      "mean": 0.6304,
+      "std": 0.0087,
+      "per_fold": [
+        0.6395,
+        0.6263,
+        0.6154,
+        0.6347,
+        0.6364
+      ]
+    },
+    "dengan_TotalCharges": {
+      "mean": 0.6302,
+      "std": 0.0067,
+      "per_fold": [
+        0.6328,
+        0.6324,
+        0.617,
+        0.6355,
+        0.6332
+      ]
+    }
+  },
+  "n_train": 5625
+}

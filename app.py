@@ -854,10 +854,10 @@ with tab3:
                     "(https://www.kaggle.com/datasets/blastchar/telco-customer-churn). "
                     "Data awal berisi 7.043 pelanggan. Setelah 11 baris dengan TotalCharges kosong "
                     "dihapus, tersisa 7.032 pelanggan untuk training dan testing.")
-        st.write("customerID hanya digunakan sebagai identitas. TotalCharges tidak diminta agar "
-                 "form lebih sederhana. Total tagihan berkaitan dengan lama berlangganan, tetapi "
-                 "tidak selalu sama dengan tagihan bulanan dikali jumlah bulan. Kami belum "
-                 "membandingkan hasil model dengan dan tanpa fitur ini.")
+        st.write("customerID hanya digunakan sebagai identitas. TotalCharges tidak dipakai karena "
+                 "nilainya hampir sama dengan tagihan bulanan dikali lama berlangganan (korelasi "
+                 "0,9996 pada data latih). F1 validasi silang model tanpa TotalCharges 0,6304, "
+                 "dengan TotalCharges 0,6302.")
         st.write("Hasil model berasal dari satu dataset dan belum diuji pada operator lain. "
                  "TETAP berarti diprediksi tidak churn, bukan jaminan pelanggan akan terus "
                  "berlangganan. Saran penawaran juga belum diuji efektivitasnya.")
@@ -881,9 +881,10 @@ with tab4:
             st.dataframe(pd.read_csv(eda_dir / "data_dictionary.csv"), width="stretch", hide_index=True)
             st.markdown("**Mengapa TotalCharges dihapus?**")
             st.write("TotalCharges (total tagihan selama berlangganan) tidak dipakai sebagai fitur. "
-                     "Nilainya berkorelasi erat dengan tenure dan tidak selalu sama dengan "
-                     "MonthlyCharges × tenure, sehingga form cukup meminta tenure dan tagihan "
-                     "bulanan. Performa model dengan dan tanpa fitur ini belum dibandingkan.")
+                     "Nilainya hampir sama dengan MonthlyCharges × tenure (korelasi 0,9996 pada data "
+                     "latih), dan menambahkannya tidak memperbaiki model: F1 validasi silang 0,6304 "
+                     "tanpa TotalCharges dan 0,6302 dengan TotalCharges. Form cukup meminta tenure "
+                     "dan tagihan bulanan.")
             st.caption("Pada tahap cleaning, 11 baris dengan TotalCharges kosong dihapus lebih dulu "
                        "agar data pemodelan sama dengan eksperimen awal, lalu kolomnya dibuang.")
             st.markdown("**Ringkasan statistik**")

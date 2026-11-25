@@ -14,7 +14,7 @@ Gunakan nama folder **ML2026_B2_Kelompok12_PrediksiCustomerChurn**.
 
 ## Yang diisi/direkam anggota
 
-1. Pembagian tugas aktual tiap anggota sudah diisi di **slide 15** PPT dan tabel di bawah.
+1. Pembagian tugas aktual tiap anggota sudah diisi di **slide 16** PPT dan tabel di bawah.
 2. Rekam video asli dengan aplikasi benar-benar dijalankan; cek
    durasi final **≤7 menit**. Cantumkan link video/berkas MP4 saat pengumpulan.
 3. Cek ulang bahwa materi menjelaskan hasil dan keterbatasan yang dipahami

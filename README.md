@@ -17,7 +17,7 @@ Proyek ini berawal dari proyek akhir mata kuliah Pembelajaran Mesin, lalu dikemb
 Data berasal dari dataset publik IBM Telco Customer Churn (`Telco-Customer-Churn.csv`) yang berisi 7.043 baris dan 21 kolom. Pada tahap pembersihan di `training_data.py`, 11 baris dengan nilai `TotalCharges` kosong (seluruhnya pada `tenure = 0`) dihapus sehingga tersisa 7.032 baris bersih.
 
 - **Ketidakseimbangan Kelas:** Dari 7.032 pelanggan, terdapat 5.163 tidak churn (sekitar 73,4%) dan 1.869 churn (sekitar 26,6%). Karena kelas tidak seimbang, evaluasi berfokus pada F1, Recall, Precision, ROC AUC, dan Brier Score, bukan hanya akurasi.
-- **Pemilihan 18 Fitur Input:** Kolom `customerID`, target `Churn`, dan `TotalCharges` tidak digunakan sebagai fitur model. `TotalCharges` sengaja dikeluarkan untuk menyederhanakan input form pengguna sekaligus menghindari kolinearitas tinggi dengan `tenure` (`r = 0,827` pada data latih).
+- **Pemilihan 18 Fitur Input:** Kolom `customerID`, target `Churn`, dan `TotalCharges` tidak digunakan sebagai fitur model. Pada data latih, `TotalCharges` hampir identik dengan `tenure × MonthlyCharges` (korelasi `0,9996`, selisih median `1,98%`), sehingga informasinya sudah terwakili dua fitur lain. Uji pada `02_Training_Model.ipynb` (`uji_totalcharges.json`) menunjukkan CV F1 Logistic Regression `0,6304` tanpa `TotalCharges` dan `0,6302` dengan `TotalCharges`.
 - **Pembagian Data:** Data dibagi secara stratified 80/20 (`random_state=42`) menjadi 5.625 baris data latih dan 1.407 baris data uji holdout.
 
 ## Seleksi Model dan Analisis Overfitting
@@ -32,7 +32,7 @@ Tabel berikut merangkum hasil perbandingan dari `hasil_perbandingan.csv` (evalua
 | RandomForest | 0,6260 (0,0126) | 0,8342 | 0,8217 | 0,7697 | 0,5548 | 0,6765 | 0,6096 | 0,8235 | 0,1567 |
 | DecisionTree | 0,6147 (0,0083) | 0,6366 | 0,6433 | 0,7363 | 0,5025 | 0,7968 | 0,6163 | 0,8305 | 0,1721 |
 
-`LogisticRegression` dipilih sebagai model inti karena mencatat `CV_F1` tertinggi (`0,6304`) dengan selisih performa latih dan validasi yang sangat kecil (`CV_TRAIN_F1` `0,6354` vs `CV_F1` `0,6304`). Sebaliknya, `RandomForest` menunjukkan kesenjangan latih-validasi yang lebar (`Train_F1` `0,8217` vs `CV_F1` `0,6260`), yang menandakan overfitting pada data latih, sedangkan `DecisionTree` mencatat `CV_F1` terendah (`0,6147`) karena pohon tunggal lebih sensitif terhadap variasi pembagian fold.
+`LogisticRegression` dipilih sebagai model inti karena mencatat `CV_F1` tertinggi (`0,6304`) dengan selisih performa latih dan validasi yang sangat kecil (`CV_TRAIN_F1` `0,6354` vs `CV_F1` `0,6304`). Sebaliknya, `RandomForest` menunjukkan kesenjangan latih-validasi yang lebar (`Train_F1` `0,8217` vs `CV_F1` `0,6260`), yang menandakan overfitting pada data latih, sedangkan `DecisionTree` mencatat `CV_F1` terendah (`0,6147`) walaupun F1 data ujinya sedikit lebih tinggi (`0,6163`); pemilihan model tidak memakai data uji.
 
 ## Kalibrasi Probabilitas dan Penyesuaian Threshold
 
@@ -60,7 +60,7 @@ Penurunan threshold dari `0,50` ke `0,32` menaikkan Recall dari `56,42%` menjadi
 Alur pemodelan ditulis sebagai notebook bernomor dengan penjelasan di setiap sel, sedangkan aplikasi tetap berupa modul Python karena Streamlit Community Cloud menjalankan `app.py`:
 
 - `01_EDA.ipynb`: Pemeriksaan kualitas data, statistik deskriptif, dan 7 grafik EDA yang disimpan ke `docs/eda(explaratory data analysis)/`.
-- `02_Training_Model.ipynb`: Menjalankan `GridSearchCV` 5-fold untuk tiga model, menyimpan tabel perbandingan (`hasil_perbandingan.csv`, `cv_detail.csv`) dan artefak `model_churn.pkl`.
+- `02_Training_Model.ipynb`: Menjalankan `GridSearchCV` 5-fold untuk tiga model, menyimpan tabel perbandingan (`hasil_perbandingan.csv`, `cv_detail.csv`) dan artefak `model_churn.pkl`, lalu menguji model dengan dan tanpa `TotalCharges` (`uji_totalcharges.json`).
 - `03_Kalibrasi_dan_Threshold.ipynb`: Melatih kalibrator sigmoid pada data latih, mencari threshold OOF optimal, dan menulis metadata `calib_info.json` serta `deployment_info.json`.
 - `04_Penjelasan_Aplikasi.ipynb`: Menjalankan fungsi inti aplikasi langkah demi langkah: pemeriksaan hash model, skema input, validasi, prediksi tunggal dan batch.
 - `training_data.py`: Memuat `Telco-Customer-Churn.csv`, membersihkan baris kosong, menghasilkan stratified 80/20 split yang deterministik, dan menghitung metrik evaluasi; dipakai bersama oleh notebook, aplikasi, dan pengujian.
@@ -103,5 +103,5 @@ python -m unittest discover -s tests -v
 
 - Model dilatih pada dataset historis publik IBM Telco Customer Churn (7.032 baris bersih) dari satu titik waktu; distribusi fitur dan tingkat churn di lingkungan produksi nyata dapat berbeda sehingga memerlukan kalibrasi atau pelatihan ulang secara berkala.
 - Analisis korelasi pada data latih menunjukkan hubungan antar-fitur seperti kontrak bulanan dan tagihan bulanan dengan churn, namun pola tersebut bersifat asosiatif dan tidak membuktikan hubungan sebab-akibat.
-- Fitur `TotalCharges` tidak disertakan untuk menjaga kesederhanaan pengisian form, dan perbandingan performa eksperimental dengan serta tanpa `TotalCharges` belum dilakukan.
-- Rekomendasi tindakan retensi pada aplikasi disusun berbasis aturan statis dari profil input, bukan dari model kausal (uplift modeling) atau hasil eksperimen A/B.
+- Sebanyak 18 profil fitur pada data uji identik dengan profil pada data latih, sehingga performa untuk pelanggan dengan profil yang benar-benar baru dapat sedikit berbeda.
+- Rekomendasi tindakan retensi pada aplikasi disusun berbasis aturan statis dari profil input, bukan dari model sebab-akibat atau hasil uji coba pada pelanggan nyata.
